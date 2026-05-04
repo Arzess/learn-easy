@@ -17,6 +17,9 @@ const MAPPING = {
   'person.fill': 'person',
   'book.fill': 'book',
   'magnifyingglass': 'search',
+  'gear': 'settings',
+  'bookmark.fill': 'bookmark',
+  'photo': 'image',
 } as const;
 
 type IconSymbolName = keyof typeof MAPPING;

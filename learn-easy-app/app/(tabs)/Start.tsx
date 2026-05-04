@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { HelloWave } from '@/components/hello-wave';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 
@@ -7,7 +6,6 @@ export default function HomeScreen() {
   return (
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Start</ThemedText>
-        <HelloWave />
       </ThemedView>
   );
 }
@@ -15,7 +13,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   titleContainer: {
     marginTop: 80,
-    marginRight: 150,
     backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
