@@ -1,11 +1,11 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { getRxStorageSQLiteTrial } from 'rxdb/plugins/storage-sqlite';
+import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite';
 import { Platform } from 'react-native';
 
 const storage = Platform.OS === 'web' 
   ? getRxStorageDexie() 
-  : getRxStorageSQLiteTrial();
+  : getRxStorageSQLite();
 
 
 const _create = async () => {
