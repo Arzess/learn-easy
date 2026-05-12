@@ -1,6 +1,8 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite';
+import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
+import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
 
 const storage = Platform.OS === 'web' 
@@ -9,12 +11,18 @@ const storage = Platform.OS === 'web'
 
 
 const _create = async () => {
+  if (process.env.NODE_ENV === 'development') {
+    addRxPlugin(RxDBDevModePlugin);
+  }
   const db = await createRxDatabase({
     name: 'learn-easy-db',
-    storage: storage,
+    storage: wrappedValidateAjvStorage({
+        storage: storage,
+    }),
     ignoreDuplicate: true,
-  })
-await db.addCollections({
+  });
+
+  await db.addCollections({
     user: {
       schema: {
         version: 0,
@@ -22,14 +30,22 @@ await db.addCollections({
         type: 'object',
         properties: {
           id: { type: 'string', maxLength: 100 },
-          intensity: {type: 'string'},
-          role: {type: 'string'},
+          current: { type: 'boolean' },
+          intensity: { type: 'string' },
+          role: { type: 'string' },
           name: { type: 'string' },
-          email: {type: 'string'},
-          completedIntroduction: {type: 'boolean', default: 'false'},
-          
+          username: { type: 'string' },
+          course: { type: 'string' },
+          courseHistory: { 
+            type: 'array', 
+            items: { type: 'string' } 
+          },
+          currentCourseCompletedChapters: { 
+            type: 'array', 
+            items: { type: 'string' } 
+          }
         },
-        required: ['id', 'intensity', 'role', 'name', 'email',],
+        required: ['id', 'current', 'intensity', 'role', 'name', 'username'],
       }
     },
     bookmarks: {
@@ -39,10 +55,10 @@ await db.addCollections({
           type: 'object',
           properties: {
             bookmarkId: { type: 'string', maxLength: 100 },
-            isInhalt: {type: 'boolean'},
-            inhaltsId: {type: 'integer'},
+            isInhalt: { type: 'boolean' },
+            inhaltsId: { type: 'number' }, 
           },
-         required: ['bookmarkId', 'isInhalt', 'inhaltsId'],
+          required: ['bookmarkId', 'isInhalt', 'inhaltsId'],
       }
     },
     last_queries: {
@@ -70,3 +86,5 @@ export const getDatabase = () => {
   }
   return dbPromise;
 };
+
+

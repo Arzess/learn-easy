@@ -13,7 +13,7 @@ type Thema = {
   bild: ImageSourcePropType | null;
 };
 
-const THEMEN: Thema[] = [
+export const THEMEN: Thema[] = [
   { id: '1', titel: 'Mongolisches Reich',     bild: require('@/assets/images/themen/mongolisches-reich.png') },
   { id: '2', titel: 'Frauen in der Technik',  bild: require('@/assets/images/themen/frauen-technik.png') },
   { id: '3', titel: 'Klimawandel',            bild: require('@/assets/images/themen/klimawandel.png') },
