@@ -45,7 +45,7 @@ const _create = async () => {
             items: { type: 'string' } 
           }
         },
-        required: ['id', 'current', 'intensity', 'role', 'name', 'username'],
+        required: ['id', 'current', 'intensity', 'role', 'name', 'username', 'course', 'courseHistory', 'currentCourseCompletedChapters'],
       }
     },
     bookmarks: {

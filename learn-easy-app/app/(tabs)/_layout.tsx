@@ -1,48 +1,63 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
+import SVG from '../../components/svg'
+import '../../components/svg-sheet'
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { DatabaseProvider } from '@/db/DatabaseContext';
+import { colors } from '@/constants/theme';
 
 export default function TabLayout() {
-  const activeColor = '#0a7ea4';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: activeColor,
+        tabBarActiveBackgroundColor: "white",
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarButton: HapticTab,
-      }}>
+        tabBarStyle: {
+          backgroundColor: '#1B1E20',
+          borderTopWidth: 2,
+          borderTopColor: colors.white.color,
+          height: 128,
+          paddingBottom: 32, 
+        },
+        tabBarItemStyle: {
+          marginHorizontal: 8,
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+          overflow: 'hidden',
+        },
+        tabBarIconStyle: {
+          padding: 20,
+        }
+    }}>
       <Tabs.Screen
-        name="Start"
+        name="Home"
         options={{
-          title: 'Start',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ focused }) => <SVG icon={"home"} width={24} height={24} white={!focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Suche"
         options={{
-          title: 'Suche',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
+          tabBarIcon: ({ focused }) => <SVG icon={"search"} width={24} height={24} white={!focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Lernen"
         options={{
-          title: 'Lernen',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
+          tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={!focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Account"
         options={{
-          title: 'Account',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
+          tabBarIcon: ({ focused }) => <SVG icon={"user"} width={24} height={24} white={!focused}/>,
         }}
       />
     </Tabs>

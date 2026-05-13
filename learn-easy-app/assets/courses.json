@@ -1,8 +1,222 @@
 {
     "courses": [
         {
-          "course_name": "Mongolei",
-          "course_id": 1,
+          "course_name": "Mongolisches Reich",
+          "course_description":"Mongolisches Reich course",
+          "course_id": "1",
+          "course_cover_id": "@/assets/images/themen/mongolisches-reich.png",
+          "amount_of_chapters": 3,
+          "chapters": [
+            {
+                "chapter_name": "Chapter 1: Something",
+                "chapter_desc": "Description of the first chapter",
+                "chapter_id": 1,
+                "chapter_content": [
+                    {
+                        "content_type": "text",
+                        "content": "Long time ago, in the 13th century there was a..."
+                    },
+                    {
+                        "content_type": "image",
+                        "image_id": "2434343"
+                    },
+                    {
+                        "content_type": "text",
+                        "content": "Another paragraph"
+                    },
+                    {
+                        "content_type": "video",
+                        "link": "https://......."
+                    }
+                ]
+            }
+          ],
+          "quiz": {
+            "questions": [
+                {
+                    "question_content": "When did the Mongolian empire begin to exist?",
+                    "question_type": "multiple choice",
+                    "answers": [
+                        {
+                            "answer_label": "A",
+                            "answer_content": "13th century",
+                            "correct": true
+                        },
+                        {
+                            "answer_label": "B",
+                            "answer_content": "14th century",
+                            "correct": false
+                        }
+                        
+                    ]
+                }
+            ]
+          }
+        },
+        {
+          "course_name": "Frauen in der Technik",
+          "course_id": "2",
+          "course_cover_id": "@/assets/images/themen/frauen-technik.png",
+          "course_description": "Frauen in der Technik course",
+          "amount_of_chapters": 3,
+          "chapters": [
+            {
+                "chapter_name": "Chapter 1: Something",
+                "chapter_desc": "Description of the first chapter",
+                "chapter_id": 1,
+                "chapter_content": [
+                    {
+                        "content_type": "text",
+                        "content": "Long time ago, in the 13th century there was a..."
+                    },
+                    {
+                        "content_type": "image",
+                        "image_id": "2434343"
+                    },
+                    {
+                        "content_type": "text",
+                        "content": "Another paragraph"
+                    },
+                    {
+                        "content_type": "video",
+                        "link": "https://......."
+                    }
+                ]
+            }
+          ],
+          "quiz": {
+            "questions": [
+                {
+                    "question_content": "When did the Mongolian empire begin to exist?",
+                    "question_type": "multiple choice",
+                    "answers": [
+                        {
+                            "answer_label": "A",
+                            "answer_content": "13th century",
+                            "correct": true
+                        },
+                        {
+                            "answer_label": "B",
+                            "answer_content": "14th century",
+                            "correct": false
+                        }
+                        
+                    ]
+                }
+            ]
+          }
+        },
+        {
+          "course_name": "Klimawandel",
+          "course_id": "3",
+          "course_description":"Klimawandel course",
+          "course_cover_id": "@/assets/images/themen/klimawandel.png",
+          "amount_of_chapters": 3,
+          "chapters": [
+            {
+                "chapter_name": "Chapter 1: Something",
+                "chapter_desc": "Description of the first chapter",
+                "chapter_id": 1,
+                "chapter_content": [
+                    {
+                        "content_type": "text",
+                        "content": "Long time ago, in the 13th century there was a..."
+                    },
+                    {
+                        "content_type": "image",
+                        "image_id": "2434343"
+                    },
+                    {
+                        "content_type": "text",
+                        "content": "Another paragraph"
+                    },
+                    {
+                        "content_type": "video",
+                        "link": "https://......."
+                    }
+                ]
+            }
+          ],
+          "quiz": {
+            "questions": [
+                {
+                    "question_content": "When did the Mongolian empire begin to exist?",
+                    "question_type": "multiple choice",
+                    "answers": [
+                        {
+                            "answer_label": "A",
+                            "answer_content": "13th century",
+                            "correct": true
+                        },
+                        {
+                            "answer_label": "B",
+                            "answer_content": "14th century",
+                            "correct": false
+                        }
+                        
+                    ]
+                }
+            ]
+          }
+        },
+        {
+          "course_name": "Künstliche Intelligenz",
+          "course_id": "4",
+          "course_description":"Künstliche Intelligenz course",
+          "course_cover_id": "@/assets/images/themen/kuenstliche-intelligenz.png",
+          "amount_of_chapters": 3,
+          "chapters": [
+            {
+                "chapter_name": "Chapter 1: Something",
+                "chapter_desc": "Description of the first chapter",
+                "chapter_id": 1,
+                "chapter_content": [
+                    {
+                        "content_type": "text",
+                        "content": "Long time ago, in the 13th century there was a..."
+                    },
+                    {
+                        "content_type": "image",
+                        "image_id": "2434343"
+                    },
+                    {
+                        "content_type": "text",
+                        "content": "Another paragraph"
+                    },
+                    {
+                        "content_type": "video",
+                        "link": "https://......."
+                    }
+                ]
+            }
+          ],
+          "quiz": {
+            "questions": [
+                {
+                    "question_content": "When did the Mongolian empire begin to exist?",
+                    "question_type": "multiple choice",
+                    "answers": [
+                        {
+                            "answer_label": "A",
+                            "answer_content": "13th century",
+                            "correct": true
+                        },
+                        {
+                            "answer_label": "B",
+                            "answer_content": "14th century",
+                            "correct": false
+                        }
+                        
+                    ]
+                }
+            ]
+          }
+        },
+        {
+          "course_name": "Die Raumfahrt",
+          "course_id": "5",
+          "course_description":"Die Raumfahrt course",
+          "course_cover_id": "@/assets/images/themen/raumfahrt.png",
           "amount_of_chapters": 3,
           "chapters": [
             {
@@ -51,5 +265,6 @@
             ]
           }
         }
+
     ]
 }

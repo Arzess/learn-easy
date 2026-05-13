@@ -5,11 +5,11 @@ import SVG from './svg'
 import './svg-sheet'
 
 
-export default function Button({text, iconName, onPress} : {text: string, iconName: string, onPress: Function}){
+export default function Button({text, iconName, onPress, light, darkIcon} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean}){
     return (
-        <Pressable style={styles.button} onPress={onPress as any}>
-            <Text style={[fonts.josefin, styles.buttonText]}>{text}</Text>
-            <SVG icon={iconName} width={24} height={24} white={true}/>
+        <Pressable style={[styles.button, light && styles.lightButton]} onPress={onPress as any}>
+            <Text style={[fonts.josefin, styles.buttonText, light && styles.lightButtonText]}>{text}</Text>
+            <SVG icon={iconName} width={24} height={24} white={!darkIcon}/>
         </Pressable>
     )
 }
@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
+    },
+    lightButton: {
+        backgroundColor: colors.whiteBg.backgroundColor,
+    },
+    lightButtonText: {
+        color: colors.black.color,
     }
 
 })

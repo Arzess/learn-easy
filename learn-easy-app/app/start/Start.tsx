@@ -6,14 +6,12 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useState } from 'react';
 import Input from '@/components/Input';
-import { useDB } from '../../db/DatabaseContext';
 import Button from '@/components/Button';
 import { useRouter } from 'expo-router';
 
 export default function Start() {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
-  const db = useDB();
   const router = useRouter();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -32,8 +30,8 @@ export default function Start() {
       
       <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading]} className="heading">Hallo!</Text>
-          <Text style={[fonts.josefin, styles.subheading]}>Bitte erzähl uns kurz über dich.</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading]} className="heading">Hey!</Text>
+          <Text style={[fonts.josefin, styles.subheading]}>Could you tell us about yourself?</Text>
         </View>
         
         <View style={styles.form}>
@@ -41,7 +39,7 @@ export default function Start() {
           <Input color='dark' placeholder='' value={username} label="Username" changeText={setUsername}/>
           <Input color='dark' placeholder='' value={name} label="Name" changeText={setName}/>
 
-          <Button text="Next" iconName="chevron-right" onPress={()=>{
+          <Button text="Next" iconName="chevron-right" darkIcon={false} onPress={()=>{
             if (name != "" && username != "") next_step(name, username)
           }}/>
           <View>

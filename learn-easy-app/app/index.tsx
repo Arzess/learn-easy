@@ -3,13 +3,21 @@ import { useEffect, useState } from 'react';
 import { View, ActivityIndicator, Platform } from 'react-native';
 
 
-const getItem = async (key: string): Promise<string | null> => {
+
+export const getItem = async (key: string): Promise<string | null> => {
   if (Platform.OS === 'web') {
     return localStorage.getItem(key);
   }
   const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
   return AsyncStorage.getItem(key);
 };
+
+
+export const completeIntro = async () => {
+  const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+  await AsyncStorage.setItem('@firstLaunch', 'false');
+};
+
 
 export default function Index() {
   const rootNavigationState = useRootNavigationState();
@@ -39,5 +47,5 @@ export default function Index() {
     return <Redirect href="/start/Start" />;
   }
 
-  return <Redirect href="/(tabs)/Lernen" />;
+  return <Redirect href="/(tabs)/Home" />;
 }
