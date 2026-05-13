@@ -1,53 +1,65 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+import { Platform, StyleSheet } from 'react-native';
 
-import { Platform } from 'react-native';
+export const colors = StyleSheet.create({
+  black: { color: '#000000' },
+  blackBg: { backgroundColor: '#000000' },
+  primary: { color: '#505050' },
+  primaryBg: { backgroundColor: '#505050' },
+  white: { color: 'white' },
+  whiteBg: { backgroundColor: 'white' },
+  interface: { color: '#1B1E20' },
+  interfaceBg: { backgroundColor: '#1B1E20' },
+  primary2: { color: '#B4B4B4' },
+  primary2Bg: { backgroundColor: '#B4B4B4' },
+  secondary: { color: '#E8E8E8' },
+  secondaryBg: { backgroundColor: '#E8E8E8' },
+  secondary2: { color: '#E5E5E5' },
+  secondary2Bg: { backgroundColor: '#E5E5E5' },
+  interface2: { color: '#171717' },
+  interface2Bg: { backgroundColor: '#171717' }
+});
+
+export const fonts = StyleSheet.create({
+  josefin: { fontFamily: 'JosefinSans_400Regular' },
+  josefinMedium: { fontFamily: 'JosefinSans_500Medium' },
+  josefinSemi: { fontFamily: 'JosefinSans_600SemiBold' },
+  josefinBold: { fontFamily: 'JosefinSans_700Bold' },
+});
 
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: colors.primary.color,
+    background: colors.whiteBg.backgroundColor,
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: colors.primary.color,
+    tabIconDefault: colors.primary2.color,
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: colors.white.color,
+    background: colors.interfaceBg.backgroundColor,
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: colors.white.color,
+    tabIconDefault: colors.primary2.color,
     tabIconSelected: tintColorDark,
   },
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
+    sans: 'JosefinSans_400Regular',
+    serif: 'JosefinSans_700Bold',
+    rounded: 'JosefinSans_500Medium',
     mono: 'ui-monospace',
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
+    sans: 'JosefinSans_400Regular',
+    bold: 'JosefinSans_700Bold',
+    medium: 'JosefinSans_500Medium',
+    semiBold: 'JosefinSans_600SemiBold',
     mono: 'monospace',
   },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+})
