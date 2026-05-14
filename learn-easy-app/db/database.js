@@ -40,12 +40,15 @@ const _create = async () => {
             type: 'array', 
             items: { type: 'string' } 
           },
+          currentChapter: {
+            type: 'integer',
+          },
           currentCourseCompletedChapters: { 
             type: 'array', 
             items: { type: 'string' } 
           }
         },
-        required: ['id', 'current', 'intensity', 'role', 'name', 'username', 'course', 'courseHistory', 'currentCourseCompletedChapters'],
+        required: ['id', 'current', 'intensity', 'role', 'name', 'username', 'course', 'courseHistory', 'currentChapter', 'currentCourseCompletedChapters'],
       }
     },
     bookmarks: {

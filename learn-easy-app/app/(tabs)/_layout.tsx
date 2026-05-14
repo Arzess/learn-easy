@@ -43,14 +43,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Suche"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"search"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={!focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Lernen"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"bookmark"} width={24} height={24} white={!focused}/>,
         }}
       />
 
