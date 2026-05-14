@@ -1,270 +1,389 @@
 {
-    "courses": [
+  "courses": [
+    {
+      "course_name": "Mongolian Empire",
+      "course_description": "Discover the rise and fall of the largest contiguous land empire in history — from Genghis Khan's unification of the steppe tribes to the empire's vast cultural and trade legacy.",
+      "course_id": "1",
+      "course_cover_id": "@/assets/images/themen/mongolisches-reich.png",
+      "amount_of_chapters": 2,
+      "chapters": [
         {
-          "course_name": "Mongolisches Reich",
-          "course_description":"Mongolisches Reich course",
-          "course_id": "1",
-          "course_cover_id": "@/assets/images/themen/mongolisches-reich.png",
-          "amount_of_chapters": 3,
-          "chapters": [
+          "chapter_name": "Chapter 1: The Rise of Genghis Khan",
+          "chapter_desc": "How a boy from the harsh Mongolian steppe united warring tribes and founded the world's greatest empire.",
+          "chapter_id": 1,
+          "chapter_content": [
             {
-                "chapter_name": "Chapter 1: Something",
-                "chapter_desc": "Description of the first chapter",
-                "chapter_id": 1,
-                "chapter_content": [
-                    {
-                        "content_type": "text",
-                        "content": "Long time ago, in the 13th century there was a..."
-                    },
-                    {
-                        "content_type": "image",
-                        "image_id": "2434343"
-                    },
-                    {
-                        "content_type": "text",
-                        "content": "Another paragraph"
-                    },
-                    {
-                        "content_type": "video",
-                        "link": "https://......."
-                    }
-                ]
+              "content_type": "text",
+              "content": "It is the year 1162 on the windswept plains of Mongolia. A child is born clutching a blood clot in his fist — a sign, the shamans say, of a great warrior. His name is Temüjin.\n\nHis early years are brutal. When Temüjin is just nine, his father is poisoned by rival Tatars. His family is abandoned by their own clan and left to survive alone in the wilderness. But hardship forges iron.\n\nAs a young man, Temüjin is kidnapped, enslaved, and nearly broken. Yet each setback makes him more resourceful, more relentless. He builds alliances through loyalty rather than birthright — an unusual idea on the steppe, where blood lineage ruled everything.\n\nBy 1206, after decades of war, diplomacy, and sheer force of will, Temüjin has done the impossible: he has unified all the Mongol and Turkic tribes under a single banner. At a grand assembly called the *kurultai*, he is proclaimed **Genghis Khan** — 'Universal Ruler'.\n\nHis new nation has no cities, no written language, and no standing walls. But it has something more dangerous: an army of 100,000 disciplined, mobile, and utterly dedicated warriors — and a leader who had already survived everything the world could throw at him."
+            },
+            {
+              "content_type": "image",
+              "image_id": "mongolia_genghis_rise",
+              "image_alt": "Map showing the unification of Mongol tribes across the Central Asian steppe circa 1206",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Genghis_Khan_empire.png/1200px-Genghis_Khan_empire.png"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/a6XQCcWVmXg",
+              "title": "Genghis Khan and the Mongol Empire – History Documentary",
+              "duration_minutes": 12
             }
-          ],
-          "quiz": {
-            "questions": [
-                {
-                    "question_content": "When did the Mongolian empire begin to exist?",
-                    "question_type": "multiple choice",
-                    "answers": [
-                        {
-                            "answer_label": "A",
-                            "answer_content": "13th century",
-                            "correct": true
-                        },
-                        {
-                            "answer_label": "B",
-                            "answer_content": "14th century",
-                            "correct": false
-                        }
-                        
-                    ]
-                }
-            ]
-          }
+          ]
         },
         {
-          "course_name": "Frauen in der Technik",
-          "course_id": "2",
-          "course_cover_id": "@/assets/images/themen/frauen-technik.png",
-          "course_description": "Frauen in der Technik course",
-          "amount_of_chapters": 3,
-          "chapters": [
+          "chapter_name": "Chapter 2: Conquest and the Pax Mongolica",
+          "chapter_desc": "How Mongol expansion devastated empires — yet paradoxically connected the world through the greatest free-trade zone in history.",
+          "chapter_id": 2,
+          "chapter_content": [
             {
-                "chapter_name": "Chapter 1: Something",
-                "chapter_desc": "Description of the first chapter",
-                "chapter_id": 1,
-                "chapter_content": [
-                    {
-                        "content_type": "text",
-                        "content": "Long time ago, in the 13th century there was a..."
-                    },
-                    {
-                        "content_type": "image",
-                        "image_id": "2434343"
-                    },
-                    {
-                        "content_type": "text",
-                        "content": "Another paragraph"
-                    },
-                    {
-                        "content_type": "video",
-                        "link": "https://......."
-                    }
-                ]
-            }
-          ],
-          "quiz": {
-            "questions": [
-                {
-                    "question_content": "When did the Mongolian empire begin to exist?",
-                    "question_type": "multiple choice",
-                    "answers": [
-                        {
-                            "answer_label": "A",
-                            "answer_content": "13th century",
-                            "correct": true
-                        },
-                        {
-                            "answer_label": "B",
-                            "answer_content": "14th century",
-                            "correct": false
-                        }
-                        
-                    ]
-                }
-            ]
-          }
-        },
-        {
-          "course_name": "Klimawandel",
-          "course_id": "3",
-          "course_description":"Klimawandel course",
-          "course_cover_id": "@/assets/images/themen/klimawandel.png",
-          "amount_of_chapters": 3,
-          "chapters": [
+              "content_type": "text",
+              "content": "Imagine you are a merchant in Samarkand in 1218. Your city is the jewel of the Silk Road — prosperous, cultured, protected by massive walls. Then a message arrives from the east: the Mongols are coming.\n\nGenghis Khan had sent a trade caravan of 450 merchants to the Khwarazmian Empire. The governor executed them all. This was perhaps the costliest mistake in history.\n\nThe Mongol revenge was apocalyptic. City after city fell. Samarkand, Merv, Nishapur — populations numbered in the hundreds of thousands were wiped out. Contemporary historians wrote that the Mongols turned fertile regions into deserts that 'will not recover for a thousand years.'\n\nAnd yet — here is the paradox that makes the Mongols so fascinating — after the conquest came something extraordinary.\n\nUnder **Kublai Khan**, Genghis's grandson, the empire at its peak stretched from Korea to Poland, from Siberia to Persia. For the first time, a single political authority governed most of Eurasia. Trade routes that had been fragmented by dozens of warring states were now *safe*.\n\nThis period is called the **Pax Mongolica** — the Mongol Peace. A merchant, diplomat, or missionary could travel from Venice to Beijing with a *paiza* (a Mongol passport tablet) and face no border. Ideas, technologies, and diseases moved freely. Gunpowder, printing, and the bubonic plague all reached Europe via Mongol-controlled routes.\n\nMarco Polo made his famous journey during this era. The Mongols, destroyers of worlds, had accidentally created the first globalized network."
+            },
             {
-                "chapter_name": "Chapter 1: Something",
-                "chapter_desc": "Description of the first chapter",
-                "chapter_id": 1,
-                "chapter_content": [
-                    {
-                        "content_type": "text",
-                        "content": "Long time ago, in the 13th century there was a..."
-                    },
-                    {
-                        "content_type": "image",
-                        "image_id": "2434343"
-                    },
-                    {
-                        "content_type": "text",
-                        "content": "Another paragraph"
-                    },
-                    {
-                        "content_type": "video",
-                        "link": "https://......."
-                    }
-                ]
-            }
-          ],
-          "quiz": {
-            "questions": [
-                {
-                    "question_content": "When did the Mongolian empire begin to exist?",
-                    "question_type": "multiple choice",
-                    "answers": [
-                        {
-                            "answer_label": "A",
-                            "answer_content": "13th century",
-                            "correct": true
-                        },
-                        {
-                            "answer_label": "B",
-                            "answer_content": "14th century",
-                            "correct": false
-                        }
-                        
-                    ]
-                }
-            ]
-          }
-        },
-        {
-          "course_name": "Künstliche Intelligenz",
-          "course_id": "4",
-          "course_description":"Künstliche Intelligenz course",
-          "course_cover_id": "@/assets/images/themen/kuenstliche-intelligenz.png",
-          "amount_of_chapters": 3,
-          "chapters": [
+              "content_type": "image",
+              "image_id": "mongolia_pax_mongolica_map",
+              "image_alt": "Map of the Mongol Empire at its greatest extent in 1279, showing the four major khanates and Silk Road trade routes",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Mongol_Empire_map.gif/1200px-Mongol_Empire_map.gif"
+            },
             {
-                "chapter_name": "Chapter 1: Something",
-                "chapter_desc": "Description of the first chapter",
-                "chapter_id": 1,
-                "chapter_content": [
-                    {
-                        "content_type": "text",
-                        "content": "Long time ago, in the 13th century there was a..."
-                    },
-                    {
-                        "content_type": "image",
-                        "image_id": "2434343"
-                    },
-                    {
-                        "content_type": "text",
-                        "content": "Another paragraph"
-                    },
-                    {
-                        "content_type": "video",
-                        "link": "https://......."
-                    }
-                ]
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/szxPar0BcMo",
+              "title": "The Pax Mongolica: How the Mongols Connected the World",
+              "duration_minutes": 10
             }
-          ],
-          "quiz": {
-            "questions": [
-                {
-                    "question_content": "When did the Mongolian empire begin to exist?",
-                    "question_type": "multiple choice",
-                    "answers": [
-                        {
-                            "answer_label": "A",
-                            "answer_content": "13th century",
-                            "correct": true
-                        },
-                        {
-                            "answer_label": "B",
-                            "answer_content": "14th century",
-                            "correct": false
-                        }
-                        
-                    ]
-                }
-            ]
-          }
-        },
-        {
-          "course_name": "Die Raumfahrt",
-          "course_id": "5",
-          "course_description":"Die Raumfahrt course",
-          "course_cover_id": "@/assets/images/themen/raumfahrt.png",
-          "amount_of_chapters": 3,
-          "chapters": [
-            {
-                "chapter_name": "Chapter 1: Something",
-                "chapter_desc": "Description of the first chapter",
-                "chapter_id": 1,
-                "chapter_content": [
-                    {
-                        "content_type": "text",
-                        "content": "Long time ago, in the 13th century there was a..."
-                    },
-                    {
-                        "content_type": "image",
-                        "image_id": "2434343"
-                    },
-                    {
-                        "content_type": "text",
-                        "content": "Another paragraph"
-                    },
-                    {
-                        "content_type": "video",
-                        "link": "https://......."
-                    }
-                ]
-            }
-          ],
-          "quiz": {
-            "questions": [
-                {
-                    "question_content": "When did the Mongolian empire begin to exist?",
-                    "question_type": "multiple choice",
-                    "answers": [
-                        {
-                            "answer_label": "A",
-                            "answer_content": "13th century",
-                            "correct": true
-                        },
-                        {
-                            "answer_label": "B",
-                            "answer_content": "14th century",
-                            "correct": false
-                        }
-                        
-                    ]
-                }
-            ]
-          }
+          ]
         }
-
-    ]
+      ]
+    },
+    {
+      "course_name": "Women in Technology",
+      "course_description": "Explore the often-overlooked stories of women who shaped computing, space exploration, and digital innovation — from Ada Lovelace to the programmers of the Apollo mission.",
+      "course_id": "2",
+      "course_cover_id": "@/assets/images/themen/frauen-in-der-technik.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: The First Programmers Were Women",
+          "chapter_desc": "Long before 'computer' meant a machine, it meant a person — and most of those persons were women.",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "Picture the year 1843. The Industrial Revolution is in full swing. Charles Babbage, a brilliant and difficult English mathematician, is obsessed with building a mechanical calculating machine — his 'Analytical Engine.' Almost no one understands what he is trying to do.\n\nExcept one person: **Ada Lovelace**, daughter of the poet Lord Byron.\n\nAda translates an Italian article about Babbage's machine and adds her own notes — notes that end up three times longer than the original article. Inside them, she describes something Babbage himself had not fully articulated: that the machine could be programmed to do *any* calculation, not just arithmetic. She writes what many historians consider the world's first computer algorithm.\n\nShe does this in 1843. The first electronic computer won't exist for another 100 years.\n\nFast-forward to 1945. World War II is ending. The US Army has built **ENIAC**, the world's first general-purpose electronic computer — a room-sized machine of 18,000 vacuum tubes. It needs to be programmed.\n\nSix women are hired for the job: Jean Jennings, Frances Bilas, Betty Snyder, Marlyn Wescoff, Ruth Lichterman, and Frances Elizalde. Working from logical diagrams with no manuals, no programming languages, and no precedent, they figure out how to make ENIAC calculate ballistic trajectories. They are called the **ENIAC Programmers** — and for decades, their contribution is almost completely forgotten.\n\nThis is a pattern that repeats throughout the history of computing: women do foundational work, men receive the recognition. Understanding this history is the first step to changing it."
+            },
+            {
+              "content_type": "image",
+              "image_id": "women_tech_eniac",
+              "image_alt": "The six ENIAC programmers operating the machine in 1945 at the University of Pennsylvania",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Two_women_operating_ENIAC.gif/1200px-Two_women_operating_ENIAC.gif"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/aPCMgSMEOEk",
+              "title": "The Women of ENIAC – Forgotten Pioneers of Computing",
+              "duration_minutes": 8
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: Hidden Figures and the Space Race",
+          "chapter_desc": "How Black women mathematicians at NASA calculated the trajectories that sent humans into space — and how their story was hidden for half a century.",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "It is 1961. NASA is in a desperate race against the Soviet Union to put a human in space. The stakes could not be higher — and the margin for mathematical error is zero.\n\nIn a segregated building at Langley Research Center in Virginia, a group of African American women are doing the calculations that will determine whether astronauts live or die. They are called **'computers'** — human computers — and among them is **Katherine Johnson**.\n\nKatherine's mathematical intuition is so precise that when NASA begins using electronic IBM computers, astronaut **John Glenn** refuses to board his spacecraft until Katherine personally verifies the machine's calculations. 'If she says they're good,' Glenn reportedly says, 'then I'm ready to go.'\n\nOn February 20, 1962, Glenn orbits the Earth three times. The math holds. The mission is a success.\n\nKatherine's colleagues **Dorothy Vaughan** and **Mary Jackson** are equally extraordinary. Dorothy teaches herself and her team FORTRAN — a new programming language — and transitions her entire group into the new era of electronic computing, becoming NASA's first Black supervisor. Mary becomes NASA's first Black female engineer, fighting through legal barriers to attend the all-white night school courses she needs for her certification.\n\nTheir stories were largely unknown to the public until the 2016 book and film *Hidden Figures* brought them into the light. In 2015, at age 97, Katherine Johnson received the **Presidential Medal of Freedom**.\n\nThe lesson here is not just historical — it is a reminder that talent is universal, but opportunity is not."
+            },
+            {
+              "content_type": "image",
+              "image_id": "women_tech_hidden_figures",
+              "image_alt": "Katherine Johnson at her desk at NASA Langley Research Center, working on calculations in the 1960s",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Katherine_Johnson_1983.jpg/800px-Katherine_Johnson_1983.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/v-pbGAts6Nk",
+              "title": "Katherine Johnson: The NASA Mathematician Who Helped Send Humans to Space",
+              "duration_minutes": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_name": "The Renaissance",
+      "course_description": "Journey through 14th–17th century Europe as art, science, and philosophy are reborn — tracing the revolution that transformed how humans see themselves and their world.",
+      "course_id": "3",
+      "course_cover_id": "@/assets/images/themen/renaissance.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: Why Florence? The Birth of a New World",
+          "chapter_desc": "Why did one Italian city become the cradle of a cultural revolution that changed Western civilization forever?",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "The year is 1347. A plague ship docks in Sicily. Within five years, the Black Death will kill between 30 and 60 percent of Europe's population. Cities are emptied. The Church, which claimed God's protection, cannot explain why the pious are dying alongside the sinful.\n\nFrom this catastrophe, something unexpected emerges: a hunger for *human* answers.\n\nFlorty years later, in the wealthy city of **Florence**, a new generation of thinkers, artists, and merchants begins asking questions that would have seemed heretical to their grandparents: What can *people* achieve? How do we see, measure, and understand the world on its own terms?\n\nFlorence is the perfect petri dish for this revolution. The **Medici family** — bankers who have become the most powerful dynasty in Europe — believe that investing in artists and scholars is both spiritually valuable and politically shrewd. They fund everything.\n\nA sculptor named **Donatello** creates *David* — the first free-standing nude sculpture since antiquity. A young architect named **Brunelleschi** solves the 'impossible' problem of how to build a dome over Florence's cathedral without scaffolding by reinventing geometry. A writer named **Petrarch** digs up ancient Roman manuscripts and argues that Greek and Roman civilization represents a peak of human achievement worth studying and reviving.\n\nThey call this revival the *Rinascimento* — the **Rebirth**. We call it the **Renaissance**.\n\nThe radical idea at its heart: humans are not just sinners waiting to die — they are *creators*, capable of beauty, reason, and mastery of nature."
+            },
+            {
+              "content_type": "image",
+              "image_id": "renaissance_florence_dome",
+              "image_alt": "Brunelleschi's dome over the Florence Cathedral (Duomo), completed in 1436 — an architectural marvel that symbolized Renaissance ambition",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Duomo_di_Firenze_-_cupola.jpg/1200px-Duomo_di_Firenze_-_cupola.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/Vufba_ZcoR0",
+              "title": "The Renaissance: A History in 15 Minutes",
+              "duration_minutes": 15
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: Leonardo, Michelangelo, and the Universal Person",
+          "chapter_desc": "The Renaissance ideal of the 'uomo universale' — a person who masters everything — and the two men who came closest to achieving it.",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "The Renaissance invented a new kind of human ideal: the ***uomo universale*** — the universal man. Not a specialist, but a person who could paint, sculpt, write poetry, compose music, understand anatomy, design buildings, and theorize about philosophy — all equally well.\n\nTwo people came extraordinarily close to this ideal.\n\n**Leonardo da Vinci** (1452–1519) is perhaps history's most curious mind. His notebooks — 7,000 pages of which survive — contain the first accurate drawings of the human heart's chambers, designs for a rudimentary helicopter and solar power, studies of water flow, plans for a robotic knight, and sketches for some of the most famous paintings ever created. He filled pages with mirror-writing (possibly to prevent copying), jumping between botany, geology, mathematics, and optics within a single entry.\n\nHe also left dozens of projects unfinished. The *Mona Lisa* took 16 years. Many commissions were abandoned entirely. Leonardo may have been driven less by the desire to *make* things than by the insatiable need to *understand* them.\n\n**Michelangelo** (1475–1564) was almost his opposite — monomaniacally dedicated, tormented, devout. He insisted he was a sculptor above all else, yet the **Sistine Chapel ceiling** — painted lying on his back over four years — is arguably the greatest single artistic achievement in Western history. His *David*, *Pietà*, and the architectural design of St. Peter's Basilica span an unmatched range.\n\nBoth men lived into old age, both argued fiercely, both died convinced they had not yet done their best work. Perhaps that is what makes a genius."
+            },
+            {
+              "content_type": "image",
+              "image_id": "renaissance_vitruvian_man",
+              "image_alt": "Leonardo da Vinci's Vitruvian Man (c. 1490) — the most famous image of the Renaissance ideal of human proportion and beauty",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg/800px-Da_Vinci_Vitruve_Luc_Viatour.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/oPhJNwGAWC0",
+              "title": "Leonardo da Vinci – The Most Curious Mind in History",
+              "duration_minutes": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_name": "Climate Change",
+      "course_description": "Understand the science, history, and human stakes of Earth's changing climate — from the greenhouse effect to global policy and what individuals and societies can actually do.",
+      "course_id": "4",
+      "course_cover_id": "@/assets/images/themen/klimawandel.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: The Greenhouse Effect — A Story 200 Years in the Making",
+          "chapter_desc": "The science of climate change was discovered by 19th-century researchers — including a woman dismissed by her peers. Here is how we came to understand what we are doing to our planet.",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "It is 1856. A scientist named **Eunice Newton Foote** places two glass cylinders in sunlight — one filled with regular air, one filled with carbon dioxide. The CO₂ cylinder heats up much faster and stays hot much longer. She publishes a paper concluding that 'an atmosphere of that gas would give to our earth a high temperature.'\n\nHer paper is presented at a scientific conference — by a man, because women are not allowed to present. It is then largely ignored for over a century.\n\nThree years later, Irish physicist **John Tyndall** conducts similar experiments and receives full credit for discovering what we now call the **greenhouse effect**. In 1896, Swedish chemist **Svante Arrhenius** calculates that doubling atmospheric CO₂ would raise global temperatures by 5–6°C — a figure remarkably close to modern estimates.\n\nSo how does the greenhouse effect work? Think of Earth wrapped in a thin blanket of gases — mostly nitrogen and oxygen, but with small amounts of CO₂, methane, and water vapor. Sunlight passes through the blanket easily. But when the warmed Earth tries to radiate heat back into space, these 'greenhouse gases' trap some of it — like a car on a sunny day.\n\nWithout any greenhouse gases, Earth would be about **-18°C** — a frozen rock. The natural greenhouse effect is what makes life possible. The problem is that since the Industrial Revolution, humans have been thickening that blanket by burning fossil fuels, releasing CO₂ that was stored underground for millions of years.\n\nSince 1850, atmospheric CO₂ has risen from 280 to over **420 parts per million** — levels not seen for at least 3 million years. The blanket is getting thicker, and the planet is warming."
+            },
+            {
+              "content_type": "image",
+              "image_id": "climate_greenhouse_diagram",
+              "image_alt": "Diagram illustrating the greenhouse effect: solar radiation entering Earth's atmosphere and heat being trapped by greenhouse gases",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Greenhouse-effect-t2.svg/1200px-Greenhouse-effect-t2.svg.png"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/sTvqIijqvTg",
+              "title": "What is the Greenhouse Effect? – Climate Science Explained",
+              "duration_minutes": 7
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: Tipping Points — What Happens If We Don't Act",
+          "chapter_desc": "Climate tipping points are thresholds beyond which change becomes self-sustaining and irreversible. Understanding them is the most important — and most unsettling — chapter of climate science.",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "Imagine pushing a rocking chair. You can push it harder and harder, and it rocks back and forth — but it returns to its starting position. Then, at some critical angle, it tips *over*. There is no coming back.\n\nClimate scientists use the term **'tipping point'** to describe moments when parts of Earth's system behave like that rocking chair: once a threshold is crossed, change becomes self-reinforcing and potentially irreversible on human timescales.\n\nHere are three of the most critical:\n\n**1. The Greenland Ice Sheet.** If it melts completely — a process already underway — global sea levels rise by about 7 meters. Miami, Amsterdam, Shanghai, and most of Bangladesh would be uninhabitable. Scientists estimate we may be approaching the tipping point at just 1.5–2°C of warming.\n\n**2. Amazon Rainforest Dieback.** The Amazon generates much of its own rainfall through evaporation. As deforestation and drought reduce the forest, less rain falls — causing more drought, causing more trees to die. Once this feedback loop starts, the world's largest tropical forest could transition to dry savanna, releasing a decade's worth of global CO₂ emissions.\n\n**3. Permafrost Thaw.** Siberia and northern Canada contain vast amounts of frozen organic matter. As permafrost thaws, it releases methane — a greenhouse gas 80 times more potent than CO₂ over 20 years. This could trigger warming far beyond what human emissions alone would cause.\n\nThe alarming discovery of the last decade is that these tipping points may be *interconnected* — crossing one could trigger others in a 'cascade.' This is not inevitable. But it is why climate scientists describe urgency in terms not of decades, but of years."
+            },
+            {
+              "content_type": "image",
+              "image_id": "climate_tipping_points_map",
+              "image_alt": "World map showing 16 major climate tipping points, including Arctic sea ice, Greenland ice sheet, Amazon rainforest, and Atlantic circulation",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Key_tipping_elements_in_the_climate_system_%28English%29.png/1200px-Key_tipping_elements_in_the_climate_system_%28English%29.png"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/Dp8iFp6cFjE",
+              "title": "Climate Tipping Points – What Could Go Wrong",
+              "duration_minutes": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_name": "The Cold War",
+      "course_description": "Explore four decades of ideological conflict, nuclear brinkmanship, proxy wars, and cultural espionage that divided the world into two hostile camps — and shaped everything from space exploration to modern geopolitics.",
+      "course_id": "5",
+      "course_cover_id": "@/assets/images/themen/kalter-krieg.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: From Allies to Enemies — How the Cold War Began",
+          "chapter_desc": "In 1945, the US and USSR had just defeated Hitler together. Within three years, they were pointed nuclear weapons at each other. How did it happen so fast?",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "May 8, 1945. Nazi Germany surrenders. In cities across the Allied world — New York, London, Moscow — crowds pour into the streets in delirious celebration. The most destructive war in human history is over. Surely the alliance that won it will hold.\n\nIt will not last three years.\n\nThe cracks were always there, hidden beneath wartime necessity. The United States and Soviet Union had fundamentally incompatible visions for the postwar world. The US wanted open markets, democratic governments, and a rule-based international order. The USSR wanted a buffer zone of friendly (i.e., communist) states on its western border — it had been invaded from the west in 1812, 1914, and 1941. It would not happen again.\n\nAt the **Yalta Conference** in February 1945, Roosevelt, Churchill, and Stalin had carved up post-war Europe with vague promises about 'free elections.' By 1947, Soviet-backed communist governments had taken power in Poland, Hungary, Romania, and Bulgaria. The Iron Curtain — a phrase Churchill coined in a famous speech — had descended across Europe.\n\nOn the American side, diplomat **George Kennan** wrote an 8,000-word telegram from Moscow in 1946 that became the intellectual foundation of US Cold War policy: the USSR, he argued, was expansionist by nature and could not be negotiated with — it could only be **contained**.\n\nAnd so the world divided. Two superpowers, two ideologies, two nuclear arsenals growing larger every year. A 'hot' war between them would mean the end of civilization. So instead, they fought everywhere else — through proxies, propaganda, and the relentless competition to prove whose system was better."
+            },
+            {
+              "content_type": "image",
+              "image_id": "cold_war_iron_curtain_map",
+              "image_alt": "Map of Europe in 1949 showing the division between NATO members (West) and Soviet-aligned Warsaw Pact countries (East), with the Iron Curtain marked",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Cold_war_europe_military_alliances_map_en.png/1200px-Cold_war_europe_military_alliances_map_en.png"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/I79TpDe3t2g",
+              "title": "The Cold War – Overview in 10 Minutes",
+              "duration_minutes": 10
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: The Cuban Missile Crisis — 13 Days That Almost Ended the World",
+          "chapter_desc": "In October 1962, the world came closer to nuclear war than at any other point in history. What happened in those 13 days — and what saved us?",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "October 16, 1962, 8:45 AM. President John F. Kennedy is handed aerial reconnaissance photographs. They show Soviet nuclear missile launch sites under construction in Cuba — 90 miles from the coast of Florida. The missiles, once operational, can reach Washington DC in 13 minutes.\n\nWhat follows is the most dangerous fortnight in human history.\n\nKennedy's advisors are split. Military generals push for immediate air strikes. Others demand a naval blockade to prevent Soviet ships from bringing more weapons to Cuba. A faction, led by Kennedy's brother Robert, argues for secret back-channel diplomacy.\n\nOn the Soviet side, Premier **Nikita Khrushchev** is also under pressure — from generals who believe the US will never risk nuclear war over Cuba, and from the humiliation of the failed US-backed invasion of Cuba the previous year.\n\nFor 13 days, the world holds its breath. US warships encircle Cuba. Soviet cargo ships steam toward them. Nuclear bombers are kept in the air around the clock. Military commanders on both sides have authority to launch under certain conditions.\n\nThen, on October 27 — the day historians call **'Black Saturday'** — a US spy plane is shot down over Cuba, an American submarine is nearly destroyed by a Soviet depth charge, and a Soviet officer named **Vasili Arkhipov** refuses to authorize a nuclear torpedo strike despite believing his submarine was under attack. He may have saved the world.\n\nA secret deal is struck: the USSR removes its Cuban missiles; the US secretly removes its missiles from Turkey and promises never to invade Cuba. Khrushchev and Kennedy both compromise. Both claim victory.\n\nThe lesson: in a crisis, the most dangerous enemy is not the opponent — it is miscommunication, miscalculation, and the pressure to seem strong."
+            },
+            {
+              "content_type": "image",
+              "image_id": "cold_war_cuban_missile_crisis",
+              "image_alt": "US reconnaissance photograph from October 1962 showing Soviet nuclear missile launch pads under construction in San Cristóbal, Cuba",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Cuba_missiles_1962_US_reconnaissance_photograph.jpg/1200px-Cuba_missiles_1962_US_reconnaissance_photograph.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/bwWW3sbk4EU",
+              "title": "The Cuban Missile Crisis – 13 Days to Nuclear War",
+              "duration_minutes": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_name": "Ancient Egypt",
+      "course_description": "Uncover 3,000 years of one of humanity's most durable civilizations — from the unification of the Nile Valley to the construction of pyramids, the power of pharaohs, and the mystery of hieroglyphs.",
+      "course_id": "6",
+      "course_cover_id": "@/assets/images/themen/altes-aegypten.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: The Gift of the Nile — How a River Built a Civilization",
+          "chapter_desc": "Why did Egypt succeed so spectacularly while neighboring cultures struggled? The answer is a river, a flood cycle, and the administrative genius to harness both.",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "The Greek historian Herodotus, visiting Egypt around 450 BCE, described it simply: 'Egypt is the gift of the Nile.' He was not wrong.\n\nEvery summer, predictably and reliably, the Nile overflowed its banks. When the waters receded, they left behind a thick layer of dark, fertile silt across a strip of land perhaps 15 kilometers wide, cutting through hundreds of kilometers of absolute desert. The ancient Egyptians called this the *Kemet* — the Black Land. Everything beyond it was the *Deshret* — the Red Land. Life and death.\n\nThis annual flood was so regular that the Egyptians built their entire calendar around it: the season of flooding (*Akhet*), the season of planting (*Peret*), and the season of harvest (*Shemu*). Their agricultural surplus was extraordinary — Egypt fed itself and exported grain across the Mediterranean for millennia.\n\nBut the flood also required management. When did it peak this year? Was it higher or lower than last year? Early rulers who could answer these questions — and organize labor around them — gained enormous power.\n\nThe result was one of history's first large-scale administrative states. By around **3100 BCE**, a ruler known in tradition as **Narmer** unified Upper and Lower Egypt under a single crown. Egypt became a state, and the 3,000-year story of the pharaohs began.\n\nThe Nile did something else too: it made Egypt surprisingly *secure*. Deserts to the east and west, sea to the north, cataracts (waterfalls) to the south — natural barriers that kept invaders out and gave Egyptian civilization the stability to develop and persist across 30 dynasties and three millennia."
+            },
+            {
+              "content_type": "image",
+              "image_id": "egypt_nile_map",
+              "image_alt": "Satellite image of the Nile Delta and River Valley from space, dramatically showing the thin green ribbon of fertile land surrounded by desert",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Nile_River_and_Delta_from_orbit.jpg/800px-Nile_River_and_Delta_from_orbit.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/Z3Wvw6BivVI",
+              "title": "Ancient Egypt: Civilization on the Nile Explained",
+              "duration_minutes": 11
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: The Great Pyramid — Engineering the Impossible",
+          "chapter_desc": "The Great Pyramid of Giza is the only surviving Wonder of the Ancient World. Built with Bronze Age tools by a workforce of tens of thousands, it remained the tallest structure on Earth for 3,800 years. How?",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "Let's settle one thing immediately: the pyramids were **not** built by slaves.\n\nFor centuries, European tradition assumed the monuments must have been built through forced labour. But excavations in the 1990s revealed the workers' village beside the Giza plateau — complete with bakeries, breweries, medical facilities, and mass graves showing healed injuries and careful burials. These are people who received care, not people who were expendable.\n\nThe workforce of around **20,000–30,000 skilled workers** were fed enormous quantities of meat and bread — we can calculate this from the animal bones and grain storage found in their settlement. They rotated in shifts, received payment, and appear to have taken genuine pride in their work.\n\nNow for the engineering. The **Great Pyramid of Khufu**, completed around 2560 BCE, stands 146 meters tall (originally) and contains approximately **2.3 million stone blocks**, each weighing 2.5 to 15 tons. The base is level to within **2.1 centimeters** across 230 meters. The four sides align to the cardinal directions with an error of less than **0.05 degrees**.\n\nWith no iron tools, no wheeled vehicles (the wheel had barely been invented), and no machinery beyond sledges, levers, and ramps.\n\nHow? The best current understanding combines: copper chisels for quarrying limestone, wooden sledges on wetted sand (reducing friction dramatically), a workforce organized with military precision, and a system of internal ramps that we are still debating today.\n\nWhat is certain: the Great Pyramid represents a civilization at the absolute peak of its organizational and engineering capability — a 4,500-year-old message that says, simply: *We were here. We achieved this.*"
+            },
+            {
+              "content_type": "image",
+              "image_id": "egypt_pyramid_giza",
+              "image_alt": "Aerial photograph of the three Giza pyramids with the Sphinx in the foreground, showing their alignment and scale against the desert",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1200px-All_Gizah_Pyramids.jpg"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/ufn9N0-CRNI",
+              "title": "How Were the Pyramids Built? The Best Current Theory",
+              "duration_minutes": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_name": "The Human Brain",
+      "course_description": "Explore the most complex structure in the known universe — how your brain forms memories, makes decisions, processes emotions, and occasionally deceives you in fascinating ways.",
+      "course_id": "7",
+      "course_cover_id": "@/assets/images/themen/menschliches-gehirn.png",
+      "amount_of_chapters": 2,
+      "chapters": [
+        {
+          "chapter_name": "Chapter 1: 86 Billion Neurons — How Your Brain Is Wired",
+          "chapter_desc": "What is the brain actually made of, and how do billions of individual cells produce thought, memory, and consciousness?",
+          "chapter_id": 1,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "Right now, as you read this sentence, approximately **86 billion neurons** in your brain are firing electrical signals. Each neuron connects to up to **10,000 others** through junctions called synapses. The total number of connections — your brain's 'wiring' — is estimated at **100 trillion**.\n\nFor comparison: there are about 100 billion stars in the Milky Way. Your brain has roughly the same number of connections as there are stars in 1,000 galaxies.\n\nBut what actually *is* a neuron? Picture a tree: a cell body in the middle, long branching 'dendrites' reaching out to receive signals from other cells, and a single long 'axon' sending signals out. When a neuron fires, an electrical pulse travels down the axon at up to 120 meters per second. At the tip, it releases chemical messengers — **neurotransmitters** — that float across the tiny synaptic gap and trigger (or inhibit) the next neuron.\n\nHere is what makes this system extraordinary: it is **plastic**. Every experience you have changes your brain's physical structure. Neurons that fire together wire together — the synaptic connection between them physically strengthens. This is the mechanism of **memory** and **learning**.\n\nWhen you learn to ride a bike, specific neural pathways strengthen with every fall and correction. When you stop riding for twenty years, those pathways weaken but don't disappear — which is why riding again feels strangely familiar. Your brain has literally been shaped by every experience you have ever had.\n\nThe brain is not a computer that we use. The brain *is* us — a three-pound universe that constructs our entire experience of reality from electrical impulses, and rewires itself as it goes."
+            },
+            {
+              "content_type": "image",
+              "image_id": "brain_neuron_network",
+              "image_alt": "Microscopy image of neurons in the human brain, showing the cell bodies and intricate web of dendrite connections glowing against a dark background",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Neuron_-_annotated.svg/1200px-Neuron_-_annotated.svg.png"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/qPix_X-9t7E",
+              "title": "How Do Neurons Work? – Brain Basics Explained",
+              "duration_minutes": 9
+            }
+          ]
+        },
+        {
+          "chapter_name": "Chapter 2: Memory — Why You Remember, Why You Forget, and Why Your Memories Are Wrong",
+          "chapter_desc": "Memory is not a recording. It is a reconstruction — and every time you remember something, you subtly change it. The science of memory is stranger and more important than most people realize.",
+          "chapter_id": 2,
+          "chapter_content": [
+            {
+              "content_type": "text",
+              "content": "Where were you on September 11, 2001? If you're old enough, you probably have a vivid memory: exactly where you were, who told you, how you felt. Psychologists call these **flashbulb memories** — moments so emotional that they seem burned into the brain with extraordinary clarity.\n\nHere is the disturbing finding: **flashbulb memories are wrong**. Repeatedly.\n\nIn studies conducted after 9/11, researchers asked people to describe their memories in detail — then asked again one, three, and ten years later. The stories changed dramatically over time. People were confident about details that turned out to be false. One subject was certain they had watched the towers fall on TV at work. In fact, they had been on a plane. They had *heard about* it when they landed, and the memory had been reconstructed around a scene they later watched on television.\n\nThis is not a flaw in unusual people. This is how memory works.\n\nMemory is not like a video recording that plays back faithfully. It is a **reconstructive process**. Every time you retrieve a memory, you are actually *rebuilding* it — drawing on what you actually encoded, plus your current knowledge, your expectations, and subtle cues in the environment. Then you store that reconstruction. Small errors compound over years.\n\nThis has profound real-world implications. **Eyewitness testimony** — long considered the gold standard of evidence in criminal trials — is now known to be deeply unreliable. Studies show that 70% of wrongful convictions overturned by DNA evidence involved eyewitness misidentification.\n\nYour memory is not a library. It is a storyteller. And like all good storytellers, it quietly edits the truth to make a better story."
+            },
+            {
+              "content_type": "image",
+              "image_id": "brain_memory_hippocampus",
+              "image_alt": "Diagram of the human brain highlighting the hippocampus (shown in orange), the region critical for forming new long-term memories, and its connections to the cortex",
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hippocampus_and_seahorse_cropped.JPG/800px-Hippocampus_and_seahorse_cropped.JPG"
+            },
+            {
+              "content_type": "video",
+              "link": "https://www.youtube.com/embed/bSycdIx-C48",
+              "title": "How Memory Works — And Why It Fails You",
+              "duration_minutes": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
