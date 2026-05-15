@@ -22,9 +22,6 @@ export default function Bookmarks() {
             <Card subtext="Category" text="Videos" onPress={()=>{
               router.navigate("/bookmarks/Videos")
             }}/>
-            <Card subtext="Category" text="Texts" onPress={()=>{
-              router.navigate("/bookmarks/Texts")
-            }}/>
           </View>
       </ThemedView>
   );

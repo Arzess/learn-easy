@@ -58,10 +58,10 @@ const _create = async () => {
           type: 'object',
           properties: {
             bookmarkId: { type: 'string', maxLength: 100 },
-            isInhalt: { type: 'boolean' },
+            inhaltsTyp: { type: 'string' },
             inhaltsId: { type: 'number' }, 
           },
-          required: ['bookmarkId', 'isInhalt', 'inhaltsId'],
+          required: ['bookmarkId', 'inhaltsTyp', 'inhaltsId'],
       }
     },
     last_queries: {
