@@ -15,6 +15,7 @@ export const colors = StyleSheet.create({
   secondaryBg: { backgroundColor: '#E8E8E8' },
   secondary2: { color: '#E5E5E5' },
   secondary2Bg: { backgroundColor: '#E5E5E5' },
+  secondary2BgLight: { backgroundColor: '#F8F8F8' },
   interface2: { color: '#171717' },
   interface2Bg: { backgroundColor: '#171717' }
 });
