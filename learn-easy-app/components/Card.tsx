@@ -5,7 +5,7 @@ import SVG from './svg'
 import './svg-sheet'
 
 
-export default function Card({subtext, text, onPress, selected} : {subtext: string, text: string, onPress: Function, selected: boolean}){
+export default function Card({subtext, text, onPress, selected} : {subtext: string, text: string, onPress: Function, selected?: boolean}){
     return (
         <Pressable style={[styles.card, selected && styles.cardSelected]} onPress={onPress as any}>
             <Text style={[fonts.josefin, styles.cardSmallText, selected && styles.cardSelectedText]}>{subtext}</Text>

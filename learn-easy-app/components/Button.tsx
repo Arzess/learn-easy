@@ -1,13 +1,14 @@
 import React from 'react'
 import {Pressable, StyleSheet, Text} from 'react-native'
+import { StyleProp, ViewStyle } from 'react-native'
 import { fonts, colors} from '@/constants/theme'
 import SVG from './svg'
 import './svg-sheet'
 
 
-export default function Button({text, iconName, onPress, light, darkIcon} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean}){
+export default function Button({text, iconName, onPress, light, darkIcon, style, fullWidth} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean, style?: StyleProp<ViewStyle>, fullWidth: boolean}){
     return (
-        <Pressable style={[styles.button, light && styles.lightButton]} onPress={onPress as any}>
+        <Pressable style={[styles.button, style, light && styles.lightButton, fullWidth && styles.fullWidth]} onPress={onPress as any}>
             <Text style={[fonts.josefin, styles.buttonText, light && styles.lightButtonText]}>{text}</Text>
             <SVG icon={iconName} width={24} height={24} white={!darkIcon}/>
         </Pressable>
@@ -18,7 +19,6 @@ export default function Button({text, iconName, onPress, light, darkIcon} : {tex
 const styles = StyleSheet.create({
     button: {
         backgroundColor: colors.blackBg.backgroundColor, 
-        flex: 1,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
     },
     lightButtonText: {
         color: colors.black.color,
+    },
+    fullWidth: {
+        flex: 1,
     }
 
 })

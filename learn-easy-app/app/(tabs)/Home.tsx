@@ -6,11 +6,13 @@ import { useDB } from '@/db/DatabaseContext';
 import { createClient } from 'pexels';
 import courses from '@/assets/courses.json';
 import { colors, fonts } from '@/constants/theme';
+import Button from '@/components/Button';
 import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
+import { router } from 'expo-router';
 
 
 const width = Dimensions.get('window').width;
@@ -22,6 +24,7 @@ export default function Home() {
   const [userData, setUserData] = useState<any>(null);
   const [pictures, setPictures] = useState([]);
   const [noResult, setNoResult] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState(courses.courses[0]);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
@@ -101,7 +104,7 @@ export default function Home() {
               <View style={styles.courseDesc}>
                 <View style={styles.textContainer}>
                   <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
-                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{courses.courses[0].course_name}</Text>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse.course_name}</Text>
                   <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
                 </View>
                 <Text style={fonts.josefin}>50%</Text>
@@ -118,6 +121,27 @@ export default function Home() {
 
           </View>
         </View>
+        {/* Jump Back in */}
+        <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
+          </View>
+          <View style={styles.jumpBackIn}>
+            <View style={styles.preview}>
+              <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={12} ellipsizeMode='tail'>
+                {currentCourse.chapters[0].chapter_content[0].content}
+              </Text>
+            </View>
+          </View>
+          <Button text="Jump to the chapter" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+            // To-do: 
+            // 1: Navigate to the course
+            // 2: Pass the paramets "course_id" and "chapter"
+          }}/>
+        </View>
+
+
         {/* Gallery */}
          <View style={styles.categoryContainer}>
           <View style={styles.categoryHeadingContainer}>
@@ -172,6 +196,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 24,
     flex: 1,
+    overflowY: 'scroll',
+    overflowX: 'hidden',
     padding: 16,
   },
   carouselItem: {
@@ -287,5 +313,22 @@ const styles = StyleSheet.create({
   },
   courseHeading: {
     fontSize: 18,
+  },
+  // Jump Back in
+  jumpBackIn: {
+
+  },
+  preview: {
+    backgroundColor: colors.whiteBg.backgroundColor,
+    padding: 16,
+    borderRadius: 16,
+    overflow: 'hidden',
+    flex: 1,
+    maxHeight: 240,
+  },
+  chapterPreviewText: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   }
 });
