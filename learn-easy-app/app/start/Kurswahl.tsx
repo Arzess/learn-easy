@@ -76,6 +76,7 @@ export default function Kurswahl() {
       username: username,
       course: course_id,
       courseHistory: [course_id,],
+      currentChapter: 1,
       currentCourseCompletedChapters: [],
     });
     completeIntro();

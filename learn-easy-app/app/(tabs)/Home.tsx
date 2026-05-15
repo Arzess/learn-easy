@@ -1,17 +1,56 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { useState, useEffect } from 'react';
-import { ThemedText } from '@/components/themed-text';
+import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import {fonts} from '@/constants/theme'
 import { useDB } from '@/db/DatabaseContext';
+import { createClient } from 'pexels';
+import courses from '@/assets/courses.json';
+import { colors, fonts } from '@/constants/theme';
+import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
+import Carousel, {
+  ICarouselInstance,
+  Pagination,
+} from "react-native-reanimated-carousel";
 
-export default function Introduction() {
+
+const width = Dimensions.get('window').width;
+const carouselWidth = width - 32;
+
+export default function Home() {
   const theme = useColorScheme();
   const db = useDB();
   const [userData, setUserData] = useState<any>(null);
-  
+  const [pictures, setPictures] = useState([]);
+  const [noResult, setNoResult] = useState(false);
+  const ref = useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+
+  // Fetch random related pictures
+  const fetchPictures = async () => {
+    try{
+      const client = createClient('dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7');
+      const query = courses.courses[0].course_name;
+
+      const res = await client.photos.search({ query, per_page: 2 });
+      if ('photos' in res){
+       const pictures = res.photos.map((pic : any) => ({
+        source: {uri: pic.src.large},
+        }));
+        let nothingFound = pictures.length === 0;
+        setPictures(pictures as any);
+        setNoResult(nothingFound);
+        
+      }
+    }
+    catch (e) {
+      setNoResult(true);
+      console.log(`There was an error while fetching random pictures: ${e}`)
+
+    }
+    
+  }
+
+
   // Fetch the user data
   useEffect(()=>{
     const fetchUser = async () => {
@@ -26,7 +65,10 @@ export default function Introduction() {
 
     };
 
+
+
     fetchUser();
+    fetchPictures();
 
   }, [db]);
 
@@ -37,9 +79,84 @@ export default function Introduction() {
 
   return (
       
-      <ThemedView>
+      <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium]} className="heading">Willkommen zurück, {userData.name}!</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, user!</Text>
+        </View>
+        {/* Progress */}
+        <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Progress</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Your goal</Text>
+          </View>
+          <View style={styles.progress}>
+            {/* Course */}
+            <View style={styles.course}>
+              <View style={styles.courseImgContainer}>
+                <Image source={require("@/assets/images/themen/mongolisches-reich.png")} style={styles.courseImg}></Image>
+                <View style={styles.progressBar}>
+                  <View style={styles.progressBarFilled}></View>
+                </View>
+              </View>
+              <View style={styles.courseDesc}>
+                <View style={styles.textContainer}>
+                  <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{courses.courses[0].course_name}</Text>
+                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
+                </View>
+                <Text style={fonts.josefin}>50%</Text>
+              </View>
+            </View>
+            {/* Goal */}
+            <View style={styles.goal}>
+              <Text style={styles.goalEmoji}>🎯</Text>
+              <View style={styles.textContainer}>
+                <Text style={[fonts.josefin, fonts.josefinBold, styles.difficulty]}>Hard</Text>
+                <Text style={[fonts.josefin, styles.frequency]}>5x a day</Text>
+              </View>
+            </View>
+
+          </View>
+        </View>
+        {/* Gallery */}
+         <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Gallery</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Pictures you might like!</Text>
+          </View>
+          <View>
+            <View style={{ height: 250 }}>
+             <Carousel
+               ref={ref}
+               autoPlay={true}
+               autoPlayInterval={4000}
+               data={pictures}
+               width={carouselWidth}
+               height={220}
+               loop={true}
+               pagingEnabled={true}
+               snapEnabled={true}
+               mode={"horizontal-stack"}
+               modeConfig={{
+                  snapDirection: "left",
+                  stackInterval: 30,
+                  scaleInterval: 0.08,
+                  opacityInterval: 0.1
+               }}
+               onProgressChange={progress}
+               renderItem={({ item }: { item: any }) => (
+                 <View style={styles.carouselItem}>
+                   <Image 
+                     source={item.source} 
+                     style={styles.image} 
+                     resizeMode="cover" 
+                   />
+                 </View>
+               )}
+             />
+      
+      </View>
+          </View>
         </View>
       </ThemedView>
       
@@ -50,5 +167,125 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 32,
   },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
+    flex: 1,
+    padding: 16,
+  },
+  carouselItem: {
+    flex: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#eee'
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  progress: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    gap: 16,
 
+  },
+  categoryHeadingContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+    justifyContent: 'flex-start'
+  },
+  categoryHeading: {
+    fontSize: 24,
+  },
+  categorySubheading: {
+    fontSize: 14,
+  },
+  categoryContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+  },
+  // Course and goal
+  course: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    backgroundColor: colors.whiteBg.backgroundColor,
+    borderRadius: 16,
+    overflow: "hidden",
+    flex: 1,
+  },
+  courseImgContainer: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    minHeight: 128,
+  },
+  courseImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  progressBar: {
+    width: "100%",
+    height: 5,
+    backgroundColor: colors.whiteBg.backgroundColor,
+    elevation: 3,
+    shadowOffset: { width: 0, height: 0.5, }, shadowOpacity: 0.25, shadowRadius: 2,
+    shadowColor: 'black',
+  },
+  progressBarFilled: {
+    height: 5,
+    width: '50%',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    backgroundColor: colors.primaryBg.backgroundColor,
+  },
+  courseDesc: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subCourseHeading: {
+    fontSize: 12,
+  },
+  textContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  chapterName: {
+    fontSize: 14,
+  },
+  goal: {
+    backgroundColor: colors.whiteBg.backgroundColor,
+    padding: 16,
+    borderRadius: 16,
+    overflow: 'hidden',  
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: 4,
+  },
+  goalEmoji: {
+    borderRadius: 999,
+    overflow: "hidden",
+    fontSize: 24,
+    padding: 16,
+    backgroundColor: colors.secondary2BgLight.backgroundColor,
+  },
+  difficulty: {
+    fontSize: 18,
+  },
+  frequency: {
+    fontSize: 14,
+  },
+  courseHeading: {
+    fontSize: 18,
+  }
 });
