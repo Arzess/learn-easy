@@ -6,7 +6,7 @@ import { useDB } from '@/db/DatabaseContext';
 import { createClient } from 'pexels';
 import courses from '@/assets/courses.json';
 import { colors, fonts } from '@/constants/theme';
-import { useSharedValue } from "react-native-reanimated";
+import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination,
@@ -24,13 +24,6 @@ export default function Home() {
   const [noResult, setNoResult] = useState(false);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-
-  const onPressPagination = (index: number) => {
-    ref.current?.scrollTo({
-      count: index - progress.value,
-      animated: true,
-    });
-  };
 
   // Fetch random related pictures
   const fetchPictures = async () => {
@@ -88,13 +81,51 @@ export default function Home() {
       
       <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Willkommen zurück!</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, user!</Text>
         </View>
         {/* Progress */}
-        {/* Gallery */}
-        <View style={{ height: 250 }}>
-          <>
+        <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Progress</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Your goal</Text>
+          </View>
+          <View style={styles.progress}>
+            {/* Course */}
+            <View style={styles.course}>
+              <View style={styles.courseImgContainer}>
+                <Image source={require("@/assets/images/themen/mongolisches-reich.png")} style={styles.courseImg}></Image>
+                <View style={styles.progressBar}>
+                  <View style={styles.progressBarFilled}></View>
+                </View>
+              </View>
+              <View style={styles.courseDesc}>
+                <View style={styles.textContainer}>
+                  <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{courses.courses[0].course_name}</Text>
+                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
+                </View>
+                <Text style={fonts.josefin}>50%</Text>
+              </View>
+            </View>
+            {/* Goal */}
+            <View style={styles.goal}>
+              <Text style={styles.goalEmoji}>🎯</Text>
+              <View style={styles.textContainer}>
+                <Text style={[fonts.josefin, fonts.josefinBold, styles.difficulty]}>Hard</Text>
+                <Text style={[fonts.josefin, styles.frequency]}>5x a day</Text>
+              </View>
+            </View>
 
+          </View>
+        </View>
+        {/* Gallery */}
+         <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Gallery</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Pictures you might like!</Text>
+          </View>
+          <View>
+            <View style={{ height: 250 }}>
              <Carousel
                ref={ref}
                autoPlay={true}
@@ -123,9 +154,10 @@ export default function Home() {
                  </View>
                )}
              />
-
-          </>
+      
       </View>
+          </View>
+        </View>
       </ThemedView>
       
   );
@@ -151,5 +183,109 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  progress: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    gap: 16,
+
+  },
+  categoryHeadingContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+    justifyContent: 'flex-start'
+  },
+  categoryHeading: {
+    fontSize: 24,
+  },
+  categorySubheading: {
+    fontSize: 14,
+  },
+  categoryContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+  },
+  // Course and goal
+  course: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    backgroundColor: colors.whiteBg.backgroundColor,
+    borderRadius: 16,
+    overflow: "hidden",
+    flex: 1,
+  },
+  courseImgContainer: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    minHeight: 128,
+  },
+  courseImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  progressBar: {
+    width: "100%",
+    height: 5,
+    backgroundColor: colors.whiteBg.backgroundColor,
+    elevation: 3,
+    shadowOffset: { width: 0, height: 0.5, }, shadowOpacity: 0.25, shadowRadius: 2,
+    shadowColor: 'black',
+  },
+  progressBarFilled: {
+    height: 5,
+    width: '50%',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    backgroundColor: colors.primaryBg.backgroundColor,
+  },
+  courseDesc: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subCourseHeading: {
+    fontSize: 12,
+  },
+  textContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  chapterName: {
+    fontSize: 14,
+  },
+  goal: {
+    backgroundColor: colors.whiteBg.backgroundColor,
+    padding: 16,
+    borderRadius: 16,
+    overflow: 'hidden',  
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: 4,
+  },
+  goalEmoji: {
+    borderRadius: 999,
+    overflow: "hidden",
+    fontSize: 24,
+    padding: 16,
+    backgroundColor: colors.secondary2BgLight.backgroundColor,
+  },
+  difficulty: {
+    fontSize: 18,
+  },
+  frequency: {
+    fontSize: 14,
+  },
+  courseHeading: {
+    fontSize: 18,
   }
 });
