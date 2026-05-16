@@ -23,9 +23,10 @@ export default function Bookmarks() {
             </View>
         </View>
         {/* Bookmarks */}
-      </ThemedView>
+        </ThemedView>
   );
 }
+
 
 const styles = StyleSheet.create({
   heading: {

@@ -9,6 +9,7 @@ import { colors, fonts } from '@/constants/theme';
 import Svg from '@/components/svg';
 import Button from '@/components/Button';
 import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
+import { addBookmark, removeBookmark } from '@/db/database';
 import Carousel, {
   ICarouselInstance,
   Pagination,
@@ -32,14 +33,6 @@ export default function Home() {
   const [currentCourse, setCurrentCourse] = useState<typeof courses.courses[0] | null>(null);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-  // Bookmark logic
-  // Add a bookmark
-  const addBookmark = async (content_id: number, type: string) => {
-  }
-
-  const removeBookmark = async (content_id: number) => {
-
-  }
 
 
 
@@ -100,6 +93,7 @@ export default function Home() {
   }
 
 
+
   const isDark = theme === 'dark';
 
 
@@ -129,7 +123,7 @@ export default function Home() {
                 <View style={styles.textContainer}>
                   <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
                   <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse?.course_name}</Text>
-                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
+                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter {userData.chapter}</Text>
                 </View>
                 <Text style={fonts.josefin}>50%</Text>
               </View>

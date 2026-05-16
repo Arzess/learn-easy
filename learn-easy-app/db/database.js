@@ -23,6 +23,30 @@ const getStorage = () => {
 };
 
 
+export let bookmarkCounter = 1;
+
+ // Bookmark logic
+ // Add a bookmark
+export const addBookmark = async (db, content_id, type) => {
+  if (db){
+    db.general.bookmarks.upsert({
+      bookmarkId: bookmarkCounter,
+      inhaltsTyp: type,
+      inhaltsId: content_id,
+    })
+    bookmarkCounter++;
+  }
+ }
+ export const removeBookmark = async (db, content_id) => {
+  if (db){
+   // @ts-ignore
+   const user = await db.general.user.findOne({
+     selector: { current: {$eq: true}}
+   }).exec();
+  }
+ }
+
+
 const _create = async () => {
   if (process.env.NODE_ENV === 'development') {
     addRxPlugin(RxDBDevModePlugin);
