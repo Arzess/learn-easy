@@ -10,14 +10,14 @@ type ThemeContextType = {
 };
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: 'dark',
-  isDarkMode: true,
+  theme: 'light',
+  isDarkMode: false,
   setDarkMode: () => {},
 });
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
   const systemScheme = useSystemColorScheme();
-  const [darkModeOverride, setDarkModeOverride] = useState<boolean | null>(null);
+  const [darkModeOverride, setDarkModeOverride] = useState<boolean | null>(true);
 
   const isDarkMode =
     darkModeOverride !== null ? darkModeOverride : systemScheme === 'dark';

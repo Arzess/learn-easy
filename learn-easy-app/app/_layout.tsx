@@ -15,6 +15,7 @@ export default function RootLayout() {
     async function prepare() {
       try {
         const firstLaunch = await AsyncStorage.getItem('@firstLaunch');
+        await AsyncStorage.removeItem('@firstLaunch'); 
       } catch (e) {
         console.warn(e);
       } finally {

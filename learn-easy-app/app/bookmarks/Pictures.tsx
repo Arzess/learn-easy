@@ -1,16 +1,44 @@
 import { StyleSheet, View, Text, FlatList } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Bookmark from '@/components/Bookmark';
+import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 
+
 export default function Bookmarks() {
   const router = useRouter();
-  const [boomarks, setBookmarks] = useState([]);
+  const { courseId } = useLocalSearchParams<{ courseId: string }>();
+  const db = useDB();
+  type Bookmark = {
+  bookmarkId: string;
+  inhaltsTyp: string;
+  inhaltsId: number;
+  };
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [noResults, setNoResults] = useState(false);
+  // Fetch bookmarks
+  useEffect(()=>{
+    
+    const fetchBookmarks = async (type: string) => {
+
+      if (!db) return;
+      const res = await db.general.bookmarks.find({
+        selector: { inhaltsTyp: {$eq: type}}
+      }).exec();
+
+      const results = res.map((b: any) => b.toJSON());
+      setBookmarks(results);
+      if (results.length === 0) setNoResults(true);
+    }
+
+    fetchBookmarks("image");
+  }, [db])
 
 
   return (
@@ -23,6 +51,34 @@ export default function Bookmarks() {
             </View>
         </View>
         {/* Bookmarks */}
+        {/* Case 1: available results */}
+        {
+        
+        !noResults && 
+        
+        <>
+          <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
+            renderItem={({ item }) => (
+              <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId}/>
+            )}  
+          />
+        </>
+        
+        }
+
+        {/* Case 2: no results */}
+        {
+        
+        noResults && 
+        
+        <>
+          <NothingFound text="You don’t have any pictures saved yet. Click on the bookmark icon to add your favorite content here."/>
+        </>
+        
+        }
+        
+
+        
         </ThemedView>
   );
 }

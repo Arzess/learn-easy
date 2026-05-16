@@ -25,7 +25,6 @@ const COURSE_IMAGES: Record<string, any> = {
 
 export default function Kurswahl() {
   const [query, setQuery] = useState('');
-  const [saved, setSaved] = useState<Record<string, boolean>>({});
   const theme = useColorScheme();
   const userId = useId();
   const router = useRouter();
@@ -60,10 +59,6 @@ export default function Kurswahl() {
     );
   }
   const isDark = theme === 'dark';
-
-  function toggleSave(id: string) {
-    setSaved(prev => ({ ...prev, [id]: !prev[id] }));
-  }
 
   // Register the user in the database
   const next_step = (course_id: string) => {
@@ -143,17 +138,15 @@ export default function Kurswahl() {
                 <TouchableOpacity
                   style={[
                     styles.information,
-                    saved[thema.course_id]
-                      ? { backgroundColor: tint, borderWidth: 0 }
-                      : { backgroundColor: 'rgba(0,0,0,0.35)', borderWidth: 2, borderColor: '#fff' },
+                    { backgroundColor: 'rgba(0,0,0,0.35)', borderWidth: 2, borderColor: '#fff' },
                   ]}
-                  onPress={() => toggleSave(thema.course_id)}
+                  onPress={() => {}}
                   activeOpacity={0.7}
                 >
                   <IconSymbol
                     name="bookmark.fill"
                     size={16}
-                    color={saved[thema.course_id] ? '#fff' : 'rgba(255,255,255,0.5)'}
+                    color={'rgba(255,255,255,0.5)'}
                   />
                 </TouchableOpacity>
               </View>
@@ -168,6 +161,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 64,
+    paddingBottom: 32,
   },
   heading: {
     marginBottom: 8,

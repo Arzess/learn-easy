@@ -19,12 +19,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderColor: colors.primary2.color,
         borderWidth: 1,
-        padding: 12,
+        padding: 8,
     },
     inputContainer: {
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
+        height: 76,
     },
     label: {
         fontSize: 14,

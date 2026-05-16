@@ -1,13 +1,41 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
+import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
+import { useDB } from '@/db/DatabaseContext';
 import { useRouter } from 'expo-router';
 import Card from '@/components/Card';
+import courses from "@/assets/courses.json"
 
 export default function Bookmarks() {
   const router = useRouter();
-  
+  const [courseId, setCourseId] = useState("");
+  const db = useDB();
+
+  useEffect(()=>{
+
+  const fetchCourseId = async () => {
+    if (!db) return;
+
+    const user = await db.general.user.findOne({
+      selector: { current: {$eq: true}}
+    }).exec();
+
+    if (user){
+      const course = courses.courses.find(c => String(c.course_id) === String(user.toJSON().course));
+      if (course){
+        setCourseId(course.course_id)
+      } 
+    }
+  }
+
+  fetchCourseId();
+
+
+  }, [db])
+
+
   return (
       <ThemedView style={styles.container}>
          <View style={styles.titleContainer}>
@@ -17,7 +45,12 @@ export default function Bookmarks() {
 
           <View style={styles.categories}>
             <Card subtext="Category" text="Pictures" onPress={()=>{
-              router.navigate("/bookmarks/Pictures")
+              router.push({
+                pathname: "/bookmarks/Pictures",
+                params: {
+                  courseId: courseId, 
+                },
+              });
             }}/>
             <Card subtext="Category" text="Videos" onPress={()=>{
               router.navigate("/bookmarks/Videos")

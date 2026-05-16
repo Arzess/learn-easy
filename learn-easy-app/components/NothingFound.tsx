@@ -8,7 +8,7 @@ export default function NothingFound({text} : {text: string}){
         <View style={styles.nothingFoundContainer}>
             <Text style={[fonts.josefin, fonts.josefinBold]}>Oops..</Text>
             <Text style={[fonts.josefin, fonts.josefinMedium, styles.mainHeading]}>We couldn’t find anything here.</Text>
-            <Text style={[fonts.josefin]}>You don’t have any bookmarks yet. Click on the bookmark icon to add your favorite content here.</Text>
+            <Text style={[fonts.josefin]}>{text}</Text>
         </View>
     )
 }

@@ -27,7 +27,7 @@ export default function Index() {
     const checkStatus = async () => {
       try {
         const val = await getItem('@firstLaunch');
-        setIsFirstLaunch(val === null);
+        setIsFirstLaunch(val !== 'false');
       } catch (e) {
         setIsFirstLaunch(false);
       }

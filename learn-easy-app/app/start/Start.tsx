@@ -39,7 +39,7 @@ export default function Start() {
           <Input color='dark' placeholder='' value={username} label="Username" changeText={setUsername}/>
           <Input color='dark' placeholder='' value={name} label="Name" changeText={setName}/>
 
-          <Button text="Next" iconName="chevron-right" darkIcon={false} onPress={()=>{
+          <Button text="Next" iconName="chevron-right" darkIcon={false} fullWidth={false} onPress={()=>{
             if (name != "" && username != "") next_step(name, username)
           }}/>
           <View>
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     borderRadius: 16,
+    flex: 1,
   },
   subheading: {
     color: 'white',
@@ -74,6 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 24,
     padding: 16,
+    paddingTop: 64,
+    paddingBottom: 32,
   }
 
 

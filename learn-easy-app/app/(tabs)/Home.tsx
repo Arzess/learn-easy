@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Pressable, ScrollView, View, Text, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -24,6 +24,13 @@ function getRandom(min: number, max: number) {
   return Math.floor(Math.random() * ((max-min) + min));
 }
 
+const difficulties = new Map([
+  ["hard", "5x a day"],
+  ["easy", "1x a day"],
+  ["medium", "3x a day"],
+])
+
+
 export default function Home() {
   const theme = useColorScheme();
   const db = useDB();
@@ -37,12 +44,11 @@ export default function Home() {
 
 
   // Fetch random related pictures
-  const fetchPictures = async () => {
+  const fetchPictures = async (courseName: string) => {
     try{
       const client = createClient('dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7');
-      const query = courses.courses[0].course_name;
-
-      const res = await client.photos.search({ query, per_page: 2 });
+      const query = courseName;
+      const res = await client.photos.search({ query, per_page: 4 });
       if ('photos' in res){
        const pictures = res.photos.map((pic : any) => ({
           source: {uri: pic.src.large},
@@ -72,15 +78,17 @@ export default function Home() {
 
       if (user){
         setUserData(user.toJSON())
-        const course = courses.courses.find(c => c.course_id === user.toJSON().course);
-        if (course) setCurrentCourse(course);
+        const course = courses.courses.find(c => String(c.course_id) === String(user.toJSON().course));
+        if (course){
+          setCurrentCourse(course);
+          fetchPictures(course.course_name);
+        } 
       }
     };
 
 
 
     fetchUser();
-    fetchPictures();
 
   }, [db]);
 
@@ -96,11 +104,26 @@ export default function Home() {
 
   const isDark = theme === 'dark';
 
+  // Coursedetails
+  let completionRate = 0;
+  let progressBarWidth = 0;
+  if (currentCourse){
+    completionRate = Math.round((userData.currentCourseCompletedChapters.length / currentCourse.amount_of_chapters) * 100);
+    if (!completionRate){
+      progressBarWidth = 5;
+    }
+    else{
+      progressBarWidth = completionRate
+    }
+  }
 
 
   return (
       
       <ThemedView style={styles.container}>
+        <ScrollView style={{ flex: 1 }} 
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}>
         <View>
           <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, {userData.name}!</Text>
         </View>
@@ -112,27 +135,31 @@ export default function Home() {
           </View>
           <View style={styles.progress}>
             {/* Course */}
-            <View style={styles.course}>
+            <TouchableOpacity style={styles.course} onPress={()=>{
+              router.navigate("/(tabs)/Account");
+            }}>
               <View style={styles.courseImgContainer}>
-                <Image source={require("@/assets/images/themen/mongolisches-reich.png")} style={styles.courseImg}></Image>
+                <Image source={require("@/assets/images/themen/mongolisches-reich.png")} style={styles.courseImg} resizeMode='cover'></Image>
                 <View style={styles.progressBar}>
-                  <View style={styles.progressBarFilled}></View>
+                  <View style={[styles.progressBarFilled, {width: `${progressBarWidth}%`,}]}></View>
                 </View>
               </View>
               <View style={styles.courseDesc}>
                 <View style={styles.textContainer}>
                   <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
                   <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse?.course_name}</Text>
-                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter {userData.chapter}</Text>
+                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter {userData.currentChapter}</Text>
                 </View>
-                <Text style={fonts.josefin}>50%</Text>
+                <View style={styles.percentageContainer}>
+                  <Text style={fonts.josefin}>{completionRate + '%'}</Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
             {/* Goal */}
             <View style={styles.goal}>
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
-                <Text style={[fonts.josefin, fonts.josefinBold, styles.difficulty]}>Hard</Text>
+                <Text style={[fonts.josefin, fonts.josefinBold, styles.difficulty]}>{userData.intensity.charAt(0).toUpperCase() + userData.intensity.slice(1)}</Text>
                 <Text style={[fonts.josefin, styles.frequency]}>5x a day</Text>
               </View>
             </View>
@@ -147,7 +174,7 @@ export default function Home() {
           </View>
           <View style={styles.jumpBackIn}>
             <View style={styles.preview}>
-              <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={12} ellipsizeMode='tail'>
+              <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={8} ellipsizeMode='tail'>
                 {currentCourse?.chapters[0].chapter_content[0].content}
               </Text>
             </View>
@@ -160,15 +187,23 @@ export default function Home() {
         </View>
 
 
-        {/* Gallery */}
-         <View style={styles.categoryContainer}>
-          <View style={styles.categoryHeadingContainer}>
-            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Gallery</Text>
-            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Pictures you might like!</Text>
+      {/* Gallery */}
+      <View style={styles.categoryContainer}>
+        <View style={styles.categoryHeadingContainer}>
+          <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Gallery</Text>
+          <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Pictures you might like!</Text>
+        </View>
+
+        {pictures.length === 0 ? (
+          <View style={{ height: 220, justifyContent: 'center', alignItems: 'center' }}>
+            {noResult
+              ? <Text style={{ color: 'white' }}>No pictures found.</Text>
+              : <ActivityIndicator color="white" />
+            }
           </View>
-          <View>
-            <View style={{ height: 250 }}>
-             <Carousel
+        ) : (
+          <View style={{ height: 250 }}>
+            <Carousel
                ref={ref}
                autoPlay={true}
                autoPlayInterval={4000}
@@ -196,7 +231,7 @@ export default function Home() {
                                     }
                                   ]}
                                   onPress={() => {
-                                    addBookmark(db, item.contentId, item.type);
+                                    addBookmark(db, item.content_id, item.type);
                                   }}
                                   activeOpacity={0.7}
                                 >
@@ -210,10 +245,11 @@ export default function Home() {
                  </View>
                )}
              />
-      
-      </View>
           </View>
-        </View>
+        )}
+      </View>
+
+      </ScrollView>
       </ThemedView>
       
   );
@@ -224,15 +260,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 24,
     flex: 1,
     paddingTop: 64,
-    overflowY: 'scroll',
-    overflowX: 'hidden',
-    // justifyContent: 'center',
-    padding: 16,
   },
   carouselItem: {
     flex: 1,
@@ -249,6 +278,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     gap: 16,
+    height: 272,
 
   },
   categoryHeadingContainer: {
@@ -285,7 +315,6 @@ const styles = StyleSheet.create({
   course: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 16,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     overflow: "hidden",
@@ -293,14 +322,14 @@ const styles = StyleSheet.create({
   },
   courseImgContainer: {
     display: 'flex',
-    flex: 1,
     flexDirection: 'column',
     minHeight: 128,
+    height: 128,
   },
   courseImg: {
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
+    resizeMode: 'cover',
   },
   progressBar: {
     width: "100%",
@@ -312,7 +341,6 @@ const styles = StyleSheet.create({
   },
   progressBarFilled: {
     height: 5,
-    width: '50%',
     position: 'absolute',
     left: 0,
     bottom: 0,
@@ -322,6 +350,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 16,
+    flex: 1,
+    maxHeight: 140,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -332,6 +362,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
+    justifyContent: 'space-between'
   },
   chapterName: {
     fontSize: 14,
@@ -361,9 +392,14 @@ const styles = StyleSheet.create({
   courseHeading: {
     fontSize: 18,
   },
+  percentageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   // Jump Back in
   jumpBackIn: {
-
+    minHeight: 160,
   },
   preview: {
     backgroundColor: colors.whiteBg.backgroundColor,
@@ -377,5 +413,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-  }
+  },
+  scrollContent: {
+    flexDirection: 'column',
+    gap: 24,
+    padding: 16,
+    paddingBottom: 32,
+  },
 });

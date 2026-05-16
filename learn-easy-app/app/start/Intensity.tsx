@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   cards: {
     display: 'flex',
     flexDirection: 'column',
-    flexWrap: "wrap",
     gap: 16,
   },
   contentContainer: {
@@ -81,6 +80,8 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 24,
     padding: 16,
+    paddingTop: 64,
+    paddingBottom: 32,
   },
   buttonContainer: {
     height: 48,
