@@ -20,10 +20,6 @@ import { router } from 'expo-router';
 const width = Dimensions.get('window').width;
 const carouselWidth = width;
 
-function getRandom(min: number, max: number) {
-  return Math.floor(Math.random() * ((max-min) + min));
-}
-
 const difficulties = new Map([
   ["hard", "5x a day"],
   ["easy", "1x a day"],
@@ -37,11 +33,10 @@ export default function Home() {
   const [userData, setUserData] = useState<any>(null);
   const [pictures, setPictures] = useState([]);
   const [noResult, setNoResult] = useState(false);
+  const [bookmarkedIds, setBookmarkedImagesIds] = useState<Set<number>>(new Set());
   const [currentCourse, setCurrentCourse] = useState<typeof courses.courses[0] | null>(null);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-
-
 
   // Fetch random related pictures
   const fetchPictures = async (courseName: string) => {
@@ -53,7 +48,7 @@ export default function Home() {
        const pictures = res.photos.map((pic : any) => ({
           source: {uri: pic.src.large},
           type: "image",
-          content_id: getRandom(100, 10000),
+          content_id: pic.id,
         }));
         let nothingFound = pictures.length === 0;
         setPictures(pictures as any);
@@ -91,6 +86,20 @@ export default function Home() {
     fetchUser();
 
   }, [db]);
+
+  // Load bookmarks
+  useEffect(() => {
+    const loadBookmarked = async () => {
+      if (!db) return;
+      const res = await db.general.bookmarks.find({
+        selector: { inhaltsTyp: { $eq: 'image' } }
+      }).exec();
+      const ids = new Set<number>(res.map((b: any) => b.toJSON().inhaltsId));
+      setBookmarkedImagesIds(ids);
+    };
+    if (pictures.length > 0) loadBookmarked();
+  }, [pictures, db]);
+
 
   if (!userData) {
     return (
@@ -139,7 +148,7 @@ export default function Home() {
               router.navigate("/(tabs)/Account");
             }}>
               <View style={styles.courseImgContainer}>
-                <Image source={require("@/assets/images/themen/mongolisches-reich.png")} style={styles.courseImg} resizeMode='cover'></Image>
+                <Image source={{ uri: currentCourse?.course_cover_id}} style={styles.courseImg} resizeMode='cover'></Image>
                 <View style={styles.progressBar}>
                   <View style={[styles.progressBarFilled, {width: `${progressBarWidth}%`,}]}></View>
                 </View>
@@ -160,7 +169,7 @@ export default function Home() {
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
                 <Text style={[fonts.josefin, fonts.josefinBold, styles.difficulty]}>{userData.intensity.charAt(0).toUpperCase() + userData.intensity.slice(1)}</Text>
-                <Text style={[fonts.josefin, styles.frequency]}>5x a day</Text>
+                <Text style={[fonts.josefin, styles.frequency]}>{difficulties.get(userData.intensity)}</Text>
               </View>
             </View>
 
@@ -222,6 +231,7 @@ export default function Home() {
                }}
                onProgressChange={progress}
                renderItem={({ item }: { item: any }) => (
+                 
                  <View style={styles.carouselItem}>
                   <TouchableOpacity
                                   style={[
@@ -231,11 +241,17 @@ export default function Home() {
                                     }
                                   ]}
                                   onPress={() => {
-                                    addBookmark(db, item.content_id, item.type);
+                                    if (bookmarkedIds.has(item.content_id)) {
+                                      removeBookmark(db, item.content_id);
+                                      setBookmarkedImagesIds(prev => { const next = new Set(prev); next.delete(item.content_id); return next; });
+                                    } else {
+                                      addBookmark(db, item.content_id, item.type, item.source.uri);
+                                      setBookmarkedImagesIds(prev => new Set(prev).add(item.content_id));
+                                    }
                                   }}
                                   activeOpacity={0.7}
                                 >
-                                  <Svg icon="bookmark-filled" width={16} height={16} white={true} />
+                                  <Svg icon={bookmarkedIds.has(item.content_id) ? "bookmark-filled" : "bookmark-add"} width={16} height={16} white={true} />
                                 </TouchableOpacity>
                    <Image 
                      source={item.source} 

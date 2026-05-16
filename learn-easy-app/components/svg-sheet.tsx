@@ -78,6 +78,12 @@ const bookmarkRemove = `<svg width="24" height="24" viewBox="0 0 24 24" fill="no
 </svg>
 `;
 
+const bookmarkAdd = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 7H18V9H16V7H14V5H16V3H18V5H20V7ZM18 21L11 18L4 21V5C4 3.9 4.9 3 6 3H13C12.37 3.84 12 4.87 12 6C12 8.76 14.24 11 17 11C17.34 11 17.68 10.97 18 10.9V21Z" fill="black"/>
+</svg>
+`;
+
+
 type Svg = {
     name: string,
     svg: any,
@@ -95,6 +101,7 @@ const Svg = new Map([
     ["arrow-left", leftArrow],
     ["bookmark-filled", bookmarkFilled],
     ["bookmark-remove", bookmarkRemove],
+    ["bookmark-add", bookmarkAdd]
 ]);
 
 export default function findSvg(i: String, white: boolean){

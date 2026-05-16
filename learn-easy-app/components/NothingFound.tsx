@@ -6,9 +6,9 @@ import { fonts, colors} from '@/constants/theme'
 export default function NothingFound({text} : {text: string}){
     return (
         <View style={styles.nothingFoundContainer}>
-            <Text style={[fonts.josefin, fonts.josefinBold]}>Oops..</Text>
-            <Text style={[fonts.josefin, fonts.josefinMedium, styles.mainHeading]}>We couldn’t find anything here.</Text>
-            <Text style={[fonts.josefin]}>{text}</Text>
+            <Text style={[fonts.josefin, fonts.josefinBold, {color: colors.white.color}]}>Oops..</Text>
+            <Text style={[fonts.josefin, fonts.josefinMedium, styles.mainHeading, {color: colors.white.color}]}>We couldn’t find anything here.</Text>
+            <Text style={[fonts.josefin, {textAlign: 'center', color: colors.white.color}]}>{text}</Text>
         </View>
     )
 }
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     },
     mainHeading: {
         fontSize: 36,
+        textAlign: 'center',
     }
 
 })

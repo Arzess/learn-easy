@@ -14,21 +14,22 @@ export let bookmarkCounter = 1;
 
  // Bookmark logic
  // Add a bookmark
-export const addBookmark = async (db, content_id, type) => {
+export const addBookmark = async (db, content_id, type, url) => {
   if (db){
     db.general.bookmarks.upsert({
       bookmarkId: String(bookmarkCounter),
       inhaltsTyp: type,
       inhaltsId: content_id,
+      url: url,
     })
     bookmarkCounter++;
   }
  }
- export const removeBookmark = async (db, content_id) => {
+ export const removeBookmark = async (db, bookmark_id) => {
   if (db){
    // @ts-ignore
    const bookmark = await db.general.bookmarks.findOne({
-     selector: { inhaltsId: {$eq: content_id}}
+     selector: { bookmarkId: {$eq: bookmark_id}}
    }).exec();
    if (bookmark) await bookmark.remove();
   }
@@ -86,9 +87,10 @@ const _create = async () => {
           properties: {
             bookmarkId: { type: 'string', maxLength: 100 },
             inhaltsTyp: { type: 'string' },
-            inhaltsId: { type: 'number' }, 
+            inhaltsId: { type: 'number' },
+            url: {type: 'string'}, 
           },
-          required: ['bookmarkId', 'inhaltsTyp', 'inhaltsId'],
+          required: ['bookmarkId', 'inhaltsTyp', 'inhaltsId', 'url'],
       }
     },
     last_queries: {

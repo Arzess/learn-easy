@@ -4,7 +4,7 @@
       "course_name": "Mongolian Empire",
       "course_description": "Discover the rise and fall of the largest contiguous land empire in history — from Genghis Khan's unification of the steppe tribes to the empire's vast cultural and trade legacy.",
       "course_id": "1",
-      "course_cover_id": "@/assets/images/themen/mongolisches-reich.png",
+      "course_cover_id": "https://images.pexels.com/photos/5275474/pexels-photo-5275474.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -281,7 +281,7 @@
       "course_name": "Women in Technology",
       "course_description": "Explore the often-overlooked stories of women who shaped computing, space exploration, and digital innovation — from Ada Lovelace to the programmers of the Apollo mission.",
       "course_id": "2",
-      "course_cover_id": "@/assets/images/themen/frauen-in-der-technik.png",
+      "course_cover_id": "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -558,7 +558,7 @@
       "course_name": "The Renaissance",
       "course_description": "Journey through 14th–17th century Europe as art, science, and philosophy are reborn — tracing the revolution that transformed how humans see themselves and their world.",
       "course_id": "3",
-      "course_cover_id": "@/assets/images/themen/renaissance.png",
+      "course_cover_id": "https://images.pexels.com/photos/36742562/pexels-photo-36742562.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -835,7 +835,7 @@
       "course_name": "Climate Change",
       "course_description": "Understand the science, history, and human stakes of Earth's changing climate — from the greenhouse effect to global tipping points.",
       "course_id": "4",
-      "course_cover_id": "@/assets/images/themen/klimawandel.png",
+      "course_cover_id": "https://images.pexels.com/photos/35279538/pexels-photo-35279538.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -1112,7 +1112,7 @@
       "course_name": "The Cold War",
       "course_description": "Explore four decades of ideological conflict, nuclear brinkmanship, proxy wars, and cultural espionage that divided the world into two hostile camps.",
       "course_id": "5",
-      "course_cover_id": "@/assets/images/themen/kalter-krieg.png",
+      "course_cover_id": "https://images.pexels.com/photos/31508293/pexels-photo-31508293.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -1389,7 +1389,7 @@
       "course_name": "Ancient Egypt",
       "course_description": "Uncover 3,000 years of one of humanity's most durable civilizations — from the unification of the Nile Valley to pharaohs and pyramids.",
       "course_id": "6",
-      "course_cover_id": "@/assets/images/themen/altes-aegypten.png",
+      "course_cover_id": "https://images.pexels.com/photos/31734018/pexels-photo-31734018.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {
@@ -1666,7 +1666,7 @@
       "course_name": "The Human Brain",
       "course_description": "Explore the most complex structure in the known universe — how your brain forms memories, makes decisions, and occasionally deceives you in fascinating ways.",
       "course_id": "7",
-      "course_cover_id": "@/assets/images/themen/menschliches-gehirn.png",
+      "course_cover_id": "https://images.pexels.com/photos/15410078/pexels-photo-15410078.jpeg",
       "amount_of_chapters": 2,
       "chapters": [
         {

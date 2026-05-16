@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -9,6 +9,9 @@ import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
+import Svg from '@/components/svg';
+import { removeBookmark } from '@/db/database';
+
 
 
 export default function Bookmarks() {
@@ -19,6 +22,7 @@ export default function Bookmarks() {
   bookmarkId: string;
   inhaltsTyp: string;
   inhaltsId: number;
+  url: string;
   };
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [noResults, setNoResults] = useState(false);
@@ -41,6 +45,8 @@ export default function Bookmarks() {
   }, [db])
 
 
+
+
   return (
       <ThemedView style={styles.container}>
         <View style={styles.titleNavigationContainer}>
@@ -59,7 +65,28 @@ export default function Bookmarks() {
         <>
           <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
             renderItem={({ item }) => (
-              <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId}/>
+              <View style={styles.bookmarkContainer}>
+                <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
+                <TouchableOpacity
+                                  style={[
+                                    styles.bookmark,
+                                    {
+                                      backgroundColor: colors.whiteBg.backgroundColor,
+                                    }
+                                  ]}
+                                  onPress={() => {
+                                    removeBookmark(db, item.bookmarkId);
+                                    setBookmarks(prev => {
+                                      const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
+                                      if (updated.length === 0) setNoResults(true);
+                                      return updated;
+                                    });
+                                  }}
+                                  activeOpacity={0.7}
+                                >
+                                  <Svg icon="bookmark-remove" width={16} height={16} white={true} />
+                  </TouchableOpacity>
+              </View>
             )}  
           />
         </>
@@ -96,6 +123,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 24,
   },
+  bookmarkContainer: {
+    width: '100%',
+    minHeight: 200,
+    backgroundColor: colors.whiteBg.backgroundColor,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  bookmark: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    width: 32,
+    zIndex: 5,
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   titleContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -108,6 +153,7 @@ const styles = StyleSheet.create({
   titleNavigationContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 8,
+    gap: 16,
+    alignItems: 'center',
   }
 });
