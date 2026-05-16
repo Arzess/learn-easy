@@ -1,13 +1,26 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite';
+import { getRxStorageLoki } from 'rxdb/plugins/storage-lokijs';
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
 
-const storage = Platform.OS === 'web' 
-  ? getRxStorageDexie() 
-  : getRxStorageSQLite();
+const getLokiAdapter = () => {
+  if (Platform.OS !== 'web') {
+    const LokiAsyncStorageAdapter = require('loki-async-reference-adapter');
+    return new LokiAsyncStorageAdapter();
+  }
+  return null;
+};
+
+const getStorage = () => {
+  if (Platform.OS === 'web') {
+    return getRxStorageDexie();
+  }
+  return getRxStorageLoki({
+    adapter: getLokiAdapter(),
+  });
+};
 
 
 const _create = async () => {
@@ -17,8 +30,9 @@ const _create = async () => {
   const db = await createRxDatabase({
     name: 'learn-easy-db',
     storage: wrappedValidateAjvStorage({
-        storage: storage,
+        storage: getStorage(),
     }),
+    multiInstance: false,
     ignoreDuplicate: true,
   });
 

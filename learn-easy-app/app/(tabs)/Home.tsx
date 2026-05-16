@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -6,6 +6,7 @@ import { useDB } from '@/db/DatabaseContext';
 import { createClient } from 'pexels';
 import courses from '@/assets/courses.json';
 import { colors, fonts } from '@/constants/theme';
+import Svg from '@/components/svg';
 import Button from '@/components/Button';
 import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -18,15 +19,29 @@ import { router } from 'expo-router';
 const width = Dimensions.get('window').width;
 const carouselWidth = width - 32;
 
+function getRandom(min: number, max: number) {
+  return Math.floor(Math.random() * ((max-min) + min));
+}
+
 export default function Home() {
   const theme = useColorScheme();
   const db = useDB();
   const [userData, setUserData] = useState<any>(null);
   const [pictures, setPictures] = useState([]);
   const [noResult, setNoResult] = useState(false);
-  const [currentCourse, setCurrentCourse] = useState(courses.courses[0]);
+  const [currentCourse, setCurrentCourse] = useState<typeof courses.courses[0] | null>(null);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+  // Bookmark logic
+  // Add a bookmark
+  const addBookmark = async (content_id: number, type: string) => {
+  }
+
+  const removeBookmark = async (content_id: number) => {
+
+  }
+
+
 
   // Fetch random related pictures
   const fetchPictures = async () => {
@@ -37,22 +52,20 @@ export default function Home() {
       const res = await client.photos.search({ query, per_page: 2 });
       if ('photos' in res){
        const pictures = res.photos.map((pic : any) => ({
-        source: {uri: pic.src.large},
+          source: {uri: pic.src.large},
+          type: "image",
+          content_id: getRandom(100, 10000),
         }));
         let nothingFound = pictures.length === 0;
         setPictures(pictures as any);
         setNoResult(nothingFound);
-        
       }
     }
     catch (e) {
       setNoResult(true);
       console.log(`There was an error while fetching random pictures: ${e}`)
-
-    }
-    
+    } 
   }
-
 
   // Fetch the user data
   useEffect(()=>{
@@ -64,8 +77,11 @@ export default function Home() {
         selector: { current: {$eq: true}}
       }).exec();
 
-      if (user) setUserData(user.toJSON())
-
+      if (user){
+        setUserData(user.toJSON())
+        const course = courses.courses.find(c => c.course_id === user.toJSON().course);
+        if (course) setCurrentCourse(course);
+      }
     };
 
 
@@ -74,6 +90,14 @@ export default function Home() {
     fetchPictures();
 
   }, [db]);
+
+  if (!userData) {
+    return (
+      <ThemedView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </ThemedView>
+    );
+  }
 
 
   const isDark = theme === 'dark';
@@ -84,7 +108,7 @@ export default function Home() {
       
       <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, user!</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, {userData.name}!</Text>
         </View>
         {/* Progress */}
         <View style={styles.categoryContainer}>
@@ -170,6 +194,20 @@ export default function Home() {
                onProgressChange={progress}
                renderItem={({ item }: { item: any }) => (
                  <View style={styles.carouselItem}>
+                  <TouchableOpacity
+                                  style={[
+                                    styles.bookmark,
+                                    {
+                                      backgroundColor: colors.whiteBg.backgroundColor,
+                                    }
+                                  ]}
+                                  onPress={() => {
+                                    addBookmark(item.contentId, item.type);
+                                  }}
+                                  activeOpacity={0.7}
+                                >
+                                  <Svg icon="bookmark-filled" width={16} height={16} white={true} />
+                                </TouchableOpacity>
                    <Image 
                      source={item.source} 
                      style={styles.image} 
@@ -198,6 +236,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflowY: 'scroll',
     overflowX: 'hidden',
+    // justifyContent: 'center',
     padding: 16,
   },
   carouselItem: {
@@ -234,6 +273,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 16,
   },
+  // Bookmark
+  bookmark: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    width: 32,
+    zIndex: 5,
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   // Course and goal
   course: {
     display: 'flex',
