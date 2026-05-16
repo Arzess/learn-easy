@@ -128,7 +128,7 @@ export default function Home() {
               <View style={styles.courseDesc}>
                 <View style={styles.textContainer}>
                   <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
-                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse.course_name}</Text>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse?.course_name}</Text>
                   <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
                 </View>
                 <Text style={fonts.josefin}>50%</Text>
@@ -154,7 +154,7 @@ export default function Home() {
           <View style={styles.jumpBackIn}>
             <View style={styles.preview}>
               <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={12} ellipsizeMode='tail'>
-                {currentCourse.chapters[0].chapter_content[0].content}
+                {currentCourse?.chapters[0].chapter_content[0].content}
               </Text>
             </View>
           </View>

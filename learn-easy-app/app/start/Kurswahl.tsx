@@ -67,6 +67,7 @@ export default function Kurswahl() {
 
   // Register the user in the database
   const next_step = (course_id: string) => {
+    if (!db) return;
     db.general.user.upsert({
       id: userId.toString(),
       current: true,
