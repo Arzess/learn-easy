@@ -18,7 +18,7 @@ import { router } from 'expo-router';
 
 
 const width = Dimensions.get('window').width;
-const carouselWidth = width - 32;
+const carouselWidth = width;
 
 function getRandom(min: number, max: number) {
   return Math.floor(Math.random() * ((max-min) + min));
@@ -196,7 +196,7 @@ export default function Home() {
                                     }
                                   ]}
                                   onPress={() => {
-                                    addBookmark(item.contentId, item.type);
+                                    addBookmark(db, item.contentId, item.type);
                                   }}
                                   activeOpacity={0.7}
                                 >
@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 24,
     flex: 1,
+    paddingTop: 64,
     overflowY: 'scroll',
     overflowX: 'hidden',
     // justifyContent: 'center',

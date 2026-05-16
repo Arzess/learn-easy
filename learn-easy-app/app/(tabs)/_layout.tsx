@@ -28,7 +28,8 @@ export default function TabLayout() {
           overflow: 'hidden',
         },
         tabBarIconStyle: {
-          padding: 20,
+          padding: 0,
+          marginTop: 16,
         }
     }}>
       <Tabs.Screen

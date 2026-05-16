@@ -1,27 +1,14 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { getRxStorageLoki } from 'rxdb/plugins/storage-lokijs';
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
+import { getRxStorageMemory } from 'rxdb/plugins/storage-memory';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
 
-const getLokiAdapter = () => {
-  if (Platform.OS !== 'web') {
-    const LokiAsyncStorageAdapter = require('loki-async-reference-adapter');
-    return LokiAsyncStorageAdapter();
-  }
-  return null;
-};
-
 const getStorage = () => {
-  if (Platform.OS === 'web') {
-    return getRxStorageDexie();
-  }
-  return getRxStorageLoki({
-    adapter: getLokiAdapter(),
-  });
+  if (Platform.OS === 'web') return getRxStorageDexie();
+  return getRxStorageMemory();
 };
-
 
 export let bookmarkCounter = 1;
 
