@@ -3,8 +3,6 @@ import React from 'react';
 import SVG from '../../components/svg'
 import '../../components/svg-sheet'
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { DatabaseProvider } from '@/db/DatabaseContext';
 import { colors } from '@/constants/theme';
 
 export default function TabLayout() {
@@ -48,7 +46,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="Lernen"
+        name="Bookmarks"
         options={{
           tabBarIcon: ({ focused }) => <SVG icon={"bookmark"} width={24} height={24} white={!focused}/>,
         }}

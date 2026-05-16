@@ -5,7 +5,7 @@ import findSvg from "./svg-sheet";
 
 const SVG = ({ icon, width, height, white } : {icon: String, width: number, height: number, white: boolean}) => {
   // @ts-ignore
-  return <SvgXml xml={findSvg(icon, white)} width={width} height={height} />;
+  return <SvgXml xml={findSvg(icon, white)} width={width} height={height} style={{ minWidth: width, minHeight: height,}} />;
 };
 export default SVG;
 

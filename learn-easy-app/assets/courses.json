@@ -14,19 +14,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "It is the year 1162 on the windswept plains of Mongolia. A child is born clutching a blood clot in his fist — a sign, the shamans say, of a great warrior. His name is Temüjin.\n\nHis early years are brutal. When Temüjin is just nine, his father is poisoned by rival Tatars. His family is abandoned by their own clan and left to survive alone in the wilderness. But hardship forges iron.\n\nAs a young man, Temüjin is kidnapped, enslaved, and nearly broken. Yet each setback makes him more resourceful, more relentless. He builds alliances through loyalty rather than birthright — an unusual idea on the steppe, where blood lineage ruled everything.\n\nBy 1206, after decades of war, diplomacy, and sheer force of will, Temüjin has done the impossible: he has unified all the Mongol and Turkic tribes under a single banner. At a grand assembly called the kurultai, he is proclaimed Genghis Khan — 'Universal Ruler'.\n\nHis new nation has no cities, no written language, and no standing walls. But it has something more dangerous: an army of 100,000 disciplined, mobile, and utterly dedicated warriors — and a leader who had already survived everything the world could throw at him."
+              "content": "It is the year 1162 on the windswept plains of Mongolia. A child is born clutching a blood clot in his fist — a sign, the shamans say, of a great warrior. His name is Temüjin.\n\nHis early years are brutal. When Temüjin is just nine, his father is poisoned by rival Tatars. His family is abandoned by their own clan and left to survive alone in the wilderness. But hardship forges iron.\n\nAs a young man, Temüjin is kidnapped, enslaved, and nearly broken. Yet each setback makes him more resourceful, more relentless. He builds alliances through loyalty rather than birthright — an unusual idea on the steppe, where blood lineage ruled everything.\n\nBy 1206, after decades of war, diplomacy, and sheer force of will, Temüjin has done the impossible: he has unified all the Mongol and Turkic tribes under a single banner. At a grand assembly called the kurultai, he is proclaimed Genghis Khan — 'Universal Ruler'.\n\nHis new nation has no cities, no written language, and no standing walls. But it has something more dangerous: an army of 100,000 disciplined, mobile, and utterly dedicated warriors — and a leader who had already survived everything the world could throw at him.",
+              "content_id": 1
             },
             {
               "content_type": "image",
               "image_id": "mongolia_genghis_rise",
               "image_alt": "Map showing the unification of Mongol tribes across the Central Asian steppe circa 1206",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Genghis_Khan_empire.png/1200px-Genghis_Khan_empire.png"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Genghis_Khan_empire.png/1200px-Genghis_Khan_empire.png",
+              "content_id": 2
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/a6XQCcWVmXg",
               "title": "Genghis Khan and the Mongol Empire – History Documentary",
-              "duration_minutes": 12
+              "duration_minutes": 12,
+              "content_id": 3
             }
           ],
           "quiz": {
@@ -35,40 +38,104 @@
                 "question_content": "What was Genghis Khan's birth name?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Temüjin", "correct": true },
-                  { "answer_label": "B", "answer_content": "Kublai", "correct": false },
-                  { "answer_label": "C", "answer_content": "Ögedei", "correct": false },
-                  { "answer_label": "D", "answer_content": "Batu", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Temüjin",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Kublai",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Ögedei",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Batu",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "In which year was Genghis Khan proclaimed 'Universal Ruler' at the kurultai assembly?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "1162", "correct": false },
-                  { "answer_label": "B", "answer_content": "1185", "correct": false },
-                  { "answer_label": "C", "answer_content": "1206", "correct": true },
-                  { "answer_label": "D", "answer_content": "1227", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "1162",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "1185",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "1206",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "1227",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What made Genghis Khan's approach to building alliances unusual on the Mongolian steppe?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "He relied on blood lineage above all else", "correct": false },
-                  { "answer_label": "B", "answer_content": "He built alliances based on loyalty rather than birthright", "correct": true },
-                  { "answer_label": "C", "answer_content": "He bought loyalty with gold and silver", "correct": false },
-                  { "answer_label": "D", "answer_content": "He only allied with tribes that shared his language", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "He relied on blood lineage above all else",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "He built alliances based on loyalty rather than birthright",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "He bought loyalty with gold and silver",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "He only allied with tribes that shared his language",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Approximately how large was Genghis Khan's army after unifying the tribes?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "10,000 warriors", "correct": false },
-                  { "answer_label": "B", "answer_content": "50,000 warriors", "correct": false },
-                  { "answer_label": "C", "answer_content": "100,000 warriors", "correct": true },
-                  { "answer_label": "D", "answer_content": "500,000 warriors", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "10,000 warriors",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "50,000 warriors",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "100,000 warriors",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "500,000 warriors",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -81,19 +148,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Imagine you are a merchant in Samarkand in 1218. Your city is the jewel of the Silk Road — prosperous, cultured, protected by massive walls. Then a message arrives from the east: the Mongols are coming.\n\nGenghis Khan had sent a trade caravan of 450 merchants to the Khwarazmian Empire. The governor executed them all. This was perhaps the costliest mistake in history.\n\nThe Mongol revenge was apocalyptic. City after city fell. Samarkand, Merv, Nishapur — populations numbered in the hundreds of thousands were wiped out.\n\nAnd yet — here is the paradox — after the conquest came something extraordinary. Under Kublai Khan, Genghis's grandson, the empire at its peak stretched from Korea to Poland, from Siberia to Persia. For the first time, a single political authority governed most of Eurasia.\n\nThis period is called the Pax Mongolica — the Mongol Peace. A merchant could travel from Venice to Beijing with a paiza (a Mongol passport tablet) and face no border. Ideas, technologies, and diseases moved freely. Gunpowder, printing, and the bubonic plague all reached Europe via Mongol-controlled routes.\n\nMarco Polo made his famous journey during this era. The Mongols, destroyers of worlds, had accidentally created the first globalized network."
+              "content": "Imagine you are a merchant in Samarkand in 1218. Your city is the jewel of the Silk Road — prosperous, cultured, protected by massive walls. Then a message arrives from the east: the Mongols are coming.\n\nGenghis Khan had sent a trade caravan of 450 merchants to the Khwarazmian Empire. The governor executed them all. This was perhaps the costliest mistake in history.\n\nThe Mongol revenge was apocalyptic. City after city fell. Samarkand, Merv, Nishapur — populations numbered in the hundreds of thousands were wiped out.\n\nAnd yet — here is the paradox — after the conquest came something extraordinary. Under Kublai Khan, Genghis's grandson, the empire at its peak stretched from Korea to Poland, from Siberia to Persia. For the first time, a single political authority governed most of Eurasia.\n\nThis period is called the Pax Mongolica — the Mongol Peace. A merchant could travel from Venice to Beijing with a paiza (a Mongol passport tablet) and face no border. Ideas, technologies, and diseases moved freely. Gunpowder, printing, and the bubonic plague all reached Europe via Mongol-controlled routes.\n\nMarco Polo made his famous journey during this era. The Mongols, destroyers of worlds, had accidentally created the first globalized network.",
+              "content_id": 4
             },
             {
               "content_type": "image",
               "image_id": "mongolia_pax_mongolica_map",
               "image_alt": "Map of the Mongol Empire at its greatest extent in 1279, showing the four major khanates and Silk Road trade routes",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Mongol_Empire_map.gif/1200px-Mongol_Empire_map.gif"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Mongol_Empire_map.gif/1200px-Mongol_Empire_map.gif",
+              "content_id": 5
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/szxPar0BcMo",
               "title": "The Pax Mongolica: How the Mongols Connected the World",
-              "duration_minutes": 10
+              "duration_minutes": 10,
+              "content_id": 6
             }
           ],
           "quiz": {
@@ -102,40 +172,104 @@
                 "question_content": "What triggered the Mongol invasion of the Khwarazmian Empire?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Khwarazmians attacked a Mongol border fortress", "correct": false },
-                  { "answer_label": "B", "answer_content": "A Khwarazmian governor executed 450 Mongol trade merchants", "correct": true },
-                  { "answer_label": "C", "answer_content": "The Khwarazmians allied with rival Tatar tribes", "correct": false },
-                  { "answer_label": "D", "answer_content": "Genghis Khan sought to control the Silk Road's eastern end", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Khwarazmians attacked a Mongol border fortress",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "A Khwarazmian governor executed 450 Mongol trade merchants",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Khwarazmians allied with rival Tatar tribes",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Genghis Khan sought to control the Silk Road's eastern end",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What was a paiza in the Mongol Empire?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "A Mongol weapon used in siege warfare", "correct": false },
-                  { "answer_label": "B", "answer_content": "A gold currency used along the Silk Road", "correct": false },
-                  { "answer_label": "C", "answer_content": "A passport tablet that allowed safe travel across the empire", "correct": true },
-                  { "answer_label": "D", "answer_content": "A military rank in the Mongol army", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "A Mongol weapon used in siege warfare",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "A gold currency used along the Silk Road",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "A passport tablet that allowed safe travel across the empire",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "A military rank in the Mongol army",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What term describes the period of relative stability and open trade across the Mongol Empire?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Pax Romana", "correct": false },
-                  { "answer_label": "B", "answer_content": "Pax Mongolica", "correct": true },
-                  { "answer_label": "C", "answer_content": "Pax Sinica", "correct": false },
-                  { "answer_label": "D", "answer_content": "Pax Tatarica", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Pax Romana",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Pax Mongolica",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Pax Sinica",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Pax Tatarica",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Which famous European traveller journeyed to Asia during the Pax Mongolica?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Christopher Columbus", "correct": false },
-                  { "answer_label": "B", "answer_content": "Vasco da Gama", "correct": false },
-                  { "answer_label": "C", "answer_content": "Marco Polo", "correct": true },
-                  { "answer_label": "D", "answer_content": "Ferdinand Magellan", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Christopher Columbus",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Vasco da Gama",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Marco Polo",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Ferdinand Magellan",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -157,19 +291,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Picture the year 1843. Charles Babbage, a brilliant English mathematician, is obsessed with building a mechanical calculating machine — his 'Analytical Engine.' Almost no one understands what he is trying to do.\n\nExcept one person: Ada Lovelace, daughter of the poet Lord Byron.\n\nAda translates an Italian article about Babbage's machine and adds her own notes — three times longer than the original. Inside them, she describes something Babbage himself had not fully articulated: that the machine could be programmed to do any calculation, not just arithmetic. She writes what many historians consider the world's first computer algorithm — in 1843, a century before the first electronic computer.\n\nFast-forward to 1945. The US Army has built ENIAC, the world's first general-purpose electronic computer. It needs to be programmed. Six women are hired: Jean Jennings, Frances Bilas, Betty Snyder, Marlyn Wescoff, Ruth Lichterman, and Frances Elizalde. Working from logical diagrams with no manuals and no precedent, they make ENIAC calculate ballistic trajectories. They are called the ENIAC Programmers — and for decades, their contribution is almost completely forgotten.\n\nThis is a pattern that repeats throughout the history of computing: women do foundational work, men receive the recognition."
+              "content": "Picture the year 1843. Charles Babbage, a brilliant English mathematician, is obsessed with building a mechanical calculating machine — his 'Analytical Engine.' Almost no one understands what he is trying to do.\n\nExcept one person: Ada Lovelace, daughter of the poet Lord Byron.\n\nAda translates an Italian article about Babbage's machine and adds her own notes — three times longer than the original. Inside them, she describes something Babbage himself had not fully articulated: that the machine could be programmed to do any calculation, not just arithmetic. She writes what many historians consider the world's first computer algorithm — in 1843, a century before the first electronic computer.\n\nFast-forward to 1945. The US Army has built ENIAC, the world's first general-purpose electronic computer. It needs to be programmed. Six women are hired: Jean Jennings, Frances Bilas, Betty Snyder, Marlyn Wescoff, Ruth Lichterman, and Frances Elizalde. Working from logical diagrams with no manuals and no precedent, they make ENIAC calculate ballistic trajectories. They are called the ENIAC Programmers — and for decades, their contribution is almost completely forgotten.\n\nThis is a pattern that repeats throughout the history of computing: women do foundational work, men receive the recognition.",
+              "content_id": 7
             },
             {
               "content_type": "image",
               "image_id": "women_tech_eniac",
               "image_alt": "The six ENIAC programmers operating the machine in 1945 at the University of Pennsylvania",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Two_women_operating_ENIAC.gif/1200px-Two_women_operating_ENIAC.gif"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Two_women_operating_ENIAC.gif/1200px-Two_women_operating_ENIAC.gif",
+              "content_id": 8
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/aPCMgSMEOEk",
               "title": "The Women of ENIAC – Forgotten Pioneers of Computing",
-              "duration_minutes": 8
+              "duration_minutes": 8,
+              "content_id": 9
             }
           ],
           "quiz": {
@@ -178,40 +315,104 @@
                 "question_content": "What is Ada Lovelace historically credited with writing?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The first programming language manual", "correct": false },
-                  { "answer_label": "B", "answer_content": "The world's first computer algorithm", "correct": true },
-                  { "answer_label": "C", "answer_content": "The blueprint for ENIAC", "correct": false },
-                  { "answer_label": "D", "answer_content": "The first textbook on electrical engineering", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The first programming language manual",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The world's first computer algorithm",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The blueprint for ENIAC",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The first textbook on electrical engineering",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What was Ada Lovelace's key insight about Babbage's Analytical Engine?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "That it could only calculate artillery trajectories", "correct": false },
-                  { "answer_label": "B", "answer_content": "That it could be programmed to perform any calculation, not just arithmetic", "correct": true },
-                  { "answer_label": "C", "answer_content": "That it was too expensive to build", "correct": false },
-                  { "answer_label": "D", "answer_content": "That it needed electrical power to function", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "That it could only calculate artillery trajectories",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "That it could be programmed to perform any calculation, not just arithmetic",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "That it was too expensive to build",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "That it needed electrical power to function",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How many women were hired to program the ENIAC computer in 1945?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Two", "correct": false },
-                  { "answer_label": "B", "answer_content": "Four", "correct": false },
-                  { "answer_label": "C", "answer_content": "Six", "correct": true },
-                  { "answer_label": "D", "answer_content": "Ten", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Two",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Four",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Six",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Ten",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What task were the ENIAC programmers solving?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Calculating weather forecasts", "correct": false },
-                  { "answer_label": "B", "answer_content": "Calculating ballistic trajectories for the US Army", "correct": true },
-                  { "answer_label": "C", "answer_content": "Designing nuclear reactor cooling systems", "correct": false },
-                  { "answer_label": "D", "answer_content": "Processing census population data", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Calculating weather forecasts",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Calculating ballistic trajectories for the US Army",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Designing nuclear reactor cooling systems",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Processing census population data",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -224,19 +425,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "It is 1961. NASA is in a desperate race against the Soviet Union to put a human in space. In a segregated building at Langley Research Center in Virginia, a group of African American women are doing the calculations that will determine whether astronauts live or die. They are called 'computers' — human computers — and among them is Katherine Johnson.\n\nKatherine's mathematical intuition is so precise that when NASA begins using electronic IBM computers, astronaut John Glenn refuses to board his spacecraft until Katherine personally verifies the machine's calculations. 'If she says they're good,' Glenn reportedly says, 'then I'm ready to go.'\n\nOn February 20, 1962, Glenn orbits the Earth three times. The math holds.\n\nKatherine's colleagues Dorothy Vaughan and Mary Jackson are equally extraordinary. Dorothy teaches herself FORTRAN and transitions her entire group into the new era of electronic computing, becoming NASA's first Black supervisor. Mary becomes NASA's first Black female engineer, fighting through legal barriers to attend the all-white night school courses she needed.\n\nTheir stories were largely unknown until the 2016 film Hidden Figures. In 2015, at age 97, Katherine Johnson received the Presidential Medal of Freedom."
+              "content": "It is 1961. NASA is in a desperate race against the Soviet Union to put a human in space. In a segregated building at Langley Research Center in Virginia, a group of African American women are doing the calculations that will determine whether astronauts live or die. They are called 'computers' — human computers — and among them is Katherine Johnson.\n\nKatherine's mathematical intuition is so precise that when NASA begins using electronic IBM computers, astronaut John Glenn refuses to board his spacecraft until Katherine personally verifies the machine's calculations. 'If she says they're good,' Glenn reportedly says, 'then I'm ready to go.'\n\nOn February 20, 1962, Glenn orbits the Earth three times. The math holds.\n\nKatherine's colleagues Dorothy Vaughan and Mary Jackson are equally extraordinary. Dorothy teaches herself FORTRAN and transitions her entire group into the new era of electronic computing, becoming NASA's first Black supervisor. Mary becomes NASA's first Black female engineer, fighting through legal barriers to attend the all-white night school courses she needed.\n\nTheir stories were largely unknown until the 2016 film Hidden Figures. In 2015, at age 97, Katherine Johnson received the Presidential Medal of Freedom.",
+              "content_id": 10
             },
             {
               "content_type": "image",
               "image_id": "women_tech_hidden_figures",
               "image_alt": "Katherine Johnson at her desk at NASA Langley Research Center, working on calculations in the 1960s",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Katherine_Johnson_1983.jpg/800px-Katherine_Johnson_1983.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Katherine_Johnson_1983.jpg/800px-Katherine_Johnson_1983.jpg",
+              "content_id": 11
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/v-pbGAts6Nk",
               "title": "Katherine Johnson: The NASA Mathematician Who Helped Send Humans to Space",
-              "duration_minutes": 9
+              "duration_minutes": 9,
+              "content_id": 12
             }
           ],
           "quiz": {
@@ -245,40 +449,104 @@
                 "question_content": "Why did astronaut John Glenn insist on Katherine Johnson verifying NASA's computer calculations?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "She had personally built the IBM computer", "correct": false },
-                  { "answer_label": "B", "answer_content": "He trusted her mathematical precision more than the electronic computer", "correct": true },
-                  { "answer_label": "C", "answer_content": "NASA regulations required a human co-signer on all calculations", "correct": false },
-                  { "answer_label": "D", "answer_content": "The IBM computer had broken down before his launch", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "She had personally built the IBM computer",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "He trusted her mathematical precision more than the electronic computer",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "NASA regulations required a human co-signer on all calculations",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The IBM computer had broken down before his launch",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What milestone did Dorothy Vaughan achieve at NASA?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "She became the first woman to walk in space", "correct": false },
-                  { "answer_label": "B", "answer_content": "She became NASA's first Black supervisor", "correct": true },
-                  { "answer_label": "C", "answer_content": "She designed the Apollo spacecraft heat shield", "correct": false },
-                  { "answer_label": "D", "answer_content": "She became the first female astronaut candidate", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "She became the first woman to walk in space",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "She became NASA's first Black supervisor",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "She designed the Apollo spacecraft heat shield",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "She became the first female astronaut candidate",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What programming language did Dorothy Vaughan teach herself and her team?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "COBOL", "correct": false },
-                  { "answer_label": "B", "answer_content": "BASIC", "correct": false },
-                  { "answer_label": "C", "answer_content": "FORTRAN", "correct": true },
-                  { "answer_label": "D", "answer_content": "ALGOL", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "COBOL",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "BASIC",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "FORTRAN",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "ALGOL",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What prestigious award did Katherine Johnson receive in 2015?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Nobel Prize in Physics", "correct": false },
-                  { "answer_label": "B", "answer_content": "The Congressional Gold Medal", "correct": false },
-                  { "answer_label": "C", "answer_content": "The Presidential Medal of Freedom", "correct": true },
-                  { "answer_label": "D", "answer_content": "The National Medal of Science", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Nobel Prize in Physics",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The Congressional Gold Medal",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Presidential Medal of Freedom",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The National Medal of Science",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -300,19 +568,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "The year is 1347. A plague ship docks in Sicily. Within five years, the Black Death will kill between 30 and 60 percent of Europe's population. The Church cannot explain why the pious are dying alongside the sinful.\n\nFrom this catastrophe, something unexpected emerges: a hunger for human answers.\n\nIn the wealthy city of Florence, a new generation of thinkers, artists, and merchants begins asking questions that would have seemed heretical to their grandparents: What can people achieve? How do we see, measure, and understand the world on its own terms?\n\nThe Medici family — bankers who have become the most powerful dynasty in Europe — believe that investing in artists and scholars is both spiritually valuable and politically shrewd. They fund everything.\n\nA sculptor named Donatello creates David — the first free-standing nude sculpture since antiquity. An architect named Brunelleschi solves the 'impossible' problem of building a dome over Florence's cathedral without scaffolding by reinventing geometry. A writer named Petrarch digs up ancient Roman manuscripts and argues that Greek and Roman civilization represents a peak of human achievement worth reviving.\n\nThey call this revival the Rinascimento — the Rebirth. We call it the Renaissance. The radical idea at its heart: humans are not just sinners waiting to die — they are creators, capable of beauty, reason, and mastery of nature."
+              "content": "The year is 1347. A plague ship docks in Sicily. Within five years, the Black Death will kill between 30 and 60 percent of Europe's population. The Church cannot explain why the pious are dying alongside the sinful.\n\nFrom this catastrophe, something unexpected emerges: a hunger for human answers.\n\nIn the wealthy city of Florence, a new generation of thinkers, artists, and merchants begins asking questions that would have seemed heretical to their grandparents: What can people achieve? How do we see, measure, and understand the world on its own terms?\n\nThe Medici family — bankers who have become the most powerful dynasty in Europe — believe that investing in artists and scholars is both spiritually valuable and politically shrewd. They fund everything.\n\nA sculptor named Donatello creates David — the first free-standing nude sculpture since antiquity. An architect named Brunelleschi solves the 'impossible' problem of building a dome over Florence's cathedral without scaffolding by reinventing geometry. A writer named Petrarch digs up ancient Roman manuscripts and argues that Greek and Roman civilization represents a peak of human achievement worth reviving.\n\nThey call this revival the Rinascimento — the Rebirth. We call it the Renaissance. The radical idea at its heart: humans are not just sinners waiting to die — they are creators, capable of beauty, reason, and mastery of nature.",
+              "content_id": 13
             },
             {
               "content_type": "image",
               "image_id": "renaissance_florence_dome",
               "image_alt": "Brunelleschi's dome over the Florence Cathedral (Duomo), completed in 1436",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Duomo_di_Firenze_-_cupola.jpg/1200px-Duomo_di_Firenze_-_cupola.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Duomo_di_Firenze_-_cupola.jpg/1200px-Duomo_di_Firenze_-_cupola.jpg",
+              "content_id": 14
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/Vufba_ZcoR0",
               "title": "The Renaissance: A History in 15 Minutes",
-              "duration_minutes": 15
+              "duration_minutes": 15,
+              "content_id": 15
             }
           ],
           "quiz": {
@@ -321,40 +592,104 @@
                 "question_content": "What catastrophic event preceded the Renaissance and shook European confidence in the Church?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Hundred Years' War", "correct": false },
-                  { "answer_label": "B", "answer_content": "The Black Death", "correct": true },
-                  { "answer_label": "C", "answer_content": "The Crusades", "correct": false },
-                  { "answer_label": "D", "answer_content": "The Fall of Constantinople", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Hundred Years' War",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The Black Death",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Crusades",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The Fall of Constantinople",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Which powerful family funded Renaissance art and scholarship in Florence?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Borgia family", "correct": false },
-                  { "answer_label": "B", "answer_content": "The Sforza family", "correct": false },
-                  { "answer_label": "C", "answer_content": "The Medici family", "correct": true },
-                  { "answer_label": "D", "answer_content": "The Visconti family", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Borgia family",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The Sforza family",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Medici family",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The Visconti family",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What did Brunelleschi achieve that was considered 'impossible' at the time?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "He built the first stone bridge across the Arno river", "correct": false },
-                  { "answer_label": "B", "answer_content": "He built a dome over Florence's cathedral without scaffolding", "correct": true },
-                  { "answer_label": "C", "answer_content": "He carved the first life-size marble statue since antiquity", "correct": false },
-                  { "answer_label": "D", "answer_content": "He designed the first printed book in Italian", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "He built the first stone bridge across the Arno river",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "He built a dome over Florence's cathedral without scaffolding",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "He carved the first life-size marble statue since antiquity",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "He designed the first printed book in Italian",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What does the Italian word 'Rinascimento' mean?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Enlightenment", "correct": false },
-                  { "answer_label": "B", "answer_content": "Revolution", "correct": false },
-                  { "answer_label": "C", "answer_content": "Rebirth", "correct": true },
-                  { "answer_label": "D", "answer_content": "Reform", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Enlightenment",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Revolution",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Rebirth",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Reform",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -367,19 +702,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "The Renaissance invented a new kind of human ideal: the uomo universale — the universal man. Not a specialist, but a person who could paint, sculpt, write poetry, compose music, understand anatomy, design buildings, and theorize about philosophy — all equally well.\n\nLeonardo da Vinci (1452–1519) is perhaps history's most curious mind. His 7,000 surviving notebook pages contain the first accurate drawings of the human heart's chambers, designs for a rudimentary helicopter and solar power, studies of water flow, and sketches for some of the most famous paintings ever created. He filled pages with mirror-writing, jumping between botany, geology, mathematics, and optics within a single entry. He also left dozens of projects unfinished — the Mona Lisa took 16 years.\n\nMichelangelo (1475–1564) was almost his opposite: monomaniacally dedicated, tormented, devout. He insisted he was a sculptor above all else, yet the Sistine Chapel ceiling — painted lying on his back over four years — is arguably the greatest single artistic achievement in Western history. His David, Pietà, and the architectural design of St. Peter's Basilica span an unmatched range.\n\nBoth men lived into old age, both argued fiercely, and both died convinced they had not yet done their best work."
+              "content": "The Renaissance invented a new kind of human ideal: the uomo universale — the universal man. Not a specialist, but a person who could paint, sculpt, write poetry, compose music, understand anatomy, design buildings, and theorize about philosophy — all equally well.\n\nLeonardo da Vinci (1452–1519) is perhaps history's most curious mind. His 7,000 surviving notebook pages contain the first accurate drawings of the human heart's chambers, designs for a rudimentary helicopter and solar power, studies of water flow, and sketches for some of the most famous paintings ever created. He filled pages with mirror-writing, jumping between botany, geology, mathematics, and optics within a single entry. He also left dozens of projects unfinished — the Mona Lisa took 16 years.\n\nMichelangelo (1475–1564) was almost his opposite: monomaniacally dedicated, tormented, devout. He insisted he was a sculptor above all else, yet the Sistine Chapel ceiling — painted lying on his back over four years — is arguably the greatest single artistic achievement in Western history. His David, Pietà, and the architectural design of St. Peter's Basilica span an unmatched range.\n\nBoth men lived into old age, both argued fiercely, and both died convinced they had not yet done their best work.",
+              "content_id": 16
             },
             {
               "content_type": "image",
               "image_id": "renaissance_vitruvian_man",
               "image_alt": "Leonardo da Vinci's Vitruvian Man (c. 1490)",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg/800px-Da_Vinci_Vitruve_Luc_Viatour.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg/800px-Da_Vinci_Vitruve_Luc_Viatour.jpg",
+              "content_id": 17
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/oPhJNwGAWC0",
               "title": "Leonardo da Vinci – The Most Curious Mind in History",
-              "duration_minutes": 11
+              "duration_minutes": 11,
+              "content_id": 18
             }
           ],
           "quiz": {
@@ -388,40 +726,104 @@
                 "question_content": "What does the Renaissance term 'uomo universale' mean?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Universal soldier", "correct": false },
-                  { "answer_label": "B", "answer_content": "Universal man — a person who masters many fields", "correct": true },
-                  { "answer_label": "C", "answer_content": "Universal faith", "correct": false },
-                  { "answer_label": "D", "answer_content": "Universal language", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Universal soldier",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Universal man — a person who masters many fields",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Universal faith",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Universal language",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Approximately how many pages of notebooks did Leonardo da Vinci leave behind?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "700", "correct": false },
-                  { "answer_label": "B", "answer_content": "2,000", "correct": false },
-                  { "answer_label": "C", "answer_content": "7,000", "correct": true },
-                  { "answer_label": "D", "answer_content": "15,000", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "700",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "2,000",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "7,000",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "15,000",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How long did it take Michelangelo to paint the Sistine Chapel ceiling?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "One year", "correct": false },
-                  { "answer_label": "B", "answer_content": "Four years", "correct": true },
-                  { "answer_label": "C", "answer_content": "Eight years", "correct": false },
-                  { "answer_label": "D", "answer_content": "Twelve years", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "One year",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Four years",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Eight years",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Twelve years",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How long did Leonardo reportedly work on the Mona Lisa?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "2 years", "correct": false },
-                  { "answer_label": "B", "answer_content": "8 years", "correct": false },
-                  { "answer_label": "C", "answer_content": "16 years", "correct": true },
-                  { "answer_label": "D", "answer_content": "25 years", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "2 years",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "8 years",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "16 years",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "25 years",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -443,19 +845,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "It is 1856. A scientist named Eunice Newton Foote places two glass cylinders in sunlight — one filled with regular air, one filled with carbon dioxide. The CO₂ cylinder heats up much faster and stays hot much longer. She publishes a paper concluding that 'an atmosphere of that gas would give to our earth a high temperature.'\n\nHer paper is presented at a scientific conference — by a man, because women are not allowed to present. It is then largely ignored for over a century.\n\nThree years later, Irish physicist John Tyndall conducts similar experiments and receives full credit for discovering the greenhouse effect. In 1896, Swedish chemist Svante Arrhenius calculates that doubling atmospheric CO₂ would raise global temperatures by 5–6°C — remarkably close to modern estimates.\n\nHow does the greenhouse effect work? Think of Earth wrapped in a thin blanket of gases — mostly nitrogen and oxygen, but with small amounts of CO₂, methane, and water vapor. Sunlight passes through easily. But when the warmed Earth tries to radiate heat back into space, these 'greenhouse gases' trap some of it — like a car on a sunny day.\n\nWithout any greenhouse effect, Earth would be about -18°C. The natural effect makes life possible. The problem: since the Industrial Revolution, humans have been thickening that blanket. Since 1850, atmospheric CO₂ has risen from 280 to over 420 parts per million — levels not seen for at least 3 million years."
+              "content": "It is 1856. A scientist named Eunice Newton Foote places two glass cylinders in sunlight — one filled with regular air, one filled with carbon dioxide. The CO₂ cylinder heats up much faster and stays hot much longer. She publishes a paper concluding that 'an atmosphere of that gas would give to our earth a high temperature.'\n\nHer paper is presented at a scientific conference — by a man, because women are not allowed to present. It is then largely ignored for over a century.\n\nThree years later, Irish physicist John Tyndall conducts similar experiments and receives full credit for discovering the greenhouse effect. In 1896, Swedish chemist Svante Arrhenius calculates that doubling atmospheric CO₂ would raise global temperatures by 5–6°C — remarkably close to modern estimates.\n\nHow does the greenhouse effect work? Think of Earth wrapped in a thin blanket of gases — mostly nitrogen and oxygen, but with small amounts of CO₂, methane, and water vapor. Sunlight passes through easily. But when the warmed Earth tries to radiate heat back into space, these 'greenhouse gases' trap some of it — like a car on a sunny day.\n\nWithout any greenhouse effect, Earth would be about -18°C. The natural effect makes life possible. The problem: since the Industrial Revolution, humans have been thickening that blanket. Since 1850, atmospheric CO₂ has risen from 280 to over 420 parts per million — levels not seen for at least 3 million years.",
+              "content_id": 19
             },
             {
               "content_type": "image",
               "image_id": "climate_greenhouse_diagram",
               "image_alt": "Diagram illustrating the greenhouse effect: solar radiation entering Earth's atmosphere and heat being trapped by greenhouse gases",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Greenhouse-effect-t2.svg/1200px-Greenhouse-effect-t2.svg.png"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Greenhouse-effect-t2.svg/1200px-Greenhouse-effect-t2.svg.png",
+              "content_id": 20
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/sTvqIijqvTg",
               "title": "What is the Greenhouse Effect? – Climate Science Explained",
-              "duration_minutes": 7
+              "duration_minutes": 7,
+              "content_id": 21
             }
           ],
           "quiz": {
@@ -464,40 +869,104 @@
                 "question_content": "Who conducted the first experiment linking CO₂ to atmospheric warming in 1856?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "John Tyndall", "correct": false },
-                  { "answer_label": "B", "answer_content": "Svante Arrhenius", "correct": false },
-                  { "answer_label": "C", "answer_content": "Eunice Newton Foote", "correct": true },
-                  { "answer_label": "D", "answer_content": "Charles Darwin", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "John Tyndall",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Svante Arrhenius",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Eunice Newton Foote",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Charles Darwin",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What would Earth's average temperature be WITHOUT the natural greenhouse effect?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Around +5°C", "correct": false },
-                  { "answer_label": "B", "answer_content": "Around 0°C", "correct": false },
-                  { "answer_label": "C", "answer_content": "Around -18°C", "correct": true },
-                  { "answer_label": "D", "answer_content": "Around -50°C", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Around +5°C",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Around 0°C",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Around -18°C",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Around -50°C",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What was the approximate atmospheric CO₂ level before the Industrial Revolution?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "180 ppm", "correct": false },
-                  { "answer_label": "B", "answer_content": "280 ppm", "correct": true },
-                  { "answer_label": "C", "answer_content": "350 ppm", "correct": false },
-                  { "answer_label": "D", "answer_content": "420 ppm", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "180 ppm",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "280 ppm",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "350 ppm",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "420 ppm",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How long ago were today's CO₂ levels last seen on Earth?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "300,000 years ago", "correct": false },
-                  { "answer_label": "B", "answer_content": "800,000 years ago", "correct": false },
-                  { "answer_label": "C", "answer_content": "3 million years ago", "correct": true },
-                  { "answer_label": "D", "answer_content": "50 million years ago", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "300,000 years ago",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "800,000 years ago",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "3 million years ago",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "50 million years ago",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -510,19 +979,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Imagine pushing a rocking chair. You can push it harder and harder, and it rocks back and forth — but it returns to its starting position. Then, at some critical angle, it tips over. There is no coming back.\n\nClimate scientists use the term 'tipping point' to describe moments when parts of Earth's system behave like that rocking chair: once a threshold is crossed, change becomes self-reinforcing and potentially irreversible on human timescales.\n\nThree of the most critical:\n\n1. The Greenland Ice Sheet. If it melts completely, global sea levels rise by about 7 meters. Miami, Amsterdam, Shanghai, and most of Bangladesh would be uninhabitable. Scientists estimate we may be approaching this tipping point at just 1.5–2°C of warming.\n\n2. Amazon Rainforest Dieback. The Amazon generates much of its own rainfall. As deforestation reduces the forest, less rain falls — causing more drought, causing more trees to die. The world's largest tropical forest could transition to dry savanna, releasing decades' worth of global CO₂ emissions.\n\n3. Permafrost Thaw. Siberia and northern Canada contain vast amounts of frozen organic matter. As it thaws, it releases methane — a greenhouse gas 80 times more potent than CO₂ over 20 years. This could trigger warming far beyond human emissions alone.\n\nThe alarming discovery: these tipping points may be interconnected — crossing one could trigger others in a cascade."
+              "content": "Imagine pushing a rocking chair. You can push it harder and harder, and it rocks back and forth — but it returns to its starting position. Then, at some critical angle, it tips over. There is no coming back.\n\nClimate scientists use the term 'tipping point' to describe moments when parts of Earth's system behave like that rocking chair: once a threshold is crossed, change becomes self-reinforcing and potentially irreversible on human timescales.\n\nThree of the most critical:\n\n1. The Greenland Ice Sheet. If it melts completely, global sea levels rise by about 7 meters. Miami, Amsterdam, Shanghai, and most of Bangladesh would be uninhabitable. Scientists estimate we may be approaching this tipping point at just 1.5–2°C of warming.\n\n2. Amazon Rainforest Dieback. The Amazon generates much of its own rainfall. As deforestation reduces the forest, less rain falls — causing more drought, causing more trees to die. The world's largest tropical forest could transition to dry savanna, releasing decades' worth of global CO₂ emissions.\n\n3. Permafrost Thaw. Siberia and northern Canada contain vast amounts of frozen organic matter. As it thaws, it releases methane — a greenhouse gas 80 times more potent than CO₂ over 20 years. This could trigger warming far beyond human emissions alone.\n\nThe alarming discovery: these tipping points may be interconnected — crossing one could trigger others in a cascade.",
+              "content_id": 22
             },
             {
               "content_type": "image",
               "image_id": "climate_tipping_points_map",
               "image_alt": "World map showing major climate tipping points including Arctic sea ice, Greenland ice sheet, Amazon rainforest, and Atlantic circulation",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Key_tipping_elements_in_the_climate_system_%28English%29.png/1200px-Key_tipping_elements_in_the_climate_system_%28English%29.png"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Key_tipping_elements_in_the_climate_system_%28English%29.png/1200px-Key_tipping_elements_in_the_climate_system_%28English%29.png",
+              "content_id": 23
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/Dp8iFp6cFjE",
               "title": "Climate Tipping Points – What Could Go Wrong",
-              "duration_minutes": 10
+              "duration_minutes": 10,
+              "content_id": 24
             }
           ],
           "quiz": {
@@ -531,40 +1003,104 @@
                 "question_content": "By how much would global sea levels rise if the Greenland Ice Sheet melted completely?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "1 meter", "correct": false },
-                  { "answer_label": "B", "answer_content": "3 meters", "correct": false },
-                  { "answer_label": "C", "answer_content": "7 meters", "correct": true },
-                  { "answer_label": "D", "answer_content": "20 meters", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "1 meter",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "3 meters",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "7 meters",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "20 meters",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Why is Amazon deforestation considered a potential tipping point?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Because it releases oxygen that warms the atmosphere", "correct": false },
-                  { "answer_label": "B", "answer_content": "Because reduced forest leads to less rainfall, causing further die-off in a self-reinforcing loop", "correct": true },
-                  { "answer_label": "C", "answer_content": "Because it increases soil erosion that clogs major rivers", "correct": false },
-                  { "answer_label": "D", "answer_content": "Because deforested land reflects too much sunlight", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Because it releases oxygen that warms the atmosphere",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Because reduced forest leads to less rainfall, causing further die-off in a self-reinforcing loop",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Because it increases soil erosion that clogs major rivers",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Because deforested land reflects too much sunlight",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How much more potent is methane than CO₂ as a greenhouse gas over 20 years?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "10 times", "correct": false },
-                  { "answer_label": "B", "answer_content": "30 times", "correct": false },
-                  { "answer_label": "C", "answer_content": "80 times", "correct": true },
-                  { "answer_label": "D", "answer_content": "200 times", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "10 times",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "30 times",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "80 times",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "200 times",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "At what level of global warming might the Greenland Ice Sheet tipping point be reached?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "0.5–1°C", "correct": false },
-                  { "answer_label": "B", "answer_content": "1.5–2°C", "correct": true },
-                  { "answer_label": "C", "answer_content": "3–4°C", "correct": false },
-                  { "answer_label": "D", "answer_content": "5–6°C", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "0.5–1°C",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "1.5–2°C",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "3–4°C",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "5–6°C",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -586,19 +1122,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "May 8, 1945. Nazi Germany surrenders. In cities across the Allied world — New York, London, Moscow — crowds pour into the streets in delirious celebration. The most destructive war in human history is over. Surely the alliance that won it will hold.\n\nIt will not last three years.\n\nThe cracks were always there, hidden beneath wartime necessity. The US wanted open markets, democratic governments, and a rule-based international order. The USSR wanted a buffer zone of friendly communist states on its western border — it had been invaded from the west in 1812, 1914, and 1941. It would not happen again.\n\nAt the Yalta Conference in February 1945, Roosevelt, Churchill, and Stalin carved up post-war Europe with vague promises about 'free elections.' By 1947, Soviet-backed communist governments had taken power in Poland, Hungary, Romania, and Bulgaria. The Iron Curtain — a phrase Churchill coined in a famous speech — had descended across Europe.\n\nOn the American side, diplomat George Kennan wrote an 8,000-word telegram from Moscow in 1946 that became the intellectual foundation of US Cold War policy: the USSR was expansionist by nature and could only be contained, not negotiated with.\n\nAnd so the world divided. Two superpowers, two ideologies, two growing nuclear arsenals. A 'hot' war between them would mean the end of civilization. So instead, they fought everywhere else."
+              "content": "May 8, 1945. Nazi Germany surrenders. In cities across the Allied world — New York, London, Moscow — crowds pour into the streets in delirious celebration. The most destructive war in human history is over. Surely the alliance that won it will hold.\n\nIt will not last three years.\n\nThe cracks were always there, hidden beneath wartime necessity. The US wanted open markets, democratic governments, and a rule-based international order. The USSR wanted a buffer zone of friendly communist states on its western border — it had been invaded from the west in 1812, 1914, and 1941. It would not happen again.\n\nAt the Yalta Conference in February 1945, Roosevelt, Churchill, and Stalin carved up post-war Europe with vague promises about 'free elections.' By 1947, Soviet-backed communist governments had taken power in Poland, Hungary, Romania, and Bulgaria. The Iron Curtain — a phrase Churchill coined in a famous speech — had descended across Europe.\n\nOn the American side, diplomat George Kennan wrote an 8,000-word telegram from Moscow in 1946 that became the intellectual foundation of US Cold War policy: the USSR was expansionist by nature and could only be contained, not negotiated with.\n\nAnd so the world divided. Two superpowers, two ideologies, two growing nuclear arsenals. A 'hot' war between them would mean the end of civilization. So instead, they fought everywhere else.",
+              "content_id": 25
             },
             {
               "content_type": "image",
               "image_id": "cold_war_iron_curtain_map",
               "image_alt": "Map of Europe in 1949 showing NATO members and Soviet-aligned Warsaw Pact countries with the Iron Curtain marked",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Cold_war_europe_military_alliances_map_en.png/1200px-Cold_war_europe_military_alliances_map_en.png"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Cold_war_europe_military_alliances_map_en.png/1200px-Cold_war_europe_military_alliances_map_en.png",
+              "content_id": 26
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/I79TpDe3t2g",
               "title": "The Cold War – Overview in 10 Minutes",
-              "duration_minutes": 10
+              "duration_minutes": 10,
+              "content_id": 27
             }
           ],
           "quiz": {
@@ -607,40 +1146,104 @@
                 "question_content": "What term did Churchill use to describe the division between Soviet-controlled Eastern Europe and the West?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Steel Wall", "correct": false },
-                  { "answer_label": "B", "answer_content": "The Iron Curtain", "correct": true },
-                  { "answer_label": "C", "answer_content": "The Berlin Barrier", "correct": false },
-                  { "answer_label": "D", "answer_content": "The Red Line", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Steel Wall",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The Iron Curtain",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Berlin Barrier",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The Red Line",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What was the core idea of George Kennan's 1946 'Long Telegram'?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "That the USSR should be invaded before it built nuclear weapons", "correct": false },
-                  { "answer_label": "B", "answer_content": "That the USSR was expansionist and needed to be contained rather than negotiated with", "correct": true },
-                  { "answer_label": "C", "answer_content": "That economic aid to Europe would prevent communism from spreading", "correct": false },
-                  { "answer_label": "D", "answer_content": "That the US and USSR could form a permanent alliance against China", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "That the USSR should be invaded before it built nuclear weapons",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "That the USSR was expansionist and needed to be contained rather than negotiated with",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "That economic aid to Europe would prevent communism from spreading",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "That the US and USSR could form a permanent alliance against China",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How many times had Russia/USSR been invaded from the west before 1945?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Once (1941)", "correct": false },
-                  { "answer_label": "B", "answer_content": "Twice (1914 and 1941)", "correct": false },
-                  { "answer_label": "C", "answer_content": "Three times (1812, 1914, and 1941)", "correct": true },
-                  { "answer_label": "D", "answer_content": "Four times", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Once (1941)",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Twice (1914 and 1941)",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Three times (1812, 1914, and 1941)",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Four times",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "At which wartime conference did Allied leaders try to agree on the post-war order in Europe?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The Tehran Conference", "correct": false },
-                  { "answer_label": "B", "answer_content": "The Potsdam Conference", "correct": false },
-                  { "answer_label": "C", "answer_content": "The Yalta Conference", "correct": true },
-                  { "answer_label": "D", "answer_content": "The Paris Peace Conference", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The Tehran Conference",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The Potsdam Conference",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The Yalta Conference",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The Paris Peace Conference",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -653,19 +1256,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "October 16, 1962, 8:45 AM. President Kennedy is handed aerial reconnaissance photographs showing Soviet nuclear missile launch sites under construction in Cuba — 90 miles from Florida. The missiles can reach Washington DC in 13 minutes.\n\nKennedy's advisors are split. Military generals push for immediate air strikes. Others demand a naval blockade. A faction argues for secret back-channel diplomacy.\n\nFor 13 days, the world holds its breath. US warships encircle Cuba. Soviet cargo ships steam toward them. Nuclear bombers stay in the air around the clock. Military commanders on both sides have authority to launch under certain conditions.\n\nThen, on October 27 — 'Black Saturday' — a US spy plane is shot down over Cuba, an American submarine is nearly destroyed by a Soviet depth charge, and a Soviet officer named Vasili Arkhipov refuses to authorize a nuclear torpedo strike despite believing his submarine was under attack. He may have saved the world.\n\nA secret deal is struck: the USSR removes its Cuban missiles; the US secretly removes its missiles from Turkey and promises never to invade Cuba. Both sides compromise. Both claim victory.\n\nThe lesson: in a crisis, the most dangerous enemy is not the opponent — it is miscommunication, miscalculation, and the pressure to seem strong."
+              "content": "October 16, 1962, 8:45 AM. President Kennedy is handed aerial reconnaissance photographs showing Soviet nuclear missile launch sites under construction in Cuba — 90 miles from Florida. The missiles can reach Washington DC in 13 minutes.\n\nKennedy's advisors are split. Military generals push for immediate air strikes. Others demand a naval blockade. A faction argues for secret back-channel diplomacy.\n\nFor 13 days, the world holds its breath. US warships encircle Cuba. Soviet cargo ships steam toward them. Nuclear bombers stay in the air around the clock. Military commanders on both sides have authority to launch under certain conditions.\n\nThen, on October 27 — 'Black Saturday' — a US spy plane is shot down over Cuba, an American submarine is nearly destroyed by a Soviet depth charge, and a Soviet officer named Vasili Arkhipov refuses to authorize a nuclear torpedo strike despite believing his submarine was under attack. He may have saved the world.\n\nA secret deal is struck: the USSR removes its Cuban missiles; the US secretly removes its missiles from Turkey and promises never to invade Cuba. Both sides compromise. Both claim victory.\n\nThe lesson: in a crisis, the most dangerous enemy is not the opponent — it is miscommunication, miscalculation, and the pressure to seem strong.",
+              "content_id": 28
             },
             {
               "content_type": "image",
               "image_id": "cold_war_cuban_missile_crisis",
               "image_alt": "US reconnaissance photograph from October 1962 showing Soviet nuclear missile launch pads under construction in Cuba",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Cuba_missiles_1962_US_reconnaissance_photograph.jpg/1200px-Cuba_missiles_1962_US_reconnaissance_photograph.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Cuba_missiles_1962_US_reconnaissance_photograph.jpg/1200px-Cuba_missiles_1962_US_reconnaissance_photograph.jpg",
+              "content_id": 29
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/bwWW3sbk4EU",
               "title": "The Cuban Missile Crisis – 13 Days to Nuclear War",
-              "duration_minutes": 13
+              "duration_minutes": 13,
+              "content_id": 30
             }
           ],
           "quiz": {
@@ -674,40 +1280,104 @@
                 "question_content": "How far from the US coast was Cuba, where Soviet missiles were being installed?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "30 miles", "correct": false },
-                  { "answer_label": "B", "answer_content": "90 miles", "correct": true },
-                  { "answer_label": "C", "answer_content": "200 miles", "correct": false },
-                  { "answer_label": "D", "answer_content": "500 miles", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "30 miles",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "90 miles",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "200 miles",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "500 miles",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What did Soviet officer Vasili Arkhipov do on 'Black Saturday' that may have prevented nuclear war?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "He secretly contacted Kennedy with peace terms", "correct": false },
-                  { "answer_label": "B", "answer_content": "He refused to authorize a nuclear torpedo strike despite believing his submarine was under attack", "correct": true },
-                  { "answer_label": "C", "answer_content": "He ordered Soviet ships to turn back from Cuba", "correct": false },
-                  { "answer_label": "D", "answer_content": "He destroyed the Cuban missile launch codes", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "He secretly contacted Kennedy with peace terms",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "He refused to authorize a nuclear torpedo strike despite believing his submarine was under attack",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "He ordered Soviet ships to turn back from Cuba",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "He destroyed the Cuban missile launch codes",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What was the secret US concession in the deal that ended the Cuban Missile Crisis?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The US agreed to recognize Cuba as a Soviet territory", "correct": false },
-                  { "answer_label": "B", "answer_content": "The US secretly removed its missiles from Turkey and promised not to invade Cuba", "correct": true },
-                  { "answer_label": "C", "answer_content": "The US agreed to reduce its nuclear arsenal by half", "correct": false },
-                  { "answer_label": "D", "answer_content": "The US withdrew all troops from Western Europe", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The US agreed to recognize Cuba as a Soviet territory",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The US secretly removed its missiles from Turkey and promised not to invade Cuba",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The US agreed to reduce its nuclear arsenal by half",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The US withdrew all troops from Western Europe",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "How many days did the Cuban Missile Crisis last?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "7 days", "correct": false },
-                  { "answer_label": "B", "answer_content": "13 days", "correct": true },
-                  { "answer_label": "C", "answer_content": "21 days", "correct": false },
-                  { "answer_label": "D", "answer_content": "30 days", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "7 days",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "13 days",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "21 days",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "30 days",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -729,19 +1399,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "The Greek historian Herodotus described it simply: 'Egypt is the gift of the Nile.' He was not wrong.\n\nEvery summer, predictably and reliably, the Nile overflowed its banks. When the waters receded, they left behind a thick layer of dark, fertile silt across a strip of land perhaps 15 kilometers wide, cutting through hundreds of kilometers of absolute desert. The ancient Egyptians called this the Kemet — the Black Land. Everything beyond it was the Deshret — the Red Land. Life and death.\n\nThis annual flood required management. Early rulers who could answer questions like 'When did it peak this year?' — and organize labor around the answers — gained enormous power.\n\nThe result was one of history's first large-scale administrative states. By around 3100 BCE, a ruler known as Narmer unified Upper and Lower Egypt under a single crown. Egypt became a state, and the 3,000-year story of the pharaohs began.\n\nThe Nile also made Egypt surprisingly secure. Deserts to east and west, sea to the north, cataracts to the south — natural barriers that kept invaders out and gave Egyptian civilization the stability to develop and persist across 30 dynasties."
+              "content": "The Greek historian Herodotus described it simply: 'Egypt is the gift of the Nile.' He was not wrong.\n\nEvery summer, predictably and reliably, the Nile overflowed its banks. When the waters receded, they left behind a thick layer of dark, fertile silt across a strip of land perhaps 15 kilometers wide, cutting through hundreds of kilometers of absolute desert. The ancient Egyptians called this the Kemet — the Black Land. Everything beyond it was the Deshret — the Red Land. Life and death.\n\nThis annual flood required management. Early rulers who could answer questions like 'When did it peak this year?' — and organize labor around the answers — gained enormous power.\n\nThe result was one of history's first large-scale administrative states. By around 3100 BCE, a ruler known as Narmer unified Upper and Lower Egypt under a single crown. Egypt became a state, and the 3,000-year story of the pharaohs began.\n\nThe Nile also made Egypt surprisingly secure. Deserts to east and west, sea to the north, cataracts to the south — natural barriers that kept invaders out and gave Egyptian civilization the stability to develop and persist across 30 dynasties.",
+              "content_id": 31
             },
             {
               "content_type": "image",
               "image_id": "egypt_nile_map",
               "image_alt": "Satellite image of the Nile Delta and River Valley from space, showing the thin green ribbon of fertile land surrounded by desert",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Nile_River_and_Delta_from_orbit.jpg/800px-Nile_River_and_Delta_from_orbit.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Nile_River_and_Delta_from_orbit.jpg/800px-Nile_River_and_Delta_from_orbit.jpg",
+              "content_id": 32
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/Z3Wvw6BivVI",
               "title": "Ancient Egypt: Civilization on the Nile Explained",
-              "duration_minutes": 11
+              "duration_minutes": 11,
+              "content_id": 33
             }
           ],
           "quiz": {
@@ -750,40 +1423,104 @@
                 "question_content": "What did ancient Egyptians call the fertile strip of land left by the Nile floods?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Deshret (the Red Land)", "correct": false },
-                  { "answer_label": "B", "answer_content": "Kemet (the Black Land)", "correct": true },
-                  { "answer_label": "C", "answer_content": "Khem (the Sacred Land)", "correct": false },
-                  { "answer_label": "D", "answer_content": "Waset (the Holy Land)", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Deshret (the Red Land)",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Kemet (the Black Land)",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Khem (the Sacred Land)",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Waset (the Holy Land)",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Around what year did Narmer unify Upper and Lower Egypt?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "5000 BCE", "correct": false },
-                  { "answer_label": "B", "answer_content": "3100 BCE", "correct": true },
-                  { "answer_label": "C", "answer_content": "2500 BCE", "correct": false },
-                  { "answer_label": "D", "answer_content": "1500 BCE", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "5000 BCE",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "3100 BCE",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "2500 BCE",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "1500 BCE",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Which ancient historian described Egypt as 'the gift of the Nile'?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Thucydides", "correct": false },
-                  { "answer_label": "B", "answer_content": "Plutarch", "correct": false },
-                  { "answer_label": "C", "answer_content": "Herodotus", "correct": true },
-                  { "answer_label": "D", "answer_content": "Strabo", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Thucydides",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Plutarch",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Herodotus",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Strabo",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Across how many dynasties did Egyptian civilization persist?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "10 dynasties", "correct": false },
-                  { "answer_label": "B", "answer_content": "20 dynasties", "correct": false },
-                  { "answer_label": "C", "answer_content": "30 dynasties", "correct": true },
-                  { "answer_label": "D", "answer_content": "50 dynasties", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "10 dynasties",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "20 dynasties",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "30 dynasties",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "50 dynasties",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -796,19 +1533,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Let's settle one thing immediately: the pyramids were not built by slaves.\n\nFor centuries, European tradition assumed the monuments must have been built through forced labour. But excavations in the 1990s revealed the workers' village beside the Giza plateau — complete with bakeries, breweries, medical facilities, and mass graves showing healed injuries and careful burials. These are people who received care.\n\nThe workforce of around 20,000–30,000 skilled workers were fed enormous quantities of meat and bread — we can calculate this from the animal bones and grain storage found in their settlement. They rotated in shifts and received payment.\n\nNow for the engineering. The Great Pyramid of Khufu, completed around 2560 BCE, stands 146 meters tall and contains approximately 2.3 million stone blocks, each weighing 2.5 to 15 tons. The base is level to within 2.1 centimeters across 230 meters. The four sides align to the cardinal directions with an error of less than 0.05 degrees.\n\nWith no iron tools and no wheeled vehicles.\n\nThe best current understanding combines copper chisels for quarrying, wooden sledges on wetted sand, a workforce organized with military precision, and a system of internal ramps we are still debating today.\n\nThe Great Pyramid is a 4,500-year-old message that says simply: We were here. We achieved this."
+              "content": "Let's settle one thing immediately: the pyramids were not built by slaves.\n\nFor centuries, European tradition assumed the monuments must have been built through forced labour. But excavations in the 1990s revealed the workers' village beside the Giza plateau — complete with bakeries, breweries, medical facilities, and mass graves showing healed injuries and careful burials. These are people who received care.\n\nThe workforce of around 20,000–30,000 skilled workers were fed enormous quantities of meat and bread — we can calculate this from the animal bones and grain storage found in their settlement. They rotated in shifts and received payment.\n\nNow for the engineering. The Great Pyramid of Khufu, completed around 2560 BCE, stands 146 meters tall and contains approximately 2.3 million stone blocks, each weighing 2.5 to 15 tons. The base is level to within 2.1 centimeters across 230 meters. The four sides align to the cardinal directions with an error of less than 0.05 degrees.\n\nWith no iron tools and no wheeled vehicles.\n\nThe best current understanding combines copper chisels for quarrying, wooden sledges on wetted sand, a workforce organized with military precision, and a system of internal ramps we are still debating today.\n\nThe Great Pyramid is a 4,500-year-old message that says simply: We were here. We achieved this.",
+              "content_id": 34
             },
             {
               "content_type": "image",
               "image_id": "egypt_pyramid_giza",
               "image_alt": "Aerial photograph of the three Giza pyramids with the Sphinx in the foreground",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1200px-All_Gizah_Pyramids.jpg"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1200px-All_Gizah_Pyramids.jpg",
+              "content_id": 35
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/ufn9N0-CRNI",
               "title": "How Were the Pyramids Built? The Best Current Theory",
-              "duration_minutes": 14
+              "duration_minutes": 14,
+              "content_id": 36
             }
           ],
           "quiz": {
@@ -817,40 +1557,104 @@
                 "question_content": "What did archaeological excavations in the 1990s reveal about the pyramid builders?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "They were prisoners of war from Nubia", "correct": false },
-                  { "answer_label": "B", "answer_content": "They were paid workers who received food, care, and were buried respectfully", "correct": true },
-                  { "answer_label": "C", "answer_content": "They were a priestly caste with special religious status", "correct": false },
-                  { "answer_label": "D", "answer_content": "They were slaves bought from Mesopotamian traders", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "They were prisoners of war from Nubia",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "They were paid workers who received food, care, and were buried respectfully",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "They were a priestly caste with special religious status",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "They were slaves bought from Mesopotamian traders",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "Approximately how many stone blocks does the Great Pyramid of Khufu contain?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "500,000 blocks", "correct": false },
-                  { "answer_label": "B", "answer_content": "1 million blocks", "correct": false },
-                  { "answer_label": "C", "answer_content": "2.3 million blocks", "correct": true },
-                  { "answer_label": "D", "answer_content": "5 million blocks", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "500,000 blocks",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "1 million blocks",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "2.3 million blocks",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "5 million blocks",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What technique is thought to have reduced friction when moving heavy stone blocks?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Rolling the blocks on wooden logs", "correct": false },
-                  { "answer_label": "B", "answer_content": "Pulling blocks on wooden sledges over wetted sand", "correct": true },
-                  { "answer_label": "C", "answer_content": "Floating the blocks on the Nile in barges", "correct": false },
-                  { "answer_label": "D", "answer_content": "Using animal fat as a lubricant on stone ramps", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Rolling the blocks on wooden logs",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Pulling blocks on wooden sledges over wetted sand",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Floating the blocks on the Nile in barges",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Using animal fat as a lubricant on stone ramps",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "For how long did the Great Pyramid remain the tallest structure on Earth?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "1,000 years", "correct": false },
-                  { "answer_label": "B", "answer_content": "2,000 years", "correct": false },
-                  { "answer_label": "C", "answer_content": "3,800 years", "correct": true },
-                  { "answer_label": "D", "answer_content": "5,000 years", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "1,000 years",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "2,000 years",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "3,800 years",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "5,000 years",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -872,19 +1676,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Right now, as you read this sentence, approximately 86 billion neurons in your brain are firing electrical signals. Each neuron connects to up to 10,000 others through junctions called synapses. The total number of connections — your brain's 'wiring' — is estimated at 100 trillion.\n\nFor comparison: there are about 100 billion stars in the Milky Way. Your brain has roughly the same number of connections as there are stars in 1,000 galaxies.\n\nWhat actually is a neuron? Picture a tree: a cell body in the middle, long branching 'dendrites' reaching out to receive signals from other cells, and a single long 'axon' sending signals out. When a neuron fires, an electrical pulse travels down the axon at up to 120 meters per second. At the tip, it releases chemical messengers — neurotransmitters — that float across the tiny synaptic gap and trigger the next neuron.\n\nHere is what makes this system extraordinary: it is plastic. Every experience you have changes your brain's physical structure. Neurons that fire together wire together — the synaptic connection between them physically strengthens. This is the mechanism of memory and learning.\n\nWhen you learn to ride a bike, specific neural pathways strengthen with every fall and correction. When you stop riding for twenty years, those pathways weaken but don't disappear — which is why riding again feels strangely familiar."
+              "content": "Right now, as you read this sentence, approximately 86 billion neurons in your brain are firing electrical signals. Each neuron connects to up to 10,000 others through junctions called synapses. The total number of connections — your brain's 'wiring' — is estimated at 100 trillion.\n\nFor comparison: there are about 100 billion stars in the Milky Way. Your brain has roughly the same number of connections as there are stars in 1,000 galaxies.\n\nWhat actually is a neuron? Picture a tree: a cell body in the middle, long branching 'dendrites' reaching out to receive signals from other cells, and a single long 'axon' sending signals out. When a neuron fires, an electrical pulse travels down the axon at up to 120 meters per second. At the tip, it releases chemical messengers — neurotransmitters — that float across the tiny synaptic gap and trigger the next neuron.\n\nHere is what makes this system extraordinary: it is plastic. Every experience you have changes your brain's physical structure. Neurons that fire together wire together — the synaptic connection between them physically strengthens. This is the mechanism of memory and learning.\n\nWhen you learn to ride a bike, specific neural pathways strengthen with every fall and correction. When you stop riding for twenty years, those pathways weaken but don't disappear — which is why riding again feels strangely familiar.",
+              "content_id": 37
             },
             {
               "content_type": "image",
               "image_id": "brain_neuron_network",
               "image_alt": "Microscopy image of neurons in the human brain, showing the cell bodies and intricate web of dendrite connections",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Neuron_-_annotated.svg/1200px-Neuron_-_annotated.svg.png"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Neuron_-_annotated.svg/1200px-Neuron_-_annotated.svg.png",
+              "content_id": 38
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/qPix_X-9t7E",
               "title": "How Do Neurons Work? – Brain Basics Explained",
-              "duration_minutes": 9
+              "duration_minutes": 9,
+              "content_id": 39
             }
           ],
           "quiz": {
@@ -893,40 +1700,104 @@
                 "question_content": "Approximately how many neurons does the human brain contain?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "1 billion", "correct": false },
-                  { "answer_label": "B", "answer_content": "86 billion", "correct": true },
-                  { "answer_label": "C", "answer_content": "1 trillion", "correct": false },
-                  { "answer_label": "D", "answer_content": "100 trillion", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "1 billion",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "86 billion",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "1 trillion",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "100 trillion",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What are the junctions between neurons called?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Axons", "correct": false },
-                  { "answer_label": "B", "answer_content": "Dendrites", "correct": false },
-                  { "answer_label": "C", "answer_content": "Synapses", "correct": true },
-                  { "answer_label": "D", "answer_content": "Receptors", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Axons",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Dendrites",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Synapses",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Receptors",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What does the phrase 'neurons that fire together wire together' describe?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "The brain's ability to generate electrical currents", "correct": false },
-                  { "answer_label": "B", "answer_content": "The way synaptic connections strengthen through repeated use — the basis of learning and memory", "correct": true },
-                  { "answer_label": "C", "answer_content": "The way the brain synchronizes left and right hemispheres", "correct": false },
-                  { "answer_label": "D", "answer_content": "The process of neurons dying when they stop being used", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "The brain's ability to generate electrical currents",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "The way synaptic connections strengthen through repeated use — the basis of learning and memory",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "The way the brain synchronizes left and right hemispheres",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "The process of neurons dying when they stop being used",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "At what speed can an electrical signal travel along a neuron's axon?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Up to 5 meters per second", "correct": false },
-                  { "answer_label": "B", "answer_content": "Up to 30 meters per second", "correct": false },
-                  { "answer_label": "C", "answer_content": "Up to 120 meters per second", "correct": true },
-                  { "answer_label": "D", "answer_content": "Up to the speed of light", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Up to 5 meters per second",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Up to 30 meters per second",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Up to 120 meters per second",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Up to the speed of light",
+                    "correct": false
+                  }
                 ]
               }
             ]
@@ -939,19 +1810,22 @@
           "chapter_content": [
             {
               "content_type": "text",
-              "content": "Where were you on September 11, 2001? If you're old enough, you probably have a vivid memory: exactly where you were, who told you, how you felt. Psychologists call these 'flashbulb memories' — moments so emotional they seem burned into the brain with extraordinary clarity.\n\nHere is the disturbing finding: flashbulb memories are wrong. Repeatedly.\n\nIn studies conducted after 9/11, researchers asked people to describe their memories in detail — then asked again one, three, and ten years later. The stories changed dramatically. People were confident about details that turned out to be false. One subject was certain they had watched the towers fall on TV at work. In fact, they had been on a plane. They had heard about it when they landed, and the memory had been reconstructed around a scene they later watched on television.\n\nThis is not a flaw in unusual people. This is how memory works.\n\nMemory is not a video recording. It is a reconstructive process. Every time you retrieve a memory, you are rebuilding it — drawing on what you encoded, plus your current knowledge, your expectations, and subtle cues in the environment. Then you store that reconstruction. Small errors compound over years.\n\nReal-world implication: eyewitness testimony — long considered the gold standard of criminal evidence — is deeply unreliable. Studies show 70% of wrongful convictions overturned by DNA evidence involved eyewitness misidentification."
+              "content": "Where were you on September 11, 2001? If you're old enough, you probably have a vivid memory: exactly where you were, who told you, how you felt. Psychologists call these 'flashbulb memories' — moments so emotional they seem burned into the brain with extraordinary clarity.\n\nHere is the disturbing finding: flashbulb memories are wrong. Repeatedly.\n\nIn studies conducted after 9/11, researchers asked people to describe their memories in detail — then asked again one, three, and ten years later. The stories changed dramatically. People were confident about details that turned out to be false. One subject was certain they had watched the towers fall on TV at work. In fact, they had been on a plane. They had heard about it when they landed, and the memory had been reconstructed around a scene they later watched on television.\n\nThis is not a flaw in unusual people. This is how memory works.\n\nMemory is not a video recording. It is a reconstructive process. Every time you retrieve a memory, you are rebuilding it — drawing on what you encoded, plus your current knowledge, your expectations, and subtle cues in the environment. Then you store that reconstruction. Small errors compound over years.\n\nReal-world implication: eyewitness testimony — long considered the gold standard of criminal evidence — is deeply unreliable. Studies show 70% of wrongful convictions overturned by DNA evidence involved eyewitness misidentification.",
+              "content_id": 40
             },
             {
               "content_type": "image",
               "image_id": "brain_memory_hippocampus",
               "image_alt": "Diagram of the human brain highlighting the hippocampus, the region critical for forming new long-term memories",
-              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hippocampus_and_seahorse_cropped.JPG/800px-Hippocampus_and_seahorse_cropped.JPG"
+              "image_source": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hippocampus_and_seahorse_cropped.JPG/800px-Hippocampus_and_seahorse_cropped.JPG",
+              "content_id": 41
             },
             {
               "content_type": "video",
               "link": "https://www.youtube.com/embed/bSycdIx-C48",
               "title": "How Memory Works — And Why It Fails You",
-              "duration_minutes": 10
+              "duration_minutes": 10,
+              "content_id": 42
             }
           ],
           "quiz": {
@@ -960,40 +1834,104 @@
                 "question_content": "What are 'flashbulb memories'?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "Memories formed during deep sleep", "correct": false },
-                  { "answer_label": "B", "answer_content": "Vivid memories of highly emotional events that feel permanently and accurately recorded", "correct": true },
-                  { "answer_label": "C", "answer_content": "Memories triggered by a specific smell or taste", "correct": false },
-                  { "answer_label": "D", "answer_content": "Memories that only last for a few seconds", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "Memories formed during deep sleep",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "Vivid memories of highly emotional events that feel permanently and accurately recorded",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "Memories triggered by a specific smell or taste",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "Memories that only last for a few seconds",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What does research on flashbulb memories consistently show?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "They are the most reliable type of memory", "correct": false },
-                  { "answer_label": "B", "answer_content": "They are perfectly accurate if the emotion was strong enough", "correct": false },
-                  { "answer_label": "C", "answer_content": "They change significantly over time despite feeling completely accurate", "correct": true },
-                  { "answer_label": "D", "answer_content": "They fade faster than ordinary memories", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "They are the most reliable type of memory",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "They are perfectly accurate if the emotion was strong enough",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "They change significantly over time despite feeling completely accurate",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "They fade faster than ordinary memories",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "According to the chapter, what is memory best compared to?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "A video recording that plays back faithfully", "correct": false },
-                  { "answer_label": "B", "answer_content": "A reconstruction that is partially rebuilt each time it is retrieved", "correct": true },
-                  { "answer_label": "C", "answer_content": "A library with fixed and permanent records", "correct": false },
-                  { "answer_label": "D", "answer_content": "A photograph that fades over time but stays accurate", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "A video recording that plays back faithfully",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "A reconstruction that is partially rebuilt each time it is retrieved",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "A library with fixed and permanent records",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "A photograph that fades over time but stays accurate",
+                    "correct": false
+                  }
                 ]
               },
               {
                 "question_content": "What percentage of wrongful convictions overturned by DNA evidence involved eyewitness misidentification?",
                 "question_type": "multiple_choice",
                 "answers": [
-                  { "answer_label": "A", "answer_content": "30%", "correct": false },
-                  { "answer_label": "B", "answer_content": "50%", "correct": false },
-                  { "answer_label": "C", "answer_content": "70%", "correct": true },
-                  { "answer_label": "D", "answer_content": "90%", "correct": false }
+                  {
+                    "answer_label": "A",
+                    "answer_content": "30%",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "B",
+                    "answer_content": "50%",
+                    "correct": false
+                  },
+                  {
+                    "answer_label": "C",
+                    "answer_content": "70%",
+                    "correct": true
+                  },
+                  {
+                    "answer_label": "D",
+                    "answer_content": "90%",
+                    "correct": false
+                  }
                 ]
               }
             ]

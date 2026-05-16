@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -6,15 +6,23 @@ import { useDB } from '@/db/DatabaseContext';
 import { createClient } from 'pexels';
 import courses from '@/assets/courses.json';
 import { colors, fonts } from '@/constants/theme';
+import Svg from '@/components/svg';
+import Button from '@/components/Button';
 import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
+import { addBookmark, removeBookmark } from '@/db/database';
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
+import { router } from 'expo-router';
 
 
 const width = Dimensions.get('window').width;
 const carouselWidth = width - 32;
+
+function getRandom(min: number, max: number) {
+  return Math.floor(Math.random() * ((max-min) + min));
+}
 
 export default function Home() {
   const theme = useColorScheme();
@@ -22,8 +30,11 @@ export default function Home() {
   const [userData, setUserData] = useState<any>(null);
   const [pictures, setPictures] = useState([]);
   const [noResult, setNoResult] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState<typeof courses.courses[0] | null>(null);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+
+
 
   // Fetch random related pictures
   const fetchPictures = async () => {
@@ -34,22 +45,20 @@ export default function Home() {
       const res = await client.photos.search({ query, per_page: 2 });
       if ('photos' in res){
        const pictures = res.photos.map((pic : any) => ({
-        source: {uri: pic.src.large},
+          source: {uri: pic.src.large},
+          type: "image",
+          content_id: getRandom(100, 10000),
         }));
         let nothingFound = pictures.length === 0;
         setPictures(pictures as any);
         setNoResult(nothingFound);
-        
       }
     }
     catch (e) {
       setNoResult(true);
       console.log(`There was an error while fetching random pictures: ${e}`)
-
-    }
-    
+    } 
   }
-
 
   // Fetch the user data
   useEffect(()=>{
@@ -61,8 +70,11 @@ export default function Home() {
         selector: { current: {$eq: true}}
       }).exec();
 
-      if (user) setUserData(user.toJSON())
-
+      if (user){
+        setUserData(user.toJSON())
+        const course = courses.courses.find(c => c.course_id === user.toJSON().course);
+        if (course) setCurrentCourse(course);
+      }
     };
 
 
@@ -71,6 +83,15 @@ export default function Home() {
     fetchPictures();
 
   }, [db]);
+
+  if (!userData) {
+    return (
+      <ThemedView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </ThemedView>
+    );
+  }
+
 
 
   const isDark = theme === 'dark';
@@ -81,7 +102,7 @@ export default function Home() {
       
       <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, user!</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Welcome back, {userData.name}!</Text>
         </View>
         {/* Progress */}
         <View style={styles.categoryContainer}>
@@ -101,8 +122,8 @@ export default function Home() {
               <View style={styles.courseDesc}>
                 <View style={styles.textContainer}>
                   <Text style={[fonts.josefin, styles.subCourseHeading]}>Course</Text>
-                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{courses.courses[0].course_name}</Text>
-                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter 1</Text>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.courseHeading]}>{currentCourse?.course_name}</Text>
+                  <Text style={[fonts.josefin, styles.chapterName]}>Chapter {userData.chapter}</Text>
                 </View>
                 <Text style={fonts.josefin}>50%</Text>
               </View>
@@ -118,6 +139,27 @@ export default function Home() {
 
           </View>
         </View>
+        {/* Jump Back in */}
+        <View style={styles.categoryContainer}>
+          <View style={styles.categoryHeadingContainer}>
+            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
+          </View>
+          <View style={styles.jumpBackIn}>
+            <View style={styles.preview}>
+              <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={12} ellipsizeMode='tail'>
+                {currentCourse?.chapters[0].chapter_content[0].content}
+              </Text>
+            </View>
+          </View>
+          <Button text="Jump to the chapter" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+            // To-do: 
+            // 1: Navigate to the course
+            // 2: Pass the paramets "course_id" and "chapter"
+          }}/>
+        </View>
+
+
         {/* Gallery */}
          <View style={styles.categoryContainer}>
           <View style={styles.categoryHeadingContainer}>
@@ -146,6 +188,20 @@ export default function Home() {
                onProgressChange={progress}
                renderItem={({ item }: { item: any }) => (
                  <View style={styles.carouselItem}>
+                  <TouchableOpacity
+                                  style={[
+                                    styles.bookmark,
+                                    {
+                                      backgroundColor: colors.whiteBg.backgroundColor,
+                                    }
+                                  ]}
+                                  onPress={() => {
+                                    addBookmark(item.contentId, item.type);
+                                  }}
+                                  activeOpacity={0.7}
+                                >
+                                  <Svg icon="bookmark-filled" width={16} height={16} white={true} />
+                                </TouchableOpacity>
                    <Image 
                      source={item.source} 
                      style={styles.image} 
@@ -172,6 +228,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 24,
     flex: 1,
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    // justifyContent: 'center',
     padding: 16,
   },
   carouselItem: {
@@ -208,6 +267,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 16,
   },
+  // Bookmark
+  bookmark: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    width: 32,
+    zIndex: 5,
+    height: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   // Course and goal
   course: {
     display: 'flex',
@@ -287,5 +359,22 @@ const styles = StyleSheet.create({
   },
   courseHeading: {
     fontSize: 18,
+  },
+  // Jump Back in
+  jumpBackIn: {
+
+  },
+  preview: {
+    backgroundColor: colors.whiteBg.backgroundColor,
+    padding: 16,
+    borderRadius: 16,
+    overflow: 'hidden',
+    flex: 1,
+    maxHeight: 240,
+  },
+  chapterPreviewText: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   }
 });

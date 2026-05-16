@@ -50,7 +50,7 @@ export default function Start() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button text="Next" iconName="chevron-right" light={true} darkIcon={true} onPress={()=>{
+          <Button text="Next" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
             if (intensity != "") next_step(name as any, username as any, role as any, intensity as any)
           }}/>
         </View>

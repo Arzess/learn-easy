@@ -43,9 +43,5 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
 };
 
 export const useDB = () => {
-  const context = useContext(DatabaseContext);
-  if (!context) {
-    throw new Error("useDB must be used within a DatabaseProvider");
-  }
-  return context;
+  return useContext(DatabaseContext);
 };

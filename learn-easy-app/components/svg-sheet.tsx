@@ -58,6 +58,20 @@ const bookmark = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xm
 </svg>
 `;
 
+
+
+const leftArrow = `
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.3333 8.18287C13.3333 8.436 13.1451 8.64519 12.9011 8.6783L12.8333 8.68287L2.83325 8.68287C2.55711 8.68287 2.33325 8.45901 2.33325 8.18287C2.33325 7.92974 2.52135 7.72054 2.7654 7.68743L2.83325 7.68287L12.8333 7.68287C13.1094 7.68287 13.3333 7.90672 13.3333 8.18287Z" fill="black"/>
+<path d="M7.21925 11.8448C7.41493 12.0397 7.41561 12.3562 7.22077 12.5519C7.04364 12.7298 6.7659 12.7466 6.56985 12.6017L6.51366 12.5534L2.48033 8.53745C2.30191 8.35979 2.28568 8.08105 2.43164 7.885L2.4803 7.82885L6.51363 3.81218C6.7093 3.61732 7.02588 3.61798 7.22074 3.81365C7.39788 3.99152 7.41345 4.26933 7.2678 4.46477L7.21928 4.52075L3.54192 8.18333L7.21925 11.8448Z" fill="black"/>
+</svg>
+`;
+
+const bookmarkFilled = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3Z" fill="black"/>
+</svg>
+`;
+
 type Svg = {
     name: string,
     svg: any,
@@ -71,7 +85,9 @@ const Svg = new Map([
     ["library", library],
     ["search", search],
     ["user", user],
-    ["bookmark", bookmark]
+    ["bookmark", bookmark],
+    ["arrow-left", leftArrow],
+    ["bookmark-filled", bookmarkFilled],
 ]);
 
 export default function findSvg(i: String, white: boolean){

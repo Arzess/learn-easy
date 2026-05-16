@@ -1,13 +1,50 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite';
+import { getRxStorageLoki } from 'rxdb/plugins/storage-lokijs';
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
 
-const storage = Platform.OS === 'web' 
-  ? getRxStorageDexie() 
-  : getRxStorageSQLite();
+const getLokiAdapter = () => {
+  if (Platform.OS !== 'web') {
+    const LokiAsyncStorageAdapter = require('loki-async-reference-adapter');
+    return new LokiAsyncStorageAdapter();
+  }
+  return null;
+};
+
+const getStorage = () => {
+  if (Platform.OS === 'web') {
+    return getRxStorageDexie();
+  }
+  return getRxStorageLoki({
+    adapter: getLokiAdapter(),
+  });
+};
+
+
+export let bookmarkCounter = 1;
+
+ // Bookmark logic
+ // Add a bookmark
+export const addBookmark = async (db, content_id, type) => {
+  if (db){
+    db.general.bookmarks.upsert({
+      bookmarkId: bookmarkCounter,
+      inhaltsTyp: type,
+      inhaltsId: content_id,
+    })
+    bookmarkCounter++;
+  }
+ }
+ export const removeBookmark = async (db, content_id) => {
+  if (db){
+   // @ts-ignore
+   const user = await db.general.user.findOne({
+     selector: { current: {$eq: true}}
+   }).exec();
+  }
+ }
 
 
 const _create = async () => {
@@ -17,8 +54,9 @@ const _create = async () => {
   const db = await createRxDatabase({
     name: 'learn-easy-db',
     storage: wrappedValidateAjvStorage({
-        storage: storage,
+        storage: getStorage(),
     }),
+    multiInstance: false,
     ignoreDuplicate: true,
   });
 
@@ -58,10 +96,10 @@ const _create = async () => {
           type: 'object',
           properties: {
             bookmarkId: { type: 'string', maxLength: 100 },
-            isInhalt: { type: 'boolean' },
+            inhaltsTyp: { type: 'string' },
             inhaltsId: { type: 'number' }, 
           },
-          required: ['bookmarkId', 'isInhalt', 'inhaltsId'],
+          required: ['bookmarkId', 'inhaltsTyp', 'inhaltsId'],
       }
     },
     last_queries: {

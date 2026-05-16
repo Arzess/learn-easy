@@ -48,7 +48,7 @@ export default function Start() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button text="Next" iconName="chevron-right" light={true} darkIcon={true} onPress={()=>{
+          <Button text="Next" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
             if (role != "") next_step(name as any, username as any, role)
           }}/>
         </View>
