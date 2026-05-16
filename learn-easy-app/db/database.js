@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 const getLokiAdapter = () => {
   if (Platform.OS !== 'web') {
     const LokiAsyncStorageAdapter = require('loki-async-reference-adapter');
-    return new LokiAsyncStorageAdapter();
+    return LokiAsyncStorageAdapter();
   }
   return null;
 };
@@ -30,7 +30,7 @@ export let bookmarkCounter = 1;
 export const addBookmark = async (db, content_id, type) => {
   if (db){
     db.general.bookmarks.upsert({
-      bookmarkId: bookmarkCounter,
+      bookmarkId: String(bookmarkCounter),
       inhaltsTyp: type,
       inhaltsId: content_id,
     })
@@ -40,10 +40,12 @@ export const addBookmark = async (db, content_id, type) => {
  export const removeBookmark = async (db, content_id) => {
   if (db){
    // @ts-ignore
-   const user = await db.general.user.findOne({
-     selector: { current: {$eq: true}}
+   const bookmark = await db.general.bookmarks.findOne({
+     selector: { inhaltsId: {$eq: content_id}}
    }).exec();
+   if (bookmark) await bookmark.remove();
   }
+
  }
 
 
