@@ -5,13 +5,14 @@ import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
 import { useDB } from '@/db/DatabaseContext';
 import { useRouter } from 'expo-router';
+import Button from '@/components/Button';
 import Card from '@/components/Card';
 import courses from "@/assets/courses.json"
 
 export default function Bookmarks() {
   const router = useRouter();
   const [courseId, setCourseId] = useState("");
-  const [courseHistory, setCourseHistory] = useState<any>([]);
+  const [courseName, setCourseName] = useState("");
   const db = useDB();
 
   useEffect(()=>{
@@ -25,13 +26,10 @@ export default function Bookmarks() {
 
     if (user){
       const course = courses.courses.find(c => String(c.course_id) === String(user.toJSON().course));
-      const history = user.toJSON().courseHistory;
       if (course){
-        setCourseId(course.course_id)
+        setCourseId(course.course_id);
+        setCourseName(course.course_name);
       } 
-      if (history){
-        setCourseHistory(history)
-      }
     }
   }
 
@@ -43,29 +41,31 @@ export default function Bookmarks() {
 
   return (
       <ThemedView style={styles.container}>
-         <View style={styles.titleContainer}>
-            <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Bookmarks</Text>
-            <Text style={[fonts.josefin, colors.white]}>Browse through your saved content in every course you ever had.</Text>
-          </View>
+         <View style={styles.titleNavigationContainer}>
+                <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+                <View style={styles.titleContainer}>
+                    <Text style={[fonts.josefin, colors.white]}>Bookmarks</Text>
+                    <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">{courseName}</Text>
+                </View>
+        </View>
 
           <View style={styles.categories}>
-            <FlatList data={courseHistory} keyExtractor={item => item} ItemSeparatorComponent={() => <View style={{ height: 16 }} />} renderItem={({ item }) => {
-                const course = courses.courses.find(c => String(c.course_id) === String(item));
-                if (!course) return null;
-                return (
-                  <Card
-                    subtext="Course"
-                    text={course.course_name}
-                    onPress={() => {
-                      router.push({
-                        pathname: "/bookmarks/BookmarksGeneral",
-                        params: { courseId: item },
-                      });
-                    }}
-                  />
-                );
-                }}
-          />
+            <Card subtext="Category" text="Pictures" onPress={()=>{
+              router.push({
+                pathname: "/bookmarks/Pictures",
+                params: {
+                  courseId: courseId,
+                },
+              });
+            }}/>
+            <Card subtext="Category" text="Videos" onPress={()=>{
+              router.push({
+                pathname: "/bookmarks/Videos",
+                params: {
+                  courseId: courseId, 
+                },
+              });
+            }}/>
           </View>
       </ThemedView>
   );
@@ -91,5 +91,11 @@ const styles = StyleSheet.create({
   categories: {
     display: 'flex',
     gap: 16,
-  }
+  },
+    titleNavigationContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+  },
 });

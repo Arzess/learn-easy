@@ -71,6 +71,10 @@ const _create = async () => {
           currentChapter: {
             type: 'integer',
           },
+          completedCourses: {
+            type: 'array',
+            items: {type: 'string'}
+          },
           currentCourseCompletedChapters: { 
             type: 'array', 
             items: { type: 'string' } 

@@ -44,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const val = await getItem('@quizToDo');
+        const val = await getItem('@quizIncompleted');
         setQuiz(val !== 'false');
       } catch (e) {
         setQuiz(false);
@@ -230,19 +230,18 @@ export default function Home() {
               <View style={styles.categoryContainer}>
                 <View style={styles.categoryHeadingContainer}>
                   <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
-                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
+                  <Text style={[fonts.josefin, colors.white]}>You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz! 
+                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.</Text>
                 </View>
-                <View style={styles.jumpBackIn}>
-                  <View style={styles.preview}>
-                    <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={8} ellipsizeMode='tail'>
-                      {currentCourse?.chapters[0].chapter_content[0].content}
-                    </Text>
-                  </View>
-                </View>
-                <Button text="Jump to the chapter" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
-                  // To-do: 
-                  // 1: Navigate to the course
-                  // 2: Pass the paramets "course_id" and "chapter"
+              
+                <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  router.push({
+                    pathname: "/Quiz",
+                    params: {
+                      courseId: currentCourse?.course_id
+                    }
+                  })
                 }}/>
               </View>
             </>
