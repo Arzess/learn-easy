@@ -2,7 +2,8 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
-import { fonts, colors } from '@/constants/theme';
+import { fonts, colors, Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,6 +11,8 @@ import Card from '@/components/Card';
 import courses from "@/assets/courses.json"
 
 export default function Quiz() {
+    const theme = useColorScheme();
+    const textColor = Colors[theme].text;
     const router = useRouter();
     const { courseId } = useLocalSearchParams<{courseId: string}>();
     const [course, setCourse] = useState<any>(null);
@@ -30,8 +33,8 @@ export default function Quiz() {
     return (
         <ThemedView style={styles.container}>
            <View style={styles.titleContainer}>
-              <Text style={[fonts.josefin, colors.white]}>Quiz</Text>
-              <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">{course?.course_name}</Text>
+              <Text style={[fonts.josefin, { color: textColor }]}>Quiz</Text>
+              <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">{course?.course_name}</Text>
             </View>
             {/* Quiz content */}
             {/* <FlatList/> */}

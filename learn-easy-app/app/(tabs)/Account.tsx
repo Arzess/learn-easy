@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   Switch,
+  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -15,52 +16,78 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { fonts } from '@/constants/theme';
 import { useAppTheme } from '@/context/theme-context';
+import { useDB } from '@/db/DatabaseContext';
 
 type EditField = 'name' | 'kurs' | 'passwort' | 'email';
 
 const EDIT_OPTIONS: { field: EditField; label: string }[] = [
-  { field: 'name', label: 'Name ändern' },
-  { field: 'kurs', label: 'Kurs ändern' },
-  { field: 'passwort', label: 'Passwort ändern' },
-  { field: 'email', label: 'Email ändern' },
+  { field: 'name', label: 'Change Name' },
+  { field: 'kurs', label: 'Change Course' },
+  { field: 'passwort', label: 'Change Password' },
+  { field: 'email', label: 'Change Email' },
 ];
 
+const FONT_SIZES = ['1x', '1.5x', '2x'] as const;
+type FontSize = typeof FONT_SIZES[number];
+
 export default function AccountScreen() {
+  const db = useDB();
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [name, setName] = useState('Max Mustermann');
-  const [email, setEmail] = useState('max.mustermann@example.com');
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
+  const [intensity, setIntensity] = useState('');
+  const [email, setEmail] = useState('');
   const [kurs, setKurs] = useState('');
   const [editOpen, setEditOpen] = useState(false);
   const [activeField, setActiveField] = useState<EditField | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [pushEnabled, setPushEnabled] = useState(true);
+  const [fontSize, setFontSize] = useState<FontSize>('1x');
 
   const { theme, isDarkMode, setDarkMode } = useAppTheme();
-  const tint = isDarkMode ? '#0a7ea4' : Colors[theme].tint;
   const isDark = theme === 'dark';
-  const onTintText = '#fff';
+  const cardBg = isDark ? '#1c1c1e' : '#fff';
+  const borderColor = isDark ? '#444' : '#e0e0e0';
+  const textColor = isDark ? '#fff' : '#000';
+  const subColor = isDark ? '#aaa' : '#666';
+
+  useEffect(() => {
+    if (!db) return;
+    const fetchUser = async () => {
+      // @ts-ignore
+      const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+      if (user) {
+        const data = user.toJSON();
+        setName(data.name ?? '');
+        setRole(data.role ?? '');
+        setIntensity(data.intensity ? data.intensity.charAt(0).toUpperCase() + data.intensity.slice(1) : '');
+        setEmail(data.email ?? '');
+        setKurs(String(data.course ?? ''));
+      }
+    };
+    fetchUser();
+  }, [db]);
 
   async function openImagePicker() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') return;
-
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: 'images',
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
     });
-
     if (!result.canceled) setProfileImage(result.assets[0].uri);
   }
 
   function handleAvatarPress() {
     if (!profileImage) { openImagePicker(); return; }
-    Alert.alert('Profilbild', undefined, [
-      { text: 'Foto ändern', onPress: openImagePicker },
-      { text: 'Foto löschen', style: 'destructive', onPress: () => setProfileImage(null) },
-      { text: 'Abbrechen', style: 'cancel' },
+    Alert.alert('Profile Picture', undefined, [
+      { text: 'Change Photo', onPress: openImagePicker },
+      { text: 'Delete Photo', style: 'destructive', onPress: () => setProfileImage(null) },
+      { text: 'Cancel', style: 'cancel' },
     ]);
   }
 
@@ -80,14 +107,11 @@ export default function AccountScreen() {
   }
 
   const modalTitle: Record<EditField, string> = {
-    name: 'Name ändern',
-    email: 'Email ändern',
-    kurs: 'Kurs ändern',
-    passwort: 'Passwort ändern',
+    name: 'Change Name',
+    email: 'Change Email',
+    kurs: 'Change Course',
+    passwort: 'Change Password',
   };
-
-  const cardBg = isDark ? '#1c1c1e' : '#fff';
-  const borderColor = isDark ? '#333' : '#e0e0e0';
 
   return (
     <ThemedView style={styles.container}>
@@ -98,45 +122,42 @@ export default function AccountScreen() {
         {profileImage ? (
           <Image source={{ uri: profileImage }} style={styles.avatar} />
         ) : (
-          <View style={[styles.avatarPlaceholder, { borderColor: tint }]}>
-            <IconSymbol name="person.fill" size={48} color={tint} />
+          <View style={[styles.avatarPlaceholder, { backgroundColor: isDark ? '#2c2c2e' : '#f0ece8' }]}>
+            <IconSymbol name="person.fill" size={52} color={isDark ? '#888' : '#b0906a'} />
           </View>
         )}
-        <View style={[styles.editBadge, { backgroundColor: tint }]}>
-          <IconSymbol name="paperplane.fill" size={12} color="#fff" />
+        <View style={[styles.editBadge, { backgroundColor: isDark ? '#333' : '#e0e0e0' }]}>
+          <IconSymbol name="pencil" size={11} color={isDark ? '#fff' : '#333'} />
         </View>
       </Pressable>
 
-      {/* Name + Email */}
-      <ThemedText type="defaultSemiBold" style={styles.name}>{name}</ThemedText>
-      <ThemedText style={[styles.emailText, { color: Colors[theme].icon }]}>{email}</ThemedText>
+      {/* Name / Role / Intensity */}
+      <Text style={[fonts.josefin, styles.nameText, { color: textColor }]}>{name || 'Your Name'}</Text>
+      <Text style={[fonts.josefin, styles.roleText, { color: subColor }]}>{role || 'Student'}</Text>
+      <Text style={[fonts.josefin, styles.intensityText, { color: subColor }]}>{intensity}</Text>
 
-      {/* Edit Dropdown */}
+      {/* Options Dropdown */}
       <View style={styles.dropdownWrapper}>
         <Pressable
           onPress={() => setEditOpen((v) => !v)}
-          style={[styles.editButton, { backgroundColor: tint }]}
+          style={[styles.optionsButton, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}
         >
-          <ThemedText style={styles.editButtonText}>Edit</ThemedText>
-          <IconSymbol
-            name={editOpen ? 'chevron.left.forwardslash.chevron.right' : 'chevron.right'}
-            size={14}
-            color="#fff"
-          />
+          <Text style={[fonts.josefin, styles.optionsButtonText, { color: '#111' }]}>Options</Text>
+          <IconSymbol name={editOpen ? 'chevron.up' : 'chevron.down'} size={14} color="#111" />
         </Pressable>
 
         {editOpen && (
-          <View style={[styles.dropdown, { backgroundColor: cardBg, borderColor }]}>
+          <View style={[styles.dropdown, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}>
             {EDIT_OPTIONS.map((opt, i) => (
               <Pressable
                 key={opt.field}
                 onPress={() => openEdit(opt.field)}
                 style={[
                   styles.dropdownItem,
-                  i < EDIT_OPTIONS.length - 1 && { borderBottomWidth: 1, borderBottomColor: borderColor },
+                  i < EDIT_OPTIONS.length - 1 && { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' },
                 ]}
               >
-                <ThemedText style={styles.dropdownItemText}>{opt.label}</ThemedText>
+                <Text style={[fonts.josefin, styles.dropdownItemText, { color: '#111' }]}>{opt.label}</Text>
               </Pressable>
             ))}
           </View>
@@ -144,25 +165,52 @@ export default function AccountScreen() {
       </View>
 
       {/* Settings Card */}
-      <View style={[styles.settingsCard, { backgroundColor: cardBg, borderColor }]}>
-        <IconSymbol name="gear" size={22} color={tint} style={styles.settingsIcon} />
+      <View style={[styles.settingsCard, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}>
+        {/* Card header */}
+        <View style={[styles.settingsHeader, { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }]}>
+          <IconSymbol name="gear" size={18} color="#888" />
+          <Text style={[fonts.josefin, styles.settingsHeaderText, { color: '#888' }]}>Further Settings</Text>
+        </View>
 
-        <View style={[styles.settingsRow, { borderBottomWidth: 1, borderBottomColor: borderColor }]}>
-          <ThemedText style={styles.settingsLabel}>Push Notifikation</ThemedText>
+        {/* Theme */}
+        <View style={[styles.settingsRow, {}]}>
+          <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Light Theme</Text>
           <Switch
-            value={pushEnabled}
-            onValueChange={setPushEnabled}
-            trackColor={{ false: '#ccc', true: tint }}
+            value={!isDarkMode}
+            onValueChange={(v) => setDarkMode(!v)}
+            trackColor={{ false: '#ccc', true: '#555' }}
             thumbColor="#fff"
           />
         </View>
 
-        <View style={styles.settingsRow}>
-          <ThemedText style={styles.settingsLabel}>Dark Mode</ThemedText>
+        {/* Font Size */}
+        <View style={[styles.settingsRow, {}]}>
+          <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Font Size</Text>
+          <View style={styles.fontSizeGroup}>
+            {FONT_SIZES.map((size) => (
+              <Pressable
+                key={size}
+                onPress={() => setFontSize(size)}
+                style={[
+                  styles.fontSizeBtn,
+                  { borderColor: '#ccc', backgroundColor: fontSize === size ? '#222' : 'transparent' },
+                ]}
+              >
+                <Text style={[fonts.josefin, styles.fontSizeBtnText, { color: fontSize === size ? '#fff' : '#888' }]}>
+                  {size}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
+        {/* Push Notifications */}
+        <View style={[styles.settingsRow, {}]}>
+          <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Push Notifications</Text>
           <Switch
-            value={isDarkMode}
-            onValueChange={setDarkMode}
-            trackColor={{ false: '#ccc', true: tint }}
+            value={pushEnabled}
+            onValueChange={setPushEnabled}
+            trackColor={{ false: '#ccc', true: '#0a7ea4' }}
             thumbColor="#fff"
           />
         </View>
@@ -172,24 +220,24 @@ export default function AccountScreen() {
       <Modal visible={activeField !== null} transparent animationType="fade">
         <Pressable style={styles.modalOverlay} onPress={() => setActiveField(null)}>
           <Pressable style={[styles.modalBox, { backgroundColor: cardBg }]}>
-            <ThemedText type="defaultSemiBold" style={styles.modalTitle}>
+            <Text style={[fonts.josefin, styles.modalTitleText, { color: textColor }]}>
               {activeField ? modalTitle[activeField] : ''}
-            </ThemedText>
+            </Text>
             <TextInput
-              style={[styles.input, { color: isDark ? '#fff' : '#000', borderColor: isDark ? '#444' : '#ccc' }]}
+              style={[styles.input, { color: textColor, borderColor: isDark ? '#444' : '#ccc' }]}
               value={inputValue}
               onChangeText={setInputValue}
               autoFocus
               secureTextEntry={activeField === 'passwort'}
-              placeholder={activeField === 'passwort' ? 'Neues Passwort' : ''}
+              placeholder={activeField === 'passwort' ? 'New Password' : ''}
               placeholderTextColor={Colors[theme].icon}
             />
             <View style={styles.modalButtons}>
-              <Pressable onPress={() => setActiveField(null)} style={styles.modalCancel}>
-                <ThemedText style={{ color: Colors[theme].icon }}>Abbrechen</ThemedText>
+              <Pressable onPress={() => setActiveField(null)} style={[styles.modalCancel, { borderColor }]}>
+                <Text style={[fonts.josefin, { color: subColor }]}>Cancel</Text>
               </Pressable>
-              <Pressable onPress={saveEdit} style={[styles.modalSave, { backgroundColor: tint }]}>
-                <ThemedText style={styles.modalSaveText}>Speichern</ThemedText>
+              <Pressable onPress={saveEdit} style={[styles.modalSave, { backgroundColor: isDark ? '#fff' : '#000' }]}>
+                <Text style={[fonts.josefin, styles.modalSaveText, { color: isDark ? '#000' : '#fff' }]}>Save</Text>
               </Pressable>
             </View>
           </Pressable>
@@ -203,102 +251,127 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 80,
+    paddingTop: 72,
   },
   heading: {
     alignSelf: 'flex-start',
     marginLeft: 24,
-    marginBottom: 32,
+    marginBottom: 28,
   },
   avatarWrapper: {
     position: 'relative',
-    marginBottom: 16,
+    marginBottom: 14,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
   },
   avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderStyle: 'dashed',
+    width: 96,
+    height: 96,
+    borderRadius: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
   },
   editBadge: {
     position: 'absolute',
     bottom: 2,
     right: 2,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  name: {
-    fontSize: 18,
-    marginBottom: 4,
+  nameText: {
+    fontSize: 22,
+    fontWeight: '700',
+    marginBottom: 2,
   },
-  emailText: {
+  roleText: {
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  intensityText: {
     fontSize: 14,
     marginBottom: 20,
   },
   dropdownWrapper: {
     alignItems: 'center',
-    width: 200,
-    marginBottom: 28,
+    width: 180,
+    marginBottom: 24,
+    zIndex: 10,
   },
-  editButton: {
+  optionsButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     paddingHorizontal: 24,
     paddingVertical: 10,
     borderRadius: 24,
+    borderWidth: 1,
+    width: '100%',
+    justifyContent: 'center',
   },
-  editButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+  optionsButtonText: {
     fontSize: 15,
   },
   dropdown: {
-    marginTop: 8,
+    marginTop: 6,
     width: '100%',
     borderRadius: 12,
     borderWidth: 1,
     overflow: 'hidden',
   },
   dropdownItem: {
-    paddingVertical: 14,
+    paddingVertical: 13,
     paddingHorizontal: 20,
   },
   dropdownItemText: {
-    fontSize: 15,
+    fontSize: 14,
     textAlign: 'center',
   },
   settingsCard: {
     width: '85%',
     borderRadius: 16,
     borderWidth: 1,
-    paddingTop: 12,
-    paddingHorizontal: 16,
-    paddingBottom: 4,
+    overflow: 'hidden',
   },
-  settingsIcon: {
-    marginBottom: 8,
+  settingsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  settingsHeaderText: {
+    fontSize: 13,
   },
   settingsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
   },
   settingsLabel: {
-    fontSize: 15,
+    fontSize: 14,
+  },
+  fontSizeGroup: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  fontSizeBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    minWidth: 36,
+    alignItems: 'center',
+  },
+  fontSizeBtnText: {
+    fontSize: 12,
   },
   modalOverlay: {
     flex: 1,
@@ -312,9 +385,10 @@ const styles = StyleSheet.create({
     padding: 24,
     gap: 16,
   },
-  modalTitle: {
+  modalTitleText: {
     fontSize: 17,
     textAlign: 'center',
+    fontWeight: '600',
   },
   input: {
     borderWidth: 1,
@@ -332,6 +406,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
   },
   modalSave: {
     flex: 1,
@@ -340,7 +416,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   modalSaveText: {
-    color: '#fff',
     fontWeight: '600',
   },
 });

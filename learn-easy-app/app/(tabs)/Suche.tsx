@@ -1,205 +1,410 @@
-import { useState} from 'react';
-import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, ActivityIndicator} from 'react-native';
-import { useLocalSearchParams, useRootNavigationState } from 'expo-router';
+import { useState, useEffect } from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { ThemedText } from '@/components/themed-text';
+import Svg from '@/components/svg';
+import '@/components/svg-sheet';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
-import {colors} from '@/constants/theme'
+import { Colors, fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { getItem } from '../index';
-import SVG from '@/components/svg'
-import '@/components/svg-sheet'
-import useFuzzySearchList from '@nozbe/microfuzz/dist/react/useFuzzySearchList';
-// Course structure and content
-import courses from '@/assets/courses.json'
+import { useDB } from '@/db/DatabaseContext';
+import courses from '@/assets/courses.json';
 
-const themen = courses.courses;
-const COURSE_IMAGES: Record<string, any> = {
-  "1": require('@/assets/images/themen/mongolisches-reich.png'),
-  "2": require('@/assets/images/themen/frauen-technik.png'),
-  "3": require('@/assets/images/themen/klimawandel.png'),
-  "4": require('@/assets/images/themen/kuenstliche-intelligenz.png'),
-  "5": require('@/assets/images/themen/raumfahrt.png'),
+type ResultItem = {
+  content_id: number;
+  content_type: string;
+  content?: string;
+  image_source?: string;
+  image_alt?: string;
+  video_title?: string;
+  video_link?: string;
+  duration_minutes?: number;
+  course_id: string;
+  chapter_id: number;
+  chapter_name: string;
+  course_name: string;
 };
 
+function searchCourses(query: string, activeCourseId: string): ResultItem[] {
+  if (!query.trim()) return [];
+  const q = query.toLowerCase();
+  const results: ResultItem[] = [];
+  const seen = new Set<string>();
+
+  const coursesToSearch = activeCourseId
+    ? courses.courses.filter(c => String(c.course_id) === String(activeCourseId))
+    : courses.courses;
+
+  for (const course of coursesToSearch) {
+    for (const chapter of course.chapters) {
+      for (const item of chapter.chapter_content as any[]) {
+        let matches = false;
+        if (item.content_type === 'text' && item.content?.toLowerCase().includes(q)) matches = true;
+        if (item.content_type === 'image' && item.image_alt?.toLowerCase().includes(q)) matches = true;
+        if (item.content_type === 'video' && item.title?.toLowerCase().includes(q)) matches = true;
+        if (chapter.chapter_name.toLowerCase().includes(q)) matches = true;
+        if (course.course_name.toLowerCase().includes(q)) matches = true;
+
+        if (!matches) continue;
+
+        // Deduplicate by actual content value
+        const dedupeKey =
+          item.content_type === 'image' ? `img:${item.image_source}` :
+          item.content_type === 'video' ? `vid:${item.link}` :
+          `txt:${(item.content ?? '').slice(0, 80)}`;
+
+        if (seen.has(dedupeKey)) continue;
+        seen.add(dedupeKey);
+
+        results.push({
+          content_id: item.content_id,
+          content_type: item.content_type,
+          content: item.content,
+          image_source: item.image_source,
+          image_alt: item.image_alt,
+          video_title: item.title,
+          video_link: item.link,
+          duration_minutes: item.duration_minutes,
+          course_id: course.course_id,
+          chapter_id: chapter.chapter_id,
+          chapter_name: chapter.chapter_name,
+          course_name: course.course_name,
+        });
+      }
+    }
+  }
+  return results;
+}
 
 export default function SucheScreen() {
-  const [query, setQuery] = useState('');
-  const [saved, setSaved] = useState<Record<string, boolean>>({});
   const theme = useColorScheme();
-  const {name, username, role, intensity} = useLocalSearchParams();
-  const rootNavigationState = useRootNavigationState();
+  const router = useRouter();
+  const db = useDB();
+  const [activeCourseId, setActiveCourseId] = useState('');
+  const [query, setQuery] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [results, setResults] = useState<ResultItem[]>([]);
+  const [lastQueries, setLastQueries] = useState<string[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [imgErrors, setImgErrors] = useState<Set<number>>(new Set());
 
-  const filtered = useFuzzySearchList({
-    list: themen,
-    queryText: query,
-    getText: (item) => [item.course_name],
-    mapResultItem: ({item}) => item,
-  });
+  useEffect(() => {
+    if (!db) return;
+    const fetchUser = async () => {
+      // @ts-ignore
+      const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+      if (user) setActiveCourseId(String(user.toJSON().course ?? ''));
+    };
+    fetchUser();
+  }, [db]);
 
-  if (!rootNavigationState?.key) {
+  const isDark = theme === 'dark';
+  const textColor = Colors[theme].text;
+  const iconColor = Colors[theme].icon;
+  const cardBg = '#fff';
+  const cardBorder = '#e8e8e8';
+
+  function handleSearch(q: string) {
+    const trimmed = q.trim();
+    if (!trimmed) return;
+    const found = searchCourses(trimmed, activeCourseId);
+    setResults(found);
+    setSubmittedQuery(trimmed);
+    setShowResults(true);
+    setLastQueries(prev => {
+      const next = [trimmed, ...prev.filter(x => x !== trimmed)].slice(0, 5);
+      return next;
+    });
+  }
+
+  function handleBack() {
+    setShowResults(false);
+    setQuery(submittedQuery);
+  }
+
+  if (showResults) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-        <ActivityIndicator size="large" color="#fff" />
-      </View>
+      <ThemedView style={styles.container}>
+        {/* Results header */}
+        <View style={styles.resultsHeader}>
+          <TouchableOpacity onPress={handleBack} style={styles.backBtn} activeOpacity={0.7}>
+            <Svg icon="chevron-left" width={20} height={20} white={isDark} />
+          </TouchableOpacity>
+          <View style={styles.resultsTitleBlock}>
+            <Text style={[fonts.josefin, styles.resultsFor, { color: iconColor }]}>Results for</Text>
+            <Text style={[fonts.josefin, fonts.josefinBold, styles.resultsQuery, { color: textColor }]}>
+              {submittedQuery}
+            </Text>
+            <Text style={[fonts.josefin, styles.resultsCount, { color: iconColor }]}>
+              {results.length} result{results.length !== 1 ? 's' : ''} found
+            </Text>
+          </View>
+        </View>
+
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.resultsList}>
+          {results.length === 0 && (
+            <Text style={[fonts.josefin, { color: iconColor, textAlign: 'center', marginTop: 32 }]}>
+              No results found.
+            </Text>
+          )}
+
+          {results.map((item, idx) => (
+            <View key={`${item.content_id}-${idx}`} style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+              {/* Card label row */}
+              <View style={styles.cardLabelRow}>
+                <Text style={[fonts.josefin, styles.cardLabel, { color: iconColor }]}>
+                  {item.content_type === 'text' ? 'Text' : item.content_type === 'image' ? 'Image' : 'Video'}
+                </Text>
+                <TouchableOpacity
+                  style={styles.sourceBtn}
+                  onPress={() => router.push({ pathname: '/ChapterContent', params: { courseId: item.course_id, chapterId: String(item.chapter_id), contentId: String(item.content_id) } })}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[fonts.josefin, styles.sourceBtnText]}>Source</Text>
+                  <Svg icon="chevron-right" width={14} height={14} white={false} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Image */}
+              {item.content_type === 'image' && (
+                <>
+                  <Image
+                    source={{ uri: imgErrors.has(item.content_id) ? 'https://images.pexels.com/photos/5275474/pexels-photo-5275474.jpeg' : item.image_source! }}
+                    style={styles.resultImage}
+                    resizeMode="cover"
+                    onError={() => setImgErrors(prev => new Set(prev).add(item.content_id))}
+                  />
+                  {item.image_alt ? (
+                    <Text style={[fonts.josefin, styles.imageCaption, { color: iconColor }]}>{item.image_alt}</Text>
+                  ) : null}
+                </>
+              )}
+
+              {/* Text */}
+              {item.content_type === 'text' && (
+                <Text style={[fonts.josefin, styles.textContent, { color: '#333' }]} numberOfLines={6} ellipsizeMode="tail">
+                  {item.content}
+                </Text>
+              )}
+
+              {/* Video */}
+              {item.content_type === 'video' && (() => {
+                const videoId = item.video_link?.split('/embed/')[1]?.split('?')[0];
+                const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                return (
+                  <View style={styles.videoRow}>
+                    <Image source={{ uri: thumbnail }} style={styles.videoThumb} resizeMode="cover" />
+                    <View style={styles.videoMeta}>
+                      <Text style={[fonts.josefin, fonts.josefinBold, styles.videoTitle, { color: '#111' }]} numberOfLines={2}>
+                        {item.video_title}
+                      </Text>
+                      <Text style={[fonts.josefin, styles.videoDuration, { color: iconColor }]}>
+                        {item.duration_minutes} min
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })()}
+
+              {/* Chapter tag */}
+              <Text style={[fonts.josefin, styles.chapterTag, { color: iconColor }]}>
+                {item.course_name} · {item.chapter_name}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </ThemedView>
     );
   }
-  const isDark = theme === 'dark';
 
-  function toggleSave(id: string) {
-    setSaved(prev => ({ ...prev, [id]: !prev[id] }));
-  }
-
-  const tint = '#0a7ea4';
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.heading}>Suche</ThemedText>
-      <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>
-        Schreibe die Inhalte die du suchst hier ein
-      </ThemedText>
-      
-      {/* Suchleiste */}
+      <Text style={[fonts.josefin, fonts.josefinBold, styles.heading, { color: textColor }]}>Search</Text>
+      <Text style={[fonts.josefin, styles.label, { color: iconColor }]}>Quickly find interesting material</Text>
+
+      {/* Search bar */}
       <View style={[styles.searchBar, {
         backgroundColor: isDark ? '#2c2c2e' : '#f0f0f0',
         borderColor: isDark ? '#444' : '#ddd',
       }]}>
         <TextInput
-          style={[styles.input, { color: Colors[theme].text }]}
+          style={[fonts.josefin, styles.input, { color: textColor }]}
           value={query}
           onChangeText={setQuery}
-          placeholder="Text hier"
-          placeholderTextColor={Colors[theme].icon}
+          placeholder="e.g Mongolia"
+          placeholderTextColor={iconColor}
           returnKeyType="search"
+          onSubmitEditing={() => handleSearch(query)}
         />
-        <IconSymbol name="magnifyingglass" size={18} color={Colors[theme].icon} />
+        <TouchableOpacity onPress={() => handleSearch(query)} activeOpacity={0.7}>
+          <IconSymbol name="magnifyingglass" size={18} color={iconColor} />
+        </TouchableOpacity>
       </View>
-      <ThemedText style={[styles.ergebnisse, { color: tint }]}>
-        {filtered.length} Ergebnisse
-      </ThemedText>
-      
-      {/* Karten */}
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>
-        {filtered.map(thema => (
-          <View key={thema.course_id} style={styles.kursBlock}>
-            <View style={styles.titleContainer}>
-              <ThemedText type="defaultSemiBold" style={[styles.kursTitle, { color: tint }]}>
-                {thema.course_name}
-              </ThemedText>
-            </View>
-            <View style={[styles.card, { backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8' }]}>
-              
-              {COURSE_IMAGES[thema.course_id] ? (
-                <Image 
-                  source={COURSE_IMAGES[thema.course_id]} 
-                  style={styles.cardImage} 
-                  resizeMode="cover" 
-                />
-              ) : (
-                <IconSymbol name="photo" size={40} color={Colors[theme].icon} />
-              )}
-              
-              <TouchableOpacity
-                style={[
-                  styles.bookmark,
-                  saved[thema.course_id]
-                    ? { backgroundColor: tint, borderWidth: 0 }
-                    : { backgroundColor: 'rgba(0,0,0,0.35)', borderWidth: 2, borderColor: '#fff' },
-                ]}
-                onPress={() => toggleSave(thema.course_id)}
-                activeOpacity={0.7}
-              >
-                <IconSymbol
-                  name="bookmark.fill"
-                  size={16}
-                  color={saved[thema.course_id] ? '#fff' : 'rgba(255,255,255,0.5)'}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+
+      {/* Last queries */}
+      {lastQueries.length > 0 && (
+        <View style={[styles.lastQueriesCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+          <Text style={[fonts.josefin, fonts.josefinBold, styles.lastQueriesTitle]}>Last queries</Text>
+          {lastQueries.map((q, i) => (
+            <TouchableOpacity key={i} onPress={() => { setQuery(q); handleSearch(q); }} activeOpacity={0.7}>
+              <Text style={[fonts.josefin, styles.lastQueryItem, { color: '#333' }]}>{q}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
     </ThemedView>
   );
 }
-  
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 56,
   },
   heading: {
-    marginBottom: 8,
+    fontSize: 32,
+    marginBottom: 6,
   },
   label: {
     fontSize: 13,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 6,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 20,
+    gap: 8,
   },
   input: {
     flex: 1,
     fontSize: 15,
   },
-  ergebnisse: {
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'right',
-    marginBottom: 16,
+  lastQueriesCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 16,
+    gap: 10,
   },
-  list: {
-    flex: 1,
+  lastQueriesTitle: {
+    fontSize: 15,
+    color: '#111',
+    marginBottom: 4,
   },
-  kursBlock: {
+  lastQueryItem: {
+    fontSize: 14,
+    paddingVertical: 2,
+  },
+  // Results
+  resultsHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
     marginBottom: 20,
   },
-  kursTitle: {
-    fontSize: 16,
-    marginBottom: 8,
+  backBtn: {
+    marginTop: 4,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(128,128,128,0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resultsTitleBlock: {
+    flex: 1,
+    gap: 2,
+  },
+  resultsFor: {
+    fontSize: 13,
+  },
+  resultsQuery: {
+    fontSize: 28,
+    lineHeight: 34,
+  },
+  resultsCount: {
+    fontSize: 13,
+    marginTop: 2,
+  },
+  resultsList: {
+    gap: 14,
+    paddingBottom: 32,
   },
   card: {
-    height: 200,
-    borderRadius: 12,
-    overflow: 'hidden',
-    position: 'relative',
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 14,
+    gap: 10,
   },
-  cardImage: {
+  cardLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cardLabel: {
+    fontSize: 11,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  sourceBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  sourceBtnText: {
+    fontSize: 12,
+    color: '#111',
+  },
+  resultImage: {
     width: '100%',
-    height: '100%',
+    height: 180,
+    borderRadius: 10,
   },
-  bookmark: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+  imageCaption: {
+    fontSize: 11,
+    fontStyle: 'italic',
+  },
+  textContent: {
+    fontSize: 14,
+    lineHeight: 22,
+  },
+  videoRow: {
+    flexDirection: 'row',
+    gap: 12,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  information: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 32,
-    height: 32,
+  videoThumb: {
+    width: 100,
+    height: 68,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  titleContainer: {
-    position: 'absolute',
-    display: 'flex',
+  videoMeta: {
     flex: 1,
-    minHeight: 32,
-    backgroundColor: colors.whiteBg.backgroundColor,
-  }
+    gap: 4,
+  },
+  videoTitle: {
+    fontSize: 13,
+  },
+  videoDuration: {
+    fontSize: 12,
+  },
+  chapterTag: {
+    fontSize: 11,
+  },
 });

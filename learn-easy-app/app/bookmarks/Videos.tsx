@@ -2,7 +2,8 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import { useState, useEffect } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { fonts, colors } from '@/constants/theme';
+import { fonts, colors, Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Bookmark from '@/components/Bookmark';
 import { useDB } from '@/db/DatabaseContext';
@@ -15,6 +16,8 @@ import { removeBookmark } from '@/db/database';
 
 
 export default function Bookmarks() {
+  const theme = useColorScheme();
+  const textColor = Colors[theme].text;
   const router = useRouter();
   const { courseId } = useLocalSearchParams<{ courseId: string }>();
   const db = useDB();
@@ -52,8 +55,8 @@ export default function Bookmarks() {
         <View style={styles.titleNavigationContainer}>
             <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
             <View style={styles.titleContainer}>
-                <Text style={[fonts.josefin, colors.white]}>Bookmarks</Text>
-                <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]} className="heading">Pictures</Text>
+                <Text style={[fonts.josefin, { color: textColor }]}>Bookmarks</Text>
+                <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">Pictures</Text>
             </View>
         </View>
         {/* Bookmarks */}
