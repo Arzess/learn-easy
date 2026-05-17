@@ -1,63 +1,60 @@
-import { useState, useEffect, useId,} from 'react';
-import { Image, ImageSourcePropType, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, ActivityIndicator, Touchable, Pressable } from 'react-native';
-import { useLocalSearchParams, useRootNavigationState, useRouter } from 'expo-router';
+import { useState, useId, useEffect} from 'react';
+import { Image, Modal, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, ActivityIndicator, Touchable, Pressable } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { colors, fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { completeIntro, getItem } from '../index';
 import { useDB } from '@/db/DatabaseContext';
-import SVG from '@/components/svg'
+import Svg from '@/components/svg'
 import '@/components/svg-sheet'
 import useFuzzySearchList from '@nozbe/microfuzz/dist/react/useFuzzySearchList';
 // Course structure and content
 import courses from '@/assets/courses.json'
 
 const themen = courses.courses;
-const COURSE_IMAGES: Record<string, any> = {
-  "1": require('@/assets/images/themen/mongolisches-reich.png'),
-  "2": require('@/assets/images/themen/frauen-technik.png'),
-  "3": require('@/assets/images/themen/klimawandel.png'),
-  "4": require('@/assets/images/themen/kuenstliche-intelligenz.png'),
-  "5": require('@/assets/images/themen/raumfahrt.png'),
-};
-
 export default function Kurswahl() {
   const [query, setQuery] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const theme = useColorScheme();
   const userId = useId();
   const router = useRouter();
+  const [userData, setUserData] = useState<any>(null);
+  const [currentCourse, setCurrentCourse] = useState("");
+  const [currentDesc, setCurrentDesc] = useState("");
   const {name, username, role, intensity} = useLocalSearchParams();
-  const rootNavigationState = useRootNavigationState();
-  const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null);
   const db = useDB();
-  useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const val = await getItem('@firstLaunch');
-        setIsFirstLaunch(val === null);
-      } catch (e) {
-        setIsFirstLaunch(false);
+
+  // Fetch the user data
+  useEffect(()=>{
+    const fetchUser = async () => {
+      if (!db) return;
+
+      // @ts-ignore
+      const user = await db.general.user.findOne({
+        selector: { current: {$eq: true}}
+      }).exec();
+
+      if (user){
+        setUserData(user.toJSON())
       }
     };
-    checkStatus();
-  }, []);
+
+
+
+    fetchUser();
+
+  }, [db]);
 
   const filtered = useFuzzySearchList({
-    list: themen,
+    list: themen.filter(t => !userData?.courseHistory?.includes(t.course_id)),
     queryText: query,
     getText: (item) => [item.course_name],
     mapResultItem: ({item}) => item,
   });
-
-  if (isFirstLaunch === null || !rootNavigationState?.key) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-        <ActivityIndicator size="large" color="#fff" />
-      </View>
-    );
-  }
   const isDark = theme === 'dark';
 
   // Register the user in the database
@@ -84,9 +81,9 @@ export default function Kurswahl() {
   const tint = '#0a7ea4';
    return (
       <ThemedView style={styles.container}>
-        <ThemedText type="title" style={styles.heading}>Suche</ThemedText>
-        <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>
-          Choose the course you would like to start with
+        <Text style={[styles.heading, fonts.josefin, fonts.josefinMedium, { color: colors.white.color }]}>Choose your course</Text>
+        <ThemedText style={[styles.label, fonts.josefin, { color: Colors[theme].icon }]}>
+          Choose your next course or the one you would like to start with
         </ThemedText>
 
         {/* Suchleiste */}
@@ -98,55 +95,72 @@ export default function Kurswahl() {
             style={[styles.input, { color: Colors[theme].text }]}
             value={query}
             onChangeText={setQuery}
-            placeholder="Text hier"
-            placeholderTextColor={Colors[theme].icon}
+            placeholder="e.g Mongolian Empire"
+            placeholderTextColor={"#ffffff66"}
+
             returnKeyType="search"
           />
           <IconSymbol name="magnifyingglass" size={18} color={Colors[theme].icon} />
         </View>
 
-        <ThemedText style={[styles.ergebnisse, { color: tint }]}>
+        <Text style={[styles.ergebnisse, { color: colors.white.color }]}>
           {filtered.length} Ergebnisse
-        </ThemedText>
+        </Text>
+
+        {/* Information modal */}
+
+        <Modal visible={modalVisible} animationType="fade" transparent={true} onRequestClose={() => setModalVisible(false)}>
+          <View style={styles.overlay}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalHeading}>
+                <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                  <Svg icon="close" width={24} height={24} white={false} />
+                </TouchableOpacity>
+                <Text style={[fonts.josefin, styles.modalHeadingText]}>{currentCourse}</Text>
+              </View>
+              <Text style={[fonts.josefin, styles.modalText]}>{currentDesc}</Text>
+            </View>
+          </View>
+        </Modal>
 
         {/* Karten */}
         <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>
           {filtered.map(thema => (
             <View key={thema.course_id} style={styles.kursBlock}>
-              <ThemedText type="defaultSemiBold" style={[styles.kursTitle, { color: tint }]}>
+              <ThemedText type="defaultSemiBold" style={[styles.kursTitle, { color: colors.white.color }, fonts.josefin]}>
                 {thema.course_name}
               </ThemedText>
               <View style={[styles.card, { backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8' }]}>
-                
-                {COURSE_IMAGES[thema.course_id] ? (
+              
                   <TouchableOpacity style={{ flex: 1 }} onPress={() => {
                     next_step(thema.course_id);
                   }}>
 
                     <Image 
-                      source={COURSE_IMAGES[thema.course_id]} 
+                      source={{ uri: thema.course_cover_id}} 
                       style={styles.cardImage} 
                       resizeMode="cover" 
                     />
 
                   </TouchableOpacity>
-                ) : (
-                  <IconSymbol name="photo" size={40} color={Colors[theme].icon} />
-                )}
-                
                 {/* Information about the course */}
                 <TouchableOpacity
                   style={[
                     styles.information,
-                    { backgroundColor: 'rgba(0,0,0,0.35)', borderWidth: 2, borderColor: '#fff' },
+                    { backgroundColor: colors.whiteBg.backgroundColor, borderWidth: 2, borderColor: '#fff' },
                   ]}
-                  onPress={() => {}}
+                  onPress={() => {
+                    setCurrentCourse(thema.course_name);
+                    setCurrentDesc(thema.course_description);
+                    setModalVisible(true);
+                  }}
                   activeOpacity={0.7}
                 >
-                  <IconSymbol
-                    name="bookmark.fill"
-                    size={16}
-                    color={'rgba(255,255,255,0.5)'}
+                  <Svg
+                    icon="information"
+                    width={24}
+                    height={24}
+                    white={true}
                   />
                 </TouchableOpacity>
               </View>
@@ -166,9 +180,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 8,
+    fontSize: 32,
   },
   label: {
-    fontSize: 13,
+    fontSize: 16,
     marginBottom: 8,
   },
   searchBar: {
@@ -197,11 +212,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   kursTitle: {
-    fontSize: 15,
+    fontSize: 16,
     marginBottom: 8,
   },
   card: {
-    height: 120,
+    height: 200,
     borderRadius: 12,
     overflow: 'hidden',
     position: 'relative',
@@ -230,4 +245,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Modal
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flexDirection: 'column',
+    gap: 32,
+    backgroundColor: 'white',
+    width: '80%',
+    height: 'auto',
+    borderRadius: 16,
+    padding: 16,
+  },
+  modalHeading: {
+      display: 'flex',
+      gap: 16,
+      justifyContent: 'flex-start',
+      flexDirection: 'row',
+      alignItems: 'center',
+  },
+  modalHeadingText: {
+      fontSize: 24,
+  },
+  closeButton: {
+    padding: 16,
+  },
+  modalText: {
+    fontSize: 16,
+  }
 });
