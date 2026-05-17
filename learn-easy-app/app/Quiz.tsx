@@ -140,7 +140,9 @@ export default function Quiz() {
                         router.push({
                             pathname: "/QuizResult",
                             params: {
-                            answers: JSON.stringify(Array.from(submittedAnswers?.entries() ?? [])),
+                                answers: JSON.stringify(Array.from(submittedAnswers?.entries() ?? [])),
+                                courseId: courseId,
+                                chapterId: chapterId,
                             },
                         });
                     }} />
