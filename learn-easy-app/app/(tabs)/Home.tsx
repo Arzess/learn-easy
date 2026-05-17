@@ -5,6 +5,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useDB } from '@/db/DatabaseContext';
 import { createClient } from 'pexels';
 import courses from '@/assets/courses.json';
+import { getItem } from '@/app/index';
 import { colors, fonts } from '@/constants/theme';
 import Svg from '@/components/svg';
 import Button from '@/components/Button';
@@ -37,35 +38,52 @@ export default function Home() {
   const [currentCourse, setCurrentCourse] = useState<typeof courses.courses[0] | null>(null);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+  const [quiz, setQuiz] = useState(false);
 
-  // Fetch random related pictures
-  const fetchPictures = async (courseName: string) => {
-    try{
-      const client = createClient('dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7');
-      const query = courseName;
-      const res = await client.photos.search({ query, per_page: 4 });
-      if ('photos' in res){
-       const pictures = res.photos.map((pic : any) => ({
-          source: {uri: pic.src.large},
-          type: "image",
-          content_id: pic.id,
-        }));
-        let nothingFound = pictures.length === 0;
-        setPictures(pictures as any);
-        setNoResult(nothingFound);
+  // Check if there's a quiz to be completed
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const val = await getItem('@quizIncompleted');
+        setQuiz(val !== 'false');
+      } catch (e) {
+        setQuiz(false);
       }
-    }
-    catch (e) {
-      setNoResult(true);
-      console.log(`There was an error while fetching random pictures: ${e}`)
-    } 
-  }
+    };
+    checkStatus();
+  }, []);
 
-  // Fetch the user data
+
+
+  // Fetch the user data and random pictures
   useEffect(()=>{
     const fetchUser = async () => {
       if (!db) return;
 
+      // Fetch random related pictures
+      const fetchPictures = async (courseName: string) => {
+        try{
+          const client = createClient('dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7');
+          const query = courseName;
+          const res = await client.photos.search({ query, per_page: 4 });
+          if ('photos' in res){
+           const pictures = res.photos.map((pic : any) => ({
+              source: {uri: pic.src.large},
+              type: "image",
+              content_id: pic.id,
+            }));
+            let nothingFound = pictures.length === 0;
+            setPictures(pictures as any);
+            setNoResult(nothingFound);
+          }
+        }
+        catch (e) {
+          setNoResult(true);
+          console.log(`There was an error while fetching random pictures: ${e}`)
+        } 
+      }
+      
+      
       // @ts-ignore
       const user = await db.general.user.findOne({
         selector: { current: {$eq: true}}
@@ -176,25 +194,59 @@ export default function Home() {
           </View>
         </View>
         {/* Jump Back in */}
-        <View style={styles.categoryContainer}>
-          <View style={styles.categoryHeadingContainer}>
-            <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
-            <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
-          </View>
-          <View style={styles.jumpBackIn}>
-            <View style={styles.preview}>
-              <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={8} ellipsizeMode='tail'>
-                {currentCourse?.chapters[0].chapter_content[0].content}
-              </Text>
-            </View>
-          </View>
-          <Button text="Jump to the chapter" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
-            // To-do: 
-            // 1: Navigate to the course
-            // 2: Pass the paramets "course_id" and "chapter"
-          }}/>
-        </View>
+        
+          {/* Case 1: no quiz to do */}
+          {
 
+            !quiz && 
+            <>
+              <View style={styles.categoryContainer}>
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
+                </View>
+                <View style={styles.jumpBackIn}>
+                  <View style={styles.preview}>
+                    <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={8} ellipsizeMode='tail'>
+                      {currentCourse?.chapters[0].chapter_content[0].content}
+                    </Text>
+                  </View>
+                </View>
+                <Button text="Jump to the chapter" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  // To-do: 
+                  // 1: Navigate to the course
+                  // 2: Pass the paramets "course_id" and "chapter"
+                }}/>
+              </View>
+            </>
+
+          }
+          {/* Case 2: quiz to do */}
+          {
+            quiz &&
+
+            <>
+          
+              <View style={styles.categoryContainer}>
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
+                  <Text style={[fonts.josefin, colors.white]}>You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz! 
+                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.</Text>
+                </View>
+              
+                <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  router.push({
+                    pathname: "/Quiz",
+                    params: {
+                      courseId: currentCourse?.course_id
+                    }
+                  })
+                }}/>
+              </View>
+            </>
+          
+          }
 
       {/* Gallery */}
       <View style={styles.categoryContainer}>

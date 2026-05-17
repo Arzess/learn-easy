@@ -10,7 +10,8 @@ import Button from '@/components/Button';
 import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
-import { bookmarkCounter } from '@/db/database';
+import { removeBookmark } from '@/db/database';
+
 
 
 export default function Bookmarks() {
@@ -40,8 +41,10 @@ export default function Bookmarks() {
       if (results.length === 0) setNoResults(true);
     }
 
-    fetchBookmarks("video");
+    fetchBookmarks("image");
   }, [db])
+
+
 
 
   return (
@@ -72,11 +75,16 @@ export default function Bookmarks() {
                                     }
                                   ]}
                                   onPress={() => {
-                                    // Remove the bookmark
+                                    removeBookmark(db, item.bookmarkId);
+                                    setBookmarks(prev => {
+                                      const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
+                                      if (updated.length === 0) setNoResults(true);
+                                      return updated;
+                                    });
                                   }}
                                   activeOpacity={0.7}
                                 >
-                                  <Svg icon="bookmark-filled" width={16} height={16} white={true} />
+                                  <Svg icon="bookmark-remove" width={16} height={16} white={true} />
                   </TouchableOpacity>
               </View>
             )}  
