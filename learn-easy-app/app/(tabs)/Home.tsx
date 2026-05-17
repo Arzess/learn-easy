@@ -236,11 +236,13 @@ export default function Home() {
                 </View>
               
                 <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  const lastChapterId = currentCourse?.chapters[currentCourse.chapters.length - 1]?.chapter_id;
                   router.push({
                     pathname: "/Quiz",
                     params: {
-                      courseId: currentCourse?.course_id
-                    }
+                      courseId: currentCourse?.course_id,
+                      chapterId: String(lastChapterId),
+                    },
                   })
                 }}/>
               </View>
