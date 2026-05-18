@@ -15,7 +15,8 @@ export const getItem = async (key: string): Promise<string | null> => {
 
 export const completeIntro = async () => {
   const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
-  await AsyncStorage.setItem('@quizIncompleted', 'true');
+  await AsyncStorage.setItem('@quizIncompleted', 'false');
+  await AsyncStorage.setItem('@quizCompletedCourseNotSelected', 'false')
   await AsyncStorage.setItem('@firstLaunch', 'false');
 };
 

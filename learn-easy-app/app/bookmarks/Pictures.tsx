@@ -66,7 +66,7 @@ export default function Bookmarks() {
         !noResults && 
         
         <>
-          <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
+          <FlatList data={bookmarks} style={{flex: 1}} ItemSeparatorComponent={()=>(<View style={{height: 16}}></View>)} keyExtractor={item => item.bookmarkId.toString()}
             renderItem={({ item }) => (
               <View style={styles.bookmarkContainer}>
                 <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   bookmarkContainer: {
     width: '100%',
-    minHeight: 200,
+    height: 200,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     overflow: 'hidden',

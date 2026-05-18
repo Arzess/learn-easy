@@ -51,8 +51,8 @@ export default function Home() {
       try {
         const val = await getItem('@quizIncompleted');
         const quiz = await getItem('@quizCompletedCourseNotSelected');
-        setQuizCompletedCourseNotSelected(quiz === 'false');
-        setQuiz(val !== 'false');
+        setQuizCompletedCourseNotSelected(quiz === 'true');
+        setQuiz(val ==='true');
       } catch (e) {
         setQuiz(false);
         setQuizCompletedCourseNotSelected(false);
@@ -71,8 +71,7 @@ export default function Home() {
         const fetchPictures = async (courseName: string) => {
           try {
             const client = createClient(
-              // @ts-ignore
-              process.env.API_KEY,
+              process.env.EXPO_PUBLIC_PEXELS_API_KEY!
             );
             const query = courseName;
             const res = await client.photos.search({ query, per_page: 4 });
@@ -282,6 +281,16 @@ export default function Home() {
                   <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
                   <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Carry on with your course</Text>
                 </View>
+                
+                {/* Jump Back in */}
+                <View style={styles.jumpBackIn}>
+                  <View style={styles.preview}>
+                    <Text style={[fonts.josefin, styles.chapterPreviewText]} numberOfLines={7} ellipsizeMode='tail'>
+                      {currentCourse?.chapters[userData.currentChapter - 1]?.chapter_content[0].content}
+                    </Text>
+                  </View>
+                </View>
+
                 <Button
                   text="Jump to the chapter"
                   iconName="chevron-right"
@@ -289,7 +298,10 @@ export default function Home() {
                   darkIcon={true}
                   fullWidth={true}
                   onPress={() => {
-                    // To-do: navigate to course + pass course_id and chapter
+                    router.push({
+                      pathname: '/ChapterContent',
+                      params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) }
+                    })
                   }}
                 />
               </View>
@@ -317,7 +329,7 @@ export default function Home() {
                       pathname: "/Quiz",
                       params: {
                         courseId: currentCourse?.course_id,
-                        chapterId: String(userData.currentChapter),
+                        chapterId: String(userData.currentChapter-1),
                       },
                     });
                   }}
@@ -385,7 +397,7 @@ export default function Home() {
                 autoPlay={true}
                 autoPlayInterval={4000}
                 data={pictures}
-                width={380}
+                width={width-32}
                 height={220}
                 loop={true}
                 pagingEnabled={true}
@@ -615,6 +627,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    fontSize: 16,
   },
   scrollContent: {
     flexDirection: "column",

@@ -1,11 +1,10 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, View, Text,} from 'react-native';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
 import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { getItem } from '@/app/index';
 import courses from "@/assets/courses.json"
 
 export const completeCourseSelected = async () => {
@@ -28,10 +27,8 @@ export default function QuizResult() {
     useEffect(()=>{ 
         const fetchCourseInfo = async () => {
             const foundCourse = courses.courses.find(c => String(c.course_id) === String(courseId));
-            const isLastChapter = currentCourse?.chapters?.findIndex((c: any) => String(c.chapter_id) === String(chapterId)) === (currentCourse?.amount_of_chapters-1);
             if (foundCourse) {
               setCurrentCourse(foundCourse);
-              setIsLastChapter(isLastChapter);
               const foundChapter = foundCourse.chapters.find(ch => String(ch.chapter_id) === String(chapterId));
               if (foundChapter) {
                 setCourse(foundChapter);
@@ -56,12 +53,14 @@ export default function QuizResult() {
 
     // To-do: check the answers
     useEffect(()=>{
+        if (!course || !currentCourse) return;
         let userScore = 0;
         const answersMap = new Map<number, string[]>(JSON.parse(answers));
         let totalScore = course?.quiz?.questions?.length ?? 1;
         const foundChapter = currentCourse?.chapters.find((c: any) => String(c.chapter_id) === String(chapterId));
         const questions = foundChapter?.quiz?.questions ?? [];
         const isLastChapter = currentCourse?.chapters.indexOf(foundChapter) === (currentCourse?.amount_of_chapters - 1);
+        setIsLastChapter(isLastChapter);
         // Run through every question and its correct answers
         // Check our answers, if there's at least one wrong one - user gets 0 points
         for (let i = 0; i < questions.length; i++){
@@ -96,7 +95,7 @@ export default function QuizResult() {
             }
         }
 
-    }, [course])
+    }, [course, currentCourse])
 
     const nextStep = async () => {
         if (!db) return;
@@ -156,14 +155,15 @@ export default function QuizResult() {
                     text="Next"
                     iconName="chevron-right"
                     light={true}
+                    style={styles.button}
                     darkIcon={true}
                     fullWidth={true}
                     onPress={() => {
-                      completeQuiz();
                       nextStep();
                     }}
                 />
                 </View>
+              
                 {isLastChapter &&
                   <>
 
@@ -172,6 +172,7 @@ export default function QuizResult() {
                           text="Maybe later"
                           iconName="chevron-right"
                           light={true}
+                          style={styles.button}
                           noIcon={true}
                           darkIcon={true}
                           fullWidth={true}
@@ -200,8 +201,8 @@ export default function QuizResult() {
                     iconName="chevron-right"
                     light={true}
                     noIcon={true}
+                    fullWidth={false}
                     darkIcon={true}
-                    fullWidth={true}
                     onPress={() => {
                       router.push({
                         pathname: '/Quiz',
@@ -217,8 +218,8 @@ export default function QuizResult() {
                     iconName="chevron-right"
                     light={true}
                     noIcon={true}
+                    fullWidth={false}
                     darkIcon={true}
-                    fullWidth={true}
                     onPress={() => {
                       router.navigate("/(tabs)/Home");
                     }}
@@ -265,7 +266,12 @@ const styles = StyleSheet.create({
     paddingBottom: 64, 
   },
   buttonContainer: {
-    height: 50,
     width: '100%',
-  }
+    display: 'flex',
+    gap: 16,
+  },
+  button: {
+    height: 50,
+    flex: 1,
+  },
 });

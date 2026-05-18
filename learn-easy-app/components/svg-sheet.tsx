@@ -142,4 +142,3 @@ export default function findSvg(i: String, white: boolean){
     return svgString.replace(/#B4B4B4/g, targetFill);
 } 
 
-

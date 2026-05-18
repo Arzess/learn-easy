@@ -52,10 +52,13 @@ export default function Quiz() {
     return (
         <ThemedView style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text style={[fonts.josefin, colors.white]}>Quiz</Text>
-            <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]}>
-              {currentCourse?.course_name}
-            </Text>
+            <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+            <View style={styles.titleSubContainer}>
+              <Text style={[fonts.josefin, colors.white]}>Quiz</Text>
+              <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]}>
+                {currentCourse?.course_name}
+              </Text>
+            </View>
           </View>
 
           {/* Quiz content */}
@@ -188,6 +191,13 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 16,
+  },
+  titleSubContainer: {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
