@@ -3,23 +3,28 @@ import React from 'react';
 import SVG from '../../components/svg'
 import '../../components/svg-sheet'
 import { HapticTab } from '@/components/haptic-tab';
-import { colors } from '@/constants/theme';
+import { useAppTheme } from '@/context/theme-context';
 
 export default function TabLayout() {
+  const { isDarkMode } = useAppTheme();
+
+  const tabBarBg = isDarkMode ? '#1B1E20' : '#ffffff';
+  const tabBarBorder = isDarkMode ? 'rgba(255,255,255,0.15)' : '#e0e0e0';
+  const tabBarActiveBg = isDarkMode ? '#ffffff' : '#f0f0f0';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveBackgroundColor: "white",
+        tabBarActiveBackgroundColor: tabBarActiveBg,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
-          backgroundColor: '#1B1E20',
-          borderTopWidth: 2,
-          borderTopColor: colors.white.color,
+          backgroundColor: tabBarBg,
+          borderTopWidth: 1,
+          borderTopColor: tabBarBorder,
           height: 128,
-          paddingBottom: 32, 
+          paddingBottom: 32,
         },
         tabBarItemStyle: {
           marginHorizontal: 8,
@@ -35,28 +40,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Home"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"home"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"home"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Suche"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Bookmarks"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"bookmark"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"bookmark"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
 
       <Tabs.Screen
         name="Account"
         options={{
-          tabBarIcon: ({ focused }) => <SVG icon={"user"} width={24} height={24} white={!focused}/>,
+          tabBarIcon: ({ focused }) => <SVG icon={"user"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
     </Tabs>

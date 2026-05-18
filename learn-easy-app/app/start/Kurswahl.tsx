@@ -98,7 +98,7 @@ export default function Kurswahl() {
   const tint = '#0a7ea4';
    return (
       <ThemedView style={styles.container}>
-        <Text style={[styles.heading, fonts.josefin, fonts.josefinMedium, { color: colors.white.color }]}>Choose your course</Text>
+        <Text style={[styles.heading, fonts.josefin, fonts.josefinMedium, { color: Colors[theme].text }]}>Choose your course</Text>
         <ThemedText style={[styles.label, fonts.josefin, { color: Colors[theme].icon }]}>
           Choose your next course or the one you would like to start with
         </ThemedText>
@@ -120,8 +120,8 @@ export default function Kurswahl() {
           <IconSymbol name="magnifyingglass" size={18} color={Colors[theme].icon} />
         </View>
 
-        <Text style={[styles.ergebnisse, { color: colors.white.color }]}>
-          {filtered.length} Ergebnisse
+        <Text style={[styles.ergebnisse, { color: Colors[theme].text }]}>
+          {filtered.length} Results
         </Text>
 
         {/* Information modal */}
@@ -144,7 +144,7 @@ export default function Kurswahl() {
         <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>
           {filtered.map(thema => (
             <View key={thema.course_id} style={styles.kursBlock}>
-              <ThemedText type="defaultSemiBold" style={[styles.kursTitle, { color: colors.white.color }, fonts.josefin]}>
+              <ThemedText type="defaultSemiBold" style={[styles.kursTitle, { color: Colors[theme].text }, fonts.josefin]}>
                 {thema.course_name}
               </ThemedText>
               <View style={[styles.card, { backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8' }]}>
