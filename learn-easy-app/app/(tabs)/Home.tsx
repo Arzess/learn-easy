@@ -16,6 +16,7 @@ import Carousel, {
   Pagination,
 } from "react-native-reanimated-carousel";
 import { router } from 'expo-router';
+import { completeCourseSelected } from '../QuizResult';
 
 
 const width = Dimensions.get('window').width;
@@ -39,21 +40,23 @@ export default function Home() {
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const [quiz, setQuiz] = useState(false);
+  const [quizCompletedCourseNotSelected, setQuizCompletedCourseNotSelected] = useState(false);
 
   // Check if there's a quiz to be completed
   useEffect(() => {
     const checkStatus = async () => {
       try {
         const val = await getItem('@quizIncompleted');
+        const quiz = await getItem('@quizCompletedCourseNotSelected');
+        setQuizCompletedCourseNotSelected(quiz === 'false');
         setQuiz(val !== 'false');
       } catch (e) {
         setQuiz(false);
+        setQuizCompletedCourseNotSelected(false);
       }
     };
     checkStatus();
   }, []);
-
-
 
   // Fetch the user data and random pictures
   useEffect(()=>{
@@ -63,7 +66,8 @@ export default function Home() {
       // Fetch random related pictures
       const fetchPictures = async (courseName: string) => {
         try{
-          const client = createClient('dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7');
+          // @ts-ignore
+          const client = createClient(process.env.API_KEY);
           const query = courseName;
           const res = await client.photos.search({ query, per_page: 4 });
           if ('photos' in res){
@@ -117,6 +121,22 @@ export default function Home() {
     };
     if (pictures.length > 0) loadBookmarked();
   }, [pictures, db]);
+
+  const selectNew = async () => {
+    if (!db) return;
+        
+    const user = await db.general.user.findOne({
+      selector: { current: {$eq: true}}
+    }).exec();
+    
+    if (user){
+      // Update the completed courses
+      await user.patch({
+                  completedCourses: [...user.completedCourses, currentCourse?.course_id],
+      });
+      router.navigate("/start/Kurswahl");
+    }
+  }
 
 
   if (!userData) {
@@ -198,7 +218,7 @@ export default function Home() {
           {/* Case 1: no quiz to do */}
           {
 
-            !quiz && 
+            !quiz && !quizCompletedCourseNotSelected &&
             <>
               <View style={styles.categoryContainer}>
                 <View style={styles.categoryHeadingContainer}>
@@ -236,18 +256,38 @@ export default function Home() {
                 </View>
               
                 <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
-                  const lastChapterId = currentCourse?.chapters[currentCourse.chapters.length - 1]?.chapter_id;
+                  // const lastChapterId = currentCourse?.chapters[currentCourse.chapters.length - 1]?.chapter_id;
                   router.push({
                     pathname: "/Quiz",
                     params: {
                       courseId: currentCourse?.course_id,
-                      chapterId: String(lastChapterId),
+                      chapterId: String(userData.currentChapter),
                     },
                   })
                 }}/>
               </View>
             </>
           
+          }
+          {/* Case 3: last quiz completed but user still wants to stay on the course */}
+          {
+            !quiz && quizCompletedCourseNotSelected && 
+            <>
+              <View style={styles.categoryContainer}>
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>You have finished the course</Text>
+                  <Text style={[fonts.josefin, colors.white]}>You have completed all the chapters of the {currentCourse?.course_name} quiz! 
+                    You can chill now and read the materials of the course again, or you can select a completely new one!</Text>
+                </View>
+              
+                <Button text="Select a new course" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  completeCourseSelected();
+                  selectNew();
+                }}/>
+              </View>
+            </>
+
           }
 
       {/* Gallery */}
