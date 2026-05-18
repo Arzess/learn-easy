@@ -2,7 +2,8 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Modal } from 'react
 import { ThemedText } from '@/components/themed-text';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
-import { fonts, colors } from '@/constants/theme';
+import { fonts, colors, Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
 import Svg from 'react-native-svg';
@@ -10,6 +11,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import courses from "@/assets/courses.json"
 
 export default function Quiz() {
+    const theme = useColorScheme();
+    const textColor = Colors[theme].text;
     const router = useRouter();
     const { courseId, chapterId } = useLocalSearchParams<{ courseId: string; chapterId: string }>();
     const [course, setCourse] = useState<any>(null);
