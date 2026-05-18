@@ -58,22 +58,38 @@ export default function Kurswahl() {
   const isDark = theme === 'dark';
 
   // Register the user in the database
-  const next_step = (course_id: string) => {
+  const next_step = async (course_id: string) => {
     if (!db) return;
-    db.general.user.upsert({
-      id: userId.toString(),
-      current: true,
-      intensity: intensity,
-      role: role,
-      name: name,
-      username: username,
-      course: course_id,
-      courseHistory: [course_id,],
-      completedCourses: [],
-      currentChapter: 1,
-      currentCourseCompletedChapters: [],
-    });
-    completeIntro();
+    if (await getItem("@firstLaunch") !== 'false'){
+      db.general.user.upsert({
+        id: userId.toString(),
+        current: true,
+        intensity: intensity,
+        role: role,
+        name: name,
+        username: username,
+        course: course_id,
+        courseHistory: [course_id,],
+        completedCourses: [],
+        currentChapter: 1,
+        currentCourseCompletedChapters: [],
+      });
+      completeIntro();
+    }
+    else{
+      const user = await db.general.user.findOne({
+        selector: { current: {$eq: true}}
+      }).exec();
+
+      if (user){
+        await user.patch({
+          course: course_id,
+          courseHistory: [...user.toJSON().courseHistory, course_id],
+          currentChapter: 1,
+          currentCourseCompletedChapters: [],
+        });
+      }
+    }
     // Return to the Home page
     router.navigate("/(tabs)/Home");
   }

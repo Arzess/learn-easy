@@ -6,11 +6,11 @@ import SVG from './svg'
 import './svg-sheet'
 
 
-export default function Button({text, iconName, onPress, light, darkIcon, style, fullWidth} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean, style?: StyleProp<ViewStyle>, fullWidth: boolean}){
+export default function Button({text, iconName, onPress, light, darkIcon, style, fullWidth, noIcon} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean, style?: StyleProp<ViewStyle>, fullWidth: boolean, noIcon?: boolean}){
     return (
         <Pressable style={[styles.button, style, light && styles.lightButton, fullWidth && styles.fullWidth]} onPress={onPress as any}>
             <Text style={[fonts.josefin, styles.buttonText, light && styles.lightButtonText]}>{text}</Text>
-            <SVG icon={iconName} width={24} height={24} white={!darkIcon}/>
+            {!noIcon && <SVG icon={iconName} width={24} height={24} white={!darkIcon}/>}
         </Pressable>
     )
 }

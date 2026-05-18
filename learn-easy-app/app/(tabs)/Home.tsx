@@ -331,24 +331,31 @@ export default function Home() {
                 </Text>
               </View>
 
-              <Button
-                text="Take the quiz"
-                iconName="chevron-right"
-                light={true}
-                darkIcon={true}
-                fullWidth={true}
-                onPress={() => {
+            <>
+          
+              <View style={styles.categoryContainer}>
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
+                  <Text style={[fonts.josefin, colors.white]}>You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz! 
+                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.</Text>
+                </View>
+              
+                <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
+                  const lastChapterId = currentCourse?.chapters[currentCourse.chapters.length - 1]?.chapter_id;
                   router.push({
                     pathname: "/Quiz",
                     params: {
                       courseId: currentCourse?.course_id,
+                      chapterId: String(lastChapterId),
                     },
-                  });
-                }}
-              />
-            </View>
-          </>
-        )}
+                  })
+                }}/>
+              </View>
+            </>
+          
+          }
+
 
         {/* Gallery */}
         <View style={styles.categoryContainer}>
