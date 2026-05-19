@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, View, Text,} from 'react-native';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
@@ -6,6 +6,12 @@ import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import courses from "@/assets/courses.json"
+
+export const completeCourseSelected = async () => {
+  const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+  await AsyncStorage.setItem('@quizCompletedCourseNotSelected', 'false');
+}
+
 
 export default function QuizResult() {
     const router = useRouter();
@@ -32,15 +38,29 @@ export default function QuizResult() {
       fetchCourseInfo();
     }, []);
 
+    // Check if there's a quiz to be completed
+    const completeCourseNotSelected = async () => {
+      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+      await AsyncStorage.setItem('@quizCompletedCourseNotSelected', 'true');
+    }
+
+    const completeQuiz = async () => {
+      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+      await AsyncStorage.setItem('@quizIncompleted', 'false');
+    }
+
     
+
     // To-do: check the answers
     useEffect(()=>{
+        if (!course || !currentCourse) return;
         let userScore = 0;
         const answersMap = new Map<number, string[]>(JSON.parse(answers));
         let totalScore = course?.quiz?.questions?.length ?? 1;
         const foundChapter = currentCourse?.chapters.find((c: any) => String(c.chapter_id) === String(chapterId));
         const questions = foundChapter?.quiz?.questions ?? [];
         const isLastChapter = currentCourse?.chapters.indexOf(foundChapter) === (currentCourse?.amount_of_chapters - 1);
+        setIsLastChapter(isLastChapter);
         // Run through every question and its correct answers
         // Check our answers, if there's at least one wrong one - user gets 0 points
         for (let i = 0; i < questions.length; i++){
@@ -77,7 +97,7 @@ export default function QuizResult() {
             }
         }
 
-    }, [course])
+    }, [course, currentCourse])
 
     const nextStep = async () => {
         if (!db) return;
@@ -102,7 +122,8 @@ export default function QuizResult() {
 
         // Get back to Kurswahl if its the last chapter
         if (isLastChapter){
-            if (user){
+          completeCourseSelected();
+          if (user){
                 await user.patch({
                     completedCourses: [...(user.completedCourses ?? []), courseId],
                 });
@@ -119,9 +140,9 @@ export default function QuizResult() {
     return (
         <ThemedView style={styles.container}>
             <View style={styles.result}>
-                <Text style={[fonts.josefin, fonts.josefinBold,]}>{resultText}</Text>
-                <Text style={[fonts.josefin, fonts.josefinBold, {fontSize: 48, }]}>{score}%</Text>
-                <Text style={[fonts.josefin, fonts.josefinMedium, ]}>{helpText}</Text>
+                <Text style={[fonts.josefin, fonts.josefinBold, {textAlign: 'center'}]}>{resultText}</Text>
+                <Text style={[fonts.josefin, fonts.josefinBold, {fontSize: 48, textAlign: 'center' }]}>{score}%</Text>
+                <Text style={[fonts.josefin, fonts.josefinMedium, {textAlign: 'center'}]}>{helpText}</Text>
             </View>
           {/* Choose a different course or just complete the chapter */}
           
@@ -133,6 +154,7 @@ export default function QuizResult() {
                     text="Choose next course"
                     iconName="chevron-right"
                     light={true}
+                    style={styles.button}
                     darkIcon={true}
                     fullWidth={true}
                     onPress={async () => {
@@ -198,8 +220,8 @@ export default function QuizResult() {
                     iconName="chevron-right"
                     light={true}
                     noIcon={true}
+                    fullWidth={false}
                     darkIcon={true}
-                    fullWidth={true}
                     onPress={() => {
                       router.push({
                         pathname: '/Quiz',
@@ -208,6 +230,17 @@ export default function QuizResult() {
                             chapterId: chapterId,
                         }
                       })
+                    }}
+                />
+                <Button
+                    text="Maybe later"
+                    iconName="chevron-right"
+                    light={true}
+                    noIcon={true}
+                    fullWidth={false}
+                    darkIcon={true}
+                    onPress={() => {
+                      router.navigate("/(tabs)/Home");
                     }}
                 />
                 </View>
@@ -252,7 +285,12 @@ const styles = StyleSheet.create({
     paddingBottom: 64, 
   },
   buttonContainer: {
-    height: 50,
     width: '100%',
-  }
+    display: 'flex',
+    gap: 16,
+  },
+  button: {
+    height: 50,
+    flex: 1,
+  },
 });

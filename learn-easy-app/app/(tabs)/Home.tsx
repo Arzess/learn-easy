@@ -55,10 +55,13 @@ export default function Home() {
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const val = await getItem("@quizIncompleted");
-        setQuiz(val !== "false");
+        const val = await getItem('@quizIncompleted');
+        const quiz = await getItem('@quizCompletedCourseNotSelected');
+        setQuizCompletedCourseNotSelected(quiz === 'true');
+        setQuiz(val ==='true');
       } catch (e) {
         setQuiz(false);
+        setQuizCompletedCourseNotSelected(false);
       }
     };
     checkStatus();
@@ -74,7 +77,7 @@ export default function Home() {
         const fetchPictures = async (courseName: string) => {
           try {
             const client = createClient(
-              "dnXMyimAOpRQXMPQe1Vr6TsayuxePRRb7Ox3hY9NOpMpTp0kt8VlOqb7",
+              process.env.EXPO_PUBLIC_PEXELS_API_KEY!
             );
             const query = courseName;
             const res = await client.photos.search({ query, per_page: 4 });
@@ -120,7 +123,6 @@ export default function Home() {
       fetchUser();
     }, [db]),
   );
-
   // Load bookmarks
   useEffect(() => {
     const loadBookmarked = async () => {
@@ -136,6 +138,23 @@ export default function Home() {
     if (pictures.length > 0) loadBookmarked();
   }, [pictures, db]);
 
+  const selectNew = async () => {
+    if (!db) return;
+        
+    const user = await db.general.user.findOne({
+      selector: { current: {$eq: true}}
+    }).exec();
+    
+    if (user){
+      // Update the completed courses
+      await user.patch({
+                  completedCourses: [...user.completedCourses, currentCourse?.course_id],
+      });
+      router.navigate("/start/Kurswahl");
+    }
+  }
+
+
   if (!userData) {
     return (
       <ThemedView style={styles.container}>
@@ -145,17 +164,17 @@ export default function Home() {
   }
 
   const isDark = theme === "dark";
-  const textColor = Colors[theme].text;
+  const textColor = colors.white.color;
 
   // Coursedetails
   let completionRate = 0;
   let progressBarWidth = 0;
   if (currentCourse) {
-    completionRate = Math.round(
+    completionRate = currentCourse.amount_of_chapters > 0 ? Math.round(
       (userData.currentCourseCompletedChapters.length /
         currentCourse.amount_of_chapters) *
         100,
-    );
+    ) : 0;
     if (!completionRate) {
       progressBarWidth = 5;
     } else {
@@ -295,16 +314,35 @@ export default function Home() {
                   Carry on with your course
                 </Text>
               </View>
-              <View style={styles.jumpBackIn}>
-                <View style={styles.preview}>
-                  <Text
-                    style={[fonts.josefin, styles.chapterPreviewText]}
-                    numberOfLines={8}
-                    ellipsizeMode="tail"
-                  >
-                    {currentCourse?.chapters[0].chapter_content[0].content}
+            )}
+            
+            {/* Case 2: quiz to do */}
+            {quiz && (
+              <View style={styles.categoryContainer}>
+                <View style={styles.categoryHeadingContainer}>
+                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
+                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
+                  <Text style={[fonts.josefin, colors.white]}>
+                    You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz!
+                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.
                   </Text>
                 </View>
+                <Button
+                  text="Take the quiz"
+                  iconName="chevron-right"
+                  light={true}
+                  darkIcon={true}
+                  fullWidth={true}
+                  onPress={() => {
+                    router.push({
+                      pathname: "/Quiz",
+                      params: {
+                        courseId: currentCourse?.course_id,
+                        chapterId: String(userData.currentChapter-1),
+                      },
+                    });
+                  }}
+                />
               </View>
               <Button
                 text="Jump to the chapter"
@@ -394,7 +432,7 @@ export default function Home() {
                 autoPlay={true}
                 autoPlayInterval={4000}
                 data={pictures}
-                width={380}
+                width={width-32}
                 height={220}
                 loop={true}
                 pagingEnabled={true}
@@ -713,6 +751,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    fontSize: 16,
   },
   scrollContent: {
     flexDirection: "column",

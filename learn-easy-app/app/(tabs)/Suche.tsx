@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import Button from '@/components/Button';
 import Svg from '@/components/svg';
 import '@/components/svg-sheet';
 import { ThemedView } from '@/components/themed-view';
@@ -17,6 +18,7 @@ import { Colors, fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useDB } from '@/db/DatabaseContext';
 import courses from '@/assets/courses.json';
+import { colors } from '@/constants/theme';
 
 type ResultItem = {
   content_id: number;
@@ -138,9 +140,7 @@ export default function SucheScreen() {
       <ThemedView style={styles.container}>
         {/* Results header */}
         <View style={styles.resultsHeader}>
-          <TouchableOpacity onPress={handleBack} style={styles.backBtn} activeOpacity={0.7}>
-            <Svg icon="chevron-left" width={20} height={20} white={isDark} />
-          </TouchableOpacity>
+          <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
           <View style={styles.resultsTitleBlock}>
             <Text style={[fonts.josefin, styles.resultsFor, { color: iconColor }]}>Results for</Text>
             <Text style={[fonts.josefin, fonts.josefinBold, styles.resultsQuery, { color: textColor }]}>
@@ -232,11 +232,12 @@ export default function SucheScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Text style={[fonts.josefin, fonts.josefinBold, styles.heading, { color: textColor }]}>Search</Text>
-      <Text style={[fonts.josefin, styles.label, { color: iconColor }]}>Quickly find interesting material</Text>
+      <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]}>Search</Text>
+      <View style={[{flex: 1, display: 'flex', justifyContent: 'flex-end'}, !lastQueries.length && styles.noSearches, ]}>
+        <Text style={[fonts.josefin, fonts.josefinMedium, styles.label, { color: iconColor }]}>Quickly find interesting material</Text>
 
       {/* Search bar */}
-      <View style={[styles.searchBar, {
+        <View style={[styles.searchBar, {
         backgroundColor: isDark ? '#2c2c2e' : '#f0f0f0',
         borderColor: isDark ? '#444' : '#ddd',
       }]}>
@@ -245,7 +246,7 @@ export default function SucheScreen() {
           value={query}
           onChangeText={setQuery}
           placeholder="e.g Mongolia"
-          placeholderTextColor={iconColor}
+          placeholderTextColor={'#61646B'}
           returnKeyType="search"
           onSubmitEditing={() => handleSearch(query)}
         />
@@ -254,13 +255,15 @@ export default function SucheScreen() {
         </TouchableOpacity>
       </View>
 
+      </View>
       {/* Last queries */}
       {lastQueries.length > 0 && (
         <View style={[styles.lastQueriesCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-          <Text style={[fonts.josefin, fonts.josefinBold, styles.lastQueriesTitle]}>Last queries</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.lastQueriesTitle]}>Last queries</Text>
+          <View style={{width: '100%', height: 1, marginBottom: 16, backgroundColor: colors.blackBg.backgroundColor}}></View>
           {lastQueries.map((q, i) => (
             <TouchableOpacity key={i} onPress={() => { setQuery(q); handleSearch(q); }} activeOpacity={0.7}>
-              <Text style={[fonts.josefin, styles.lastQueryItem, { color: '#333' }]}>{q}</Text>
+              <Text style={[fonts.josefin, fonts.josefinMedium, styles.lastQueryItem]}>{q}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -273,11 +276,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 56,
+    paddingTop: 64,
+    justifyContent: 'center',
   },
   heading: {
     fontSize: 32,
-    marginBottom: 6,
   },
   label: {
     fontSize: 13,
@@ -300,22 +303,24 @@ const styles = StyleSheet.create({
   lastQueriesCard: {
     borderRadius: 16,
     borderWidth: 1,
-    padding: 16,
     gap: 10,
+    flex: 1,
   },
   lastQueriesTitle: {
-    fontSize: 15,
+    fontSize: 16,
     color: '#111',
-    marginBottom: 4,
+    padding: 16,
   },
   lastQueryItem: {
-    fontSize: 14,
+    fontSize: 16,
+    textDecorationLine: 'underline',
     paddingVertical: 2,
+    padding: 16,
   },
   // Results
   resultsHeader: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 12,
     marginBottom: 20,
   },
@@ -412,4 +417,7 @@ const styles = StyleSheet.create({
   chapterTag: {
     fontSize: 11,
   },
+  noSearches: {
+    justifyContent: 'center',
+  }
 });

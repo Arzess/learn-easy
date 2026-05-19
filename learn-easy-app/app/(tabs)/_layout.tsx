@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import SVG from '../../components/svg'
 import '../../components/svg-sheet'
+import { colors } from '@/constants/theme';
 import { HapticTab } from '@/components/haptic-tab';
 import { useAppTheme } from '@/context/theme-context';
 
@@ -9,7 +10,7 @@ export default function TabLayout() {
   const { isDarkMode } = useAppTheme();
 
   const tabBarBg = isDarkMode ? '#1B1E20' : '#ffffff';
-  const tabBarBorder = isDarkMode ? 'rgba(255,255,255,0.15)' : '#e0e0e0';
+  const tabBarBorder = isDarkMode ? colors.white.color : '#f0f0f0';
   const tabBarActiveBg = isDarkMode ? '#ffffff' : '#f0f0f0';
 
   return (

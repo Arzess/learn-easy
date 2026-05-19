@@ -31,7 +31,7 @@ export default function ChapterContent() {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const isDark = theme === 'dark';
-  const tint = '#0a7ea4';
+  const tint = colors.white.color;
   const textColor = Colors[theme].text;
 
   useEffect(() => {
@@ -59,6 +59,11 @@ export default function ChapterContent() {
     );
   }
 
+  const setQuiz = async () => {
+      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+      await AsyncStorage.setItem('@quizIncompleted', 'true');
+  }
+
   const toggleBookmark = (content_id: number, type: string, url: string) => {
     if (bookmarkedIds.has(content_id)) {
       removeBookmark(db, bookmarkIdMap[content_id]);
@@ -83,7 +88,7 @@ export default function ChapterContent() {
       let updated = already;
       if (!already.map(String).includes(String(chapterId))) {
         updated = [...already, String(chapterId)];
-        await user.patch({ currentCourseCompletedChapters: updated });
+        await user.patch({ currentCourseCompletedChapters: updated, currentChapter: user.currentChapter+1 });
       }
       if (course && updated.length >= course.amount_of_chapters) {
         setShowCongrats(true);
@@ -128,9 +133,9 @@ export default function ChapterContent() {
               {labelMap[item.content_type] ?? item.content_type}
             </Text>
             <TouchableOpacity
-              style={[styles.bookmarkBtn, { backgroundColor: isBookmarked ? tint : '#fff', borderWidth: isBookmarked ? 0 : 1, borderColor: '#ccc' }]}
+              style={[styles.bookmarkBtn, { backgroundColor: '#fff' }]}
               onPress={() => {
-                const url = item.content_type === 'image' ? item.image_source : item.content_type === 'video' ? item.link : '';
+                const url = item.content_type === 'image' ? item.image_source : item.content_type === 'video' ? item.link : item.content;
                 toggleBookmark(item.content_id, item.content_type, url);
               }}
               activeOpacity={0.7}
@@ -227,11 +232,11 @@ export default function ChapterContent() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalBox}>
             <Text style={[fonts.josefin, styles.modalEmoji]}>🎉</Text>
-            <Text style={[fonts.josefin, styles.modalTitle]}>Congratulations!</Text>
+            <Text style={[fonts.josefin, styles.modalTitle, colors.black]}>Congratulations!</Text>
             <Text style={[fonts.josefin, fonts.josefinBold, styles.modalHeading]}>
               You have finished all the chapters!
             </Text>
-            <Text style={[fonts.josefin, styles.modalSub]}>Are you ready for the quiz?</Text>
+            <Text style={[fonts.josefin, styles.modalSub, colors.black]}>Are you ready for the quiz?</Text>
             <TouchableOpacity
               style={styles.modalPrimaryBtn}
               onPress={() => {
@@ -246,7 +251,7 @@ export default function ChapterContent() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalSecondaryBtn}
-              onPress={() => { setShowCongrats(false); router.back(); }}
+              onPress={() => { setShowCongrats(false); setQuiz(); router.back(); }}
               activeOpacity={0.85}
             >
               <Text style={[fonts.josefin, styles.modalSecondaryBtnText]}>Later</Text>

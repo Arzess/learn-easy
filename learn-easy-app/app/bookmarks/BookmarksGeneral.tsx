@@ -77,6 +77,14 @@ export default function Bookmarks() {
                 },
               });
             }}/>
+            <Card subtext="Category" text="Texts" onPress={()=>{
+              router.push({
+                pathname: "/bookmarks/Texts",
+                params: {
+                  courseId: courseId, 
+                },
+              });
+            }}/>
           </View>
       </ThemedView>
   );

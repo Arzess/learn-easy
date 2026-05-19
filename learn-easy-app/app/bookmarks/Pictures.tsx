@@ -61,32 +61,28 @@ export default function Bookmarks() {
         !noResults && 
         
         <>
-          <FlatList
-            data={bookmarks}
-            keyExtractor={item => item.bookmarkId.toString()}
-            contentContainerStyle={{ gap: 16, paddingBottom: 32 }}
-            renderItem={({ item }) => {
-              const allContent = courses.courses.flatMap(c => c.chapters).flatMap(ch => ch.chapter_content) as any[];
-              const source = allContent.find(c => c.content_id === item.inhaltsId);
-              const imageUri = source?.image_source ?? item.url;
-              return (
-                <View style={styles.bookmarkContainer}>
-                  {imageUri ? (
-                    <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
-                  ) : null}
-                  <TouchableOpacity
-                    style={[styles.bookmark, { backgroundColor: colors.whiteBg.backgroundColor }]}
-                    onPress={() => {
-                      removeBookmark(db, item.bookmarkId);
-                      setBookmarks(prev => {
-                        const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
-                        if (updated.length === 0) setNoResults(true);
-                        return updated;
-                      });
-                    }}
-                    activeOpacity={0.7}
-                  >
-                    <Svg icon="bookmark-remove" width={16} height={16} white={true} />
+          <FlatList data={bookmarks} style={{flex: 1}} ItemSeparatorComponent={()=>(<View style={{height: 16}}></View>)} keyExtractor={item => item.bookmarkId.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.bookmarkContainer}>
+                <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
+                <TouchableOpacity
+                                  style={[
+                                    styles.bookmark,
+                                    {
+                                      backgroundColor: colors.whiteBg.backgroundColor,
+                                    }
+                                  ]}
+                                  onPress={() => {
+                                    removeBookmark(db, item.bookmarkId);
+                                    setBookmarks(prev => {
+                                      const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
+                                      if (updated.length === 0) setNoResults(true);
+                                      return updated;
+                                    });
+                                  }}
+                                  activeOpacity={0.7}
+                                >
+                                  <Svg icon="bookmark-remove" width={16} height={16} white={true} />
                   </TouchableOpacity>
                 </View>
               );

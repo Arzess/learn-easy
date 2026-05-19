@@ -193,6 +193,13 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 16,
+  },
+  titleSubContainer: {
+    display: 'flex',
     flexDirection: 'column',
     gap: 16,
   },
