@@ -49,19 +49,37 @@ export default function Kurswahl() {
 
   }, [db]);
 
+  // Problem: Abgeschlossene Kurse wurden weiterhin in der Auswahl angezeigt – mit KI behoben
   const filtered = useFuzzySearchList({
-    list: themen.filter(t => !userData?.courseHistory?.includes(t.course_id)),
+    list: themen.filter(t =>
+      !userData?.completedCourses?.map(String).includes(String(t.course_id))
+    ),
     queryText: query,
     getText: (item) => [item.course_name],
     mapResultItem: ({item}) => item,
   });
   const isDark = theme === 'dark';
 
-  // Register the user in the database
+  // Problem: Kurswechsel aus Account verursachte Datenbankfehler (fehlende Pflichtfelder) und alte Bookmarks blieben sichtbar – mit KI behoben
   const next_step = async (course_id: string) => {
     if (!db) return;
-    if (await getItem("@firstLaunch") !== 'false'){
-      db.general.user.upsert({
+    // Clear all bookmarks when switching courses
+    const allBookmarks = await db.general.bookmarks.find().exec();
+    await Promise.all(allBookmarks.map((b: any) => b.remove()));
+
+    const existingUser = await db.general.user.findOne({
+      selector: { current: { $eq: true } }
+    }).exec();
+
+    if (existingUser) {
+      await existingUser.patch({
+        course: course_id,
+        courseHistory: [...existingUser.toJSON().courseHistory, course_id],
+        currentChapter: 1,
+        currentCourseCompletedChapters: [],
+      });
+    } else {
+      await db.general.user.upsert({
         id: userId.toString(),
         current: true,
         intensity: intensity,
@@ -69,26 +87,12 @@ export default function Kurswahl() {
         name: name,
         username: username,
         course: course_id,
-        courseHistory: [course_id,],
+        courseHistory: [course_id],
         completedCourses: [],
         currentChapter: 1,
         currentCourseCompletedChapters: [],
       });
       completeIntro();
-    }
-    else{
-      const user = await db.general.user.findOne({
-        selector: { current: {$eq: true}}
-      }).exec();
-
-      if (user){
-        await user.patch({
-          course: course_id,
-          courseHistory: [...user.toJSON().courseHistory, course_id],
-          currentChapter: 1,
-          currentCourseCompletedChapters: [],
-        });
-      }
     }
     // Return to the Home page
     router.navigate("/(tabs)/Home");

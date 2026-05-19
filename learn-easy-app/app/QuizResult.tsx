@@ -77,21 +77,23 @@ export default function QuizResult() {
         }
         const endScore = Math.round(userScore/totalScore*100);
         setScore(endScore);
+        // Problem: setPassed(true) wurde nie aufgerufen, bestandener Quiz zeigte trotzdem "Try again" – mit KI behoben
         if (endScore < 50){
             setPassed(false);
             setResultText("Well effort.");
             setHelpText("You didn't make it this time! Give it another try.");
         }
         else{
-            // Pass the test
             setPassed(true);
             if (isLastChapter){
+                setIsLastChapter(true);
                 setResultText("You've passed and completed the course!");
                 setHelpText("You did well on this test! Now choose the next course you want to learn!");
             }
             else{
+                setIsLastChapter(false);
                 setResultText("You've passed!");
-                setHelpText("You did well on this test! It's time to move on to the next chapter!");
+                setHelpText("Great work! Keep going.");
             }
         }
 
@@ -123,15 +125,13 @@ export default function QuizResult() {
           completeCourseSelected();
           if (user){
                 await user.patch({
-                    completedCourses: [...user.completedCourses, courseId],
+                    completedCourses: [...(user.completedCourses ?? []), courseId],
                 });
             }
-            
-            router.navigate("/start/Kurswahl");
-        } 
+            router.replace("/start/Kurswahl");
+        }
         else{
-          completeQuiz();
-            router.navigate("/Home");
+            router.replace("/(tabs)/Home");
         }
 
     } 
@@ -146,50 +146,69 @@ export default function QuizResult() {
             </View>
           {/* Choose a different course or just complete the chapter */}
           
-          {/* Case 1: passed */}
-          {passed && 
-          
+          {/* Case 1: passed, last chapter → choose next course */}
+          {passed && isLastChapter &&
             <>
                 <View style={styles.buttonContainer}>
                 <Button
-                    text="Next"
+                    text="Choose next course"
                     iconName="chevron-right"
                     light={true}
                     style={styles.button}
                     darkIcon={true}
                     fullWidth={true}
-                    onPress={() => {
-                      nextStep();
+                    onPress={async () => {
+                      if (db) {
+                        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+                        if (user) {
+                          await user.patch({
+                            completedCourses: [...(user.completedCourses ?? []), courseId],
+                          });
+                        }
+                      }
+                      router.replace('/start/Kurswahl');
                     }}
                 />
                 </View>
-              
-                {isLastChapter &&
-                  <>
-
-                    <View style={styles.buttonContainer}>
-                      <Button
-                          text="Maybe later"
-                          iconName="chevron-right"
-                          light={true}
-                          style={styles.button}
-                          noIcon={true}
-                          darkIcon={true}
-                          fullWidth={true}
-                          onPress={() => {
-                            completeCourseNotSelected();
-                            completeQuiz();
-                            router.navigate("/(tabs)/Home");
-                          }}
-                      />
-                    </View>
-
-                  </>
-                }
-                
-
+                <View style={styles.buttonContainer}>
+                <Button
+                    text="Later"
+                    light={true}
+                    noIcon={true}
+                    darkIcon={true}
+                    fullWidth={true}
+                    iconName="chevron-right"
+                    onPress={() => router.replace('/(tabs)/Home')}
+                />
+                </View>
             </>
-          
+          }
+
+          {/* Case 2: passed, not last chapter → next chapter */}
+          {passed && !isLastChapter &&
+            <>
+                <View style={styles.buttonContainer}>
+                <Button
+                    text="Next chapter"
+                    iconName="chevron-right"
+                    light={true}
+                    darkIcon={true}
+                    fullWidth={true}
+                    onPress={() => nextStep()}
+                />
+                </View>
+                <View style={styles.buttonContainer}>
+                <Button
+                    text="Maybe later"
+                    light={true}
+                    noIcon={true}
+                    darkIcon={true}
+                    fullWidth={true}
+                    iconName="chevron-right"
+                    onPress={() => router.navigate("/Home")}
+                />
+                </View>
+            </>
           }
           {/* Case 2:not passed */}
           

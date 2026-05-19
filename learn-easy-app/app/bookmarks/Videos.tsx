@@ -1,14 +1,11 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
-import { ThemedText } from '@/components/themed-text';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image, Linking } from 'react-native';
+import { useState, useCallback } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors, Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import Bookmark from '@/components/Bookmark';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
-import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
 import { removeBookmark } from '@/db/database';
@@ -29,23 +26,20 @@ export default function Bookmarks() {
   };
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [noResults, setNoResults] = useState(false);
-  // Fetch bookmarks
-  useEffect(()=>{
-    
-    const fetchBookmarks = async (type: string) => {
-
+  // Problem: Titel zeigte "Pictures", falscher Datenfilter, keine Videos angezeigt – mit KI behoben
+  useFocusEffect(
+    useCallback(() => {
       if (!db) return;
-      const res = await db.general.bookmarks.find({
-        selector: { inhaltsTyp: {$eq: type}}
-      }).exec();
-
-      const results = res.map((b: any) => b.toJSON());
-      setBookmarks(results);
-      if (results.length === 0) setNoResults(true);
-    }
-
-    fetchBookmarks("image");
-  }, [db])
+      const fetch = async () => {
+        const res = await db.general.bookmarks.find().exec();
+        const all = res.map((b: any) => b.toJSON());
+        const results = all.filter((b: any) => b.inhaltsTyp === 'video');
+        setBookmarks(results);
+        setNoResults(results.length === 0);
+      };
+      fetch();
+    }, [db])
+  );
 
 
 
@@ -56,7 +50,7 @@ export default function Bookmarks() {
             <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
             <View style={styles.titleContainer}>
                 <Text style={[fonts.josefin, { color: textColor }]}>Bookmarks</Text>
-                <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">Pictures</Text>
+                <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">Videos</Text>
             </View>
         </View>
         {/* Bookmarks */}
@@ -66,31 +60,49 @@ export default function Bookmarks() {
         !noResults && 
         
         <>
-          <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.bookmarkContainer}>
-                <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
-                <TouchableOpacity
-                                  style={[
-                                    styles.bookmark,
-                                    {
-                                      backgroundColor: colors.whiteBg.backgroundColor,
-                                    }
-                                  ]}
-                                  onPress={() => {
-                                    removeBookmark(db, item.bookmarkId);
-                                    setBookmarks(prev => {
-                                      const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
-                                      if (updated.length === 0) setNoResults(true);
-                                      return updated;
-                                    });
-                                  }}
-                                  activeOpacity={0.7}
-                                >
-                                  <Svg icon="bookmark-remove" width={16} height={16} white={true} />
+          <FlatList
+            data={bookmarks}
+            keyExtractor={item => item.bookmarkId.toString()}
+            contentContainerStyle={{ gap: 16, paddingBottom: 32 }}
+            renderItem={({ item }) => {
+              const videoId = item.url.split('/embed/')[1]?.split('?')[0];
+              const thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
+              const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
+              return (
+                <View style={styles.bookmarkContainer}>
+                  <TouchableOpacity
+                    activeOpacity={0.85}
+                    style={{ flex: 1 }}
+                    onPress={() => watchUrl && Linking.openURL(watchUrl)}
+                  >
+                    {thumbnail ? (
+                      <Image source={{ uri: thumbnail }} style={styles.thumbnail} resizeMode="cover" />
+                    ) : (
+                      <View style={styles.thumbnail} />
+                    )}
+                    <View style={styles.playOverlay}>
+                      <View style={styles.playButton}>
+                        <Text style={styles.playIcon}>▶</Text>
+                      </View>
+                    </View>
                   </TouchableOpacity>
-              </View>
-            )}  
+                  <TouchableOpacity
+                    style={[styles.bookmark, { backgroundColor: colors.whiteBg.backgroundColor }]}
+                    onPress={() => {
+                      removeBookmark(db, item.bookmarkId);
+                      setBookmarks(prev => {
+                        const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
+                        if (updated.length === 0) setNoResults(true);
+                        return updated;
+                      });
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <Svg icon="bookmark-remove" width={16} height={16} white={true} />
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
           />
         </>
         
@@ -102,7 +114,7 @@ export default function Bookmarks() {
         noResults && 
         
         <>
-          <NothingFound text="You don’t have any pictures saved yet. Click on the bookmark icon to add your favorite content here."/>
+          <NothingFound text="You don’t have any videos saved yet. Click on the bookmark icon in a chapter to add your favorite videos here."/>
         </>
         
         }
@@ -128,10 +140,34 @@ const styles = StyleSheet.create({
   },
   bookmarkContainer: {
     width: '100%',
-    minHeight: 200,
+    height: 220,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     overflow: 'hidden',
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#000',
+  },
+  playOverlay: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playIcon: {
+    color: 'white',
+    fontSize: 20,
+    marginLeft: 4,
   },
   bookmark: {
     position: 'absolute',

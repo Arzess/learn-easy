@@ -77,6 +77,7 @@ export default function ChapterContent() {
     }
   };
 
+  // Problem: "Take the quiz" nach Kapitelabschluss führte zu leerem Quiz (fehlender chapterId-Parameter) – mit KI behoben
   const finishChapter = async () => {
     if (!db) return;
     // @ts-ignore
@@ -240,7 +241,8 @@ export default function ChapterContent() {
               style={styles.modalPrimaryBtn}
               onPress={() => {
                 setShowCongrats(false);
-                router.replace({ pathname: '/Quiz', params: { courseId } });
+                const lastChapter = course?.chapters[course.chapters.length - 1];
+                router.replace({ pathname: '/Quiz', params: { courseId, chapterId: String(lastChapter?.chapter_id ?? chapterId) } });
               }}
               activeOpacity={0.85}
             >

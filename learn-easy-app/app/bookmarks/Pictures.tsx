@@ -1,17 +1,15 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
-import { ThemedText } from '@/components/themed-text';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { useState, useCallback } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors, Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import Bookmark from '@/components/Bookmark';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
-import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
 import { removeBookmark } from '@/db/database';
+import courses from '@/assets/courses.json';
 
 
 
@@ -29,23 +27,20 @@ export default function Bookmarks() {
   };
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [noResults, setNoResults] = useState(false);
-  // Fetch bookmarks
-  useEffect(()=>{
-    
-    const fetchBookmarks = async (type: string) => {
-
+  // Problem: Bilder aus Kapiteln wurden in Bookmarks nicht angezeigt (useEffect wurde nicht erneut ausgeführt) – mit KI behoben
+  useFocusEffect(
+    useCallback(() => {
       if (!db) return;
-      const res = await db.general.bookmarks.find({
-        selector: { inhaltsTyp: {$eq: type}}
-      }).exec();
-
-      const results = res.map((b: any) => b.toJSON());
-      setBookmarks(results);
-      if (results.length === 0) setNoResults(true);
-    }
-
-    fetchBookmarks("image");
-  }, [db])
+      const fetch = async () => {
+        const res = await db.general.bookmarks.find().exec();
+        const all = res.map((b: any) => b.toJSON());
+        const results = all.filter((b: any) => b.inhaltsTyp === 'image');
+        setBookmarks(results);
+        setNoResults(results.length === 0);
+      };
+      fetch();
+    }, [db])
+  );
 
 
 
@@ -89,8 +84,9 @@ export default function Bookmarks() {
                                 >
                                   <Svg icon="bookmark-remove" width={16} height={16} white={true} />
                   </TouchableOpacity>
-              </View>
-            )}  
+                </View>
+              );
+            }}
           />
         </>
         
@@ -128,10 +124,14 @@ const styles = StyleSheet.create({
   },
   bookmarkContainer: {
     width: '100%',
-    height: 200,
+    height: 260,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   bookmark: {
     position: 'absolute',
