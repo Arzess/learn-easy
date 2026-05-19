@@ -31,7 +31,7 @@ export default function ChapterContent() {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const isDark = theme === 'dark';
-  const tint = '#0a7ea4';
+  const tint = colors.white.color;
   const textColor = Colors[theme].text;
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function ChapterContent() {
             <TouchableOpacity
               style={[styles.bookmarkBtn, { backgroundColor: '#fff' }]}
               onPress={() => {
-                const url = item.content_type === 'image' ? item.image_source : item.content_type === 'video' ? item.link : '';
+                const url = item.content_type === 'image' ? item.image_source : item.content_type === 'video' ? item.link : item.content;
                 toggleBookmark(item.content_id, item.content_type, url);
               }}
               activeOpacity={0.7}

@@ -3,7 +3,7 @@ import {TextInput, View, StyleSheet, Text, Image} from 'react-native'
 import { fonts, colors } from "../constants/theme";
 import courses from '@/assets/courses.json'
 
-export default function Bookmark({added, content_id, courseId, url} : {added: boolean, content_id: number, courseId: string, url: string}){
+export default function Bookmark({added, content_id, courseId, url, isText} : {added: boolean, content_id: number, courseId: string, url: string, isText?: boolean}){
   const course = courses.courses.find(b => b.course_id == courseId);
   const source = course?.chapters.flatMap(ch => ch.chapter_content).find(c => c.content_id === content_id);
   
@@ -13,8 +13,18 @@ export default function Bookmark({added, content_id, courseId, url} : {added: bo
 
     return (
         <View style={styles.bookmarkContainer}>
-            <Image source={{ uri: url}} resizeMode='cover' style={styles.bookmarkImage}/>
-        </View>
+            {!isText && 
+                <>
+                    <Image source={{ uri: url}} resizeMode='cover' style={styles.bookmarkImage}/>
+                </>
+            }
+            {
+                isText &&
+                <>
+                    <Text style={fonts.josefin}>{url}</Text>
+                </>
+            }
+            </View>
     );
 }
 

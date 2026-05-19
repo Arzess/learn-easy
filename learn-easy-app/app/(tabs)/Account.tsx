@@ -15,10 +15,11 @@ import {
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
+import { colors, Colors } from '@/constants/theme';
 import { fonts } from '@/constants/theme';
 import { useAppTheme } from '@/context/theme-context';
 import { useDB } from '@/db/DatabaseContext';
+import Svg from '@/components/svg';
 
 type EditField = 'name' | 'kurs' | 'passwort' | 'email';
 
@@ -123,27 +124,29 @@ export default function AccountScreen() {
           <Image source={{ uri: profileImage }} style={styles.avatar} />
         ) : (
           <View style={[styles.avatarPlaceholder, { backgroundColor: isDark ? '#2c2c2e' : '#f0ece8' }]}>
-            <IconSymbol name="person.fill" size={52} color={isDark ? '#888' : '#b0906a'} />
+            
+            <Svg icon="person-filled" width={100} height={100} white={true} />
           </View>
         )}
         <View style={[styles.editBadge, { backgroundColor: isDark ? '#333' : '#e0e0e0' }]}>
-          <IconSymbol name="pencil" size={11} color={isDark ? '#fff' : '#333'} />
+          <Svg icon="pencil" width={16} height={16} white={!isDark} />
         </View>
       </Pressable>
 
       {/* Name / Role / Intensity */}
       <Text style={[fonts.josefin, styles.nameText, { color: textColor }]}>{name || 'Your Name'}</Text>
-      <Text style={[fonts.josefin, styles.roleText, { color: subColor }]}>{role || 'Student'}</Text>
+      <Text style={[fonts.josefin, styles.roleText, { color: subColor }]}>{role.charAt(0).toUpperCase() +
+                    role.slice(1) || 'Student'}</Text>
       <Text style={[fonts.josefin, styles.intensityText, { color: subColor }]}>{intensity}</Text>
 
       {/* Options Dropdown */}
       <View style={styles.dropdownWrapper}>
         <Pressable
           onPress={() => setEditOpen((v) => !v)}
-          style={[styles.optionsButton, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}
+          style={[styles.optionsButton, editOpen && styles.dropdownOpen, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}
         >
           <Text style={[fonts.josefin, styles.optionsButtonText, { color: '#111' }]}>Options</Text>
-          <IconSymbol name={editOpen ? 'chevron.up' : 'chevron.down'} size={14} color="#111" />
+          <Svg icon={editOpen ? 'chevron-up' : 'chevron-down'} width={16} height={16} white={false} />
         </Pressable>
 
         {editOpen && (
@@ -168,7 +171,7 @@ export default function AccountScreen() {
       <View style={[styles.settingsCard, { backgroundColor: '#fff', borderColor: '#e0e0e0' }]}>
         {/* Card header */}
         <View style={[styles.settingsHeader, { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }]}>
-          <IconSymbol name="gear" size={18} color="#888" />
+          <IconSymbol name="gear" size={18} color="black" />
           <Text style={[fonts.josefin, styles.settingsHeaderText, { color: '#888' }]}>Further Settings</Text>
         </View>
 
@@ -210,7 +213,7 @@ export default function AccountScreen() {
           <Switch
             value={pushEnabled}
             onValueChange={setPushEnabled}
-            trackColor={{ false: '#ccc', true: '#0a7ea4' }}
+            trackColor={{ false: '#ccc', true: colors.black.color }}
             thumbColor="#fff"
           />
         </View>
@@ -309,20 +312,27 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 24,
     paddingVertical: 10,
-    borderRadius: 24,
+    borderRadius: 16,
     borderWidth: 1,
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   optionsButtonText: {
     fontSize: 15,
   },
   dropdown: {
-    marginTop: 6,
     width: '100%',
-    borderRadius: 12,
+    borderRadius: 16,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
     borderWidth: 1,
     overflow: 'hidden',
+  },
+  dropdownOpen: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.black.color,
   },
   dropdownItem: {
     paddingVertical: 13,

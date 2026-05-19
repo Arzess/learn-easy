@@ -35,7 +35,7 @@ export default function CourseOverview() {
   }, [db]));
 
   const isDark = theme === 'dark';
-  const tint = '#0a7ea4';
+  const tint = colors.white.color;
   const textColor = Colors[theme].text;
 
   if (loading) {
