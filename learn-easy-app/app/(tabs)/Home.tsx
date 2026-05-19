@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -47,6 +48,8 @@ export default function Home() {
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const [quiz, setQuiz] = useState(false);
+  const [courseRating, setCourseRating] = useState(0);
+  const [showGoalModal, setShowGoalModal] = useState(false);
 
   // Check if there's a quiz to be completed
   useEffect(() => {
@@ -108,6 +111,8 @@ export default function Home() {
           if (course) {
             setCurrentCourse(course);
             fetchPictures(course.course_name);
+            const savedRating = await getItem(`@rating_${course.course_id}`);
+            setCourseRating(savedRating ? parseInt(savedRating, 10) : 0);
           }
         }
       };
@@ -233,6 +238,27 @@ export default function Home() {
                   <Text style={[fonts.josefin, styles.chapterName]}>
                     Chapter {userData.currentChapter}
                   </Text>
+                  <View style={styles.starsRow}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <TouchableOpacity
+                        key={star}
+                        onPress={async () => {
+                          const newRating = star === courseRating ? 0 : star;
+                          setCourseRating(newRating);
+                          if (currentCourse) {
+                            const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+                            AsyncStorage.setItem(`@rating_${currentCourse.course_id}`, String(newRating));
+                          }
+                        }}
+                        activeOpacity={0.7}
+                        hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+                      >
+                        <Text style={[styles.star, { color: star <= courseRating ? '#f5a623' : '#ccc' }]}>
+                          ★
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 </View>
                 <View style={styles.percentageContainer}>
                   <Text style={fonts.josefin}>{completionRate + "%"}</Text>
@@ -240,7 +266,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             {/* Goal */}
-            <View style={styles.goal}>
+            <TouchableOpacity style={styles.goal} onPress={() => setShowGoalModal(true)} activeOpacity={0.75}>
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
                 <Text
@@ -253,7 +279,7 @@ export default function Home() {
                   {difficulties.get(userData.intensity)}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         {/* Jump Back in */}
@@ -263,15 +289,6 @@ export default function Home() {
           <>
             <View style={styles.categoryContainer}>
               <View style={styles.categoryHeadingContainer}>
-                <Text
-                  style={[
-                    fonts.josefin,
-                    styles.categorySubheading,
-                    { color: textColor },
-                  ]}
-                >
-                  Jump Back in
-                </Text>
                 <Text
                   style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}
                 >
@@ -306,55 +323,41 @@ export default function Home() {
         )}
         {/* Case 2: quiz to do */}
         {quiz && (
-          <>
-            <View style={styles.categoryContainer}>
-              <View style={styles.categoryHeadingContainer}>
-                <Text
-                  style={[
-                    fonts.josefin,
-                    styles.categorySubheading,
-                    { color: textColor },
-                  ]}
-                >
-                  Jump Back in
-                </Text>
-                <Text
-                  style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}
-                >
-                  Finish the quiz
-                </Text>
-                <Text style={[fonts.josefin, { color: textColor }]}>
-                  You have completed all the chapters - it's time for the{" "}
-                  {currentCourse?.course_name} quiz! Take it now.. or take your
-                  time, learn the material and hit the button whenever you are
-                  ready.
-                </Text>
-              </View>
-
-            <>
-          
-              <View style={styles.categoryContainer}>
-                <View style={styles.categoryHeadingContainer}>
-                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
-                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
-                  <Text style={[fonts.josefin, colors.white]}>You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz! 
-                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.</Text>
-                </View>
-              
-                <Button text="Take the quiz" iconName="chevron-right" light={true} darkIcon={true} fullWidth={true} onPress={()=>{
-                  const lastChapterId = currentCourse?.chapters[currentCourse.chapters.length - 1]?.chapter_id;
-                  router.push({
-                    pathname: "/Quiz",
-                    params: {
-                      courseId: currentCourse?.course_id,
-                      chapterId: String(lastChapterId),
-                    },
-                  })
-                }}/>
-              </View>
-            </>
-          
-          }
+          <View style={styles.categoryContainer}>
+            <View style={styles.categoryHeadingContainer}>
+              <Text
+                style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}
+              >
+                Finish the quiz
+              </Text>
+              <Text style={[fonts.josefin, { color: textColor }]}>
+                You have completed all the chapters - it's time for the{" "}
+                {currentCourse?.course_name} quiz! Take it now.. or take your
+                time, learn the material and hit the button whenever you are
+                ready.
+              </Text>
+            </View>
+            <Button
+              text="Take the quiz"
+              iconName="chevron-right"
+              light={true}
+              darkIcon={true}
+              fullWidth={true}
+              onPress={() => {
+                const lastChapterId =
+                  currentCourse?.chapters[currentCourse.chapters.length - 1]
+                    ?.chapter_id;
+                router.push({
+                  pathname: "/Quiz",
+                  params: {
+                    courseId: currentCourse?.course_id,
+                    chapterId: String(lastChapterId),
+                  },
+                });
+              }}
+            />
+          </View>
+        )}
 
 
         {/* Gallery */}
@@ -379,9 +382,9 @@ export default function Home() {
               }}
             >
               {noResult ? (
-                <Text style={{ color: "white" }}>No pictures found.</Text>
+                <Text style={{ color: textColor }}>No pictures found.</Text>
               ) : (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color={textColor} />
               )}
             </View>
           ) : (
@@ -410,7 +413,11 @@ export default function Home() {
                       style={[
                         styles.bookmark,
                         {
-                          backgroundColor: colors.whiteBg.backgroundColor,
+                          backgroundColor: bookmarkedIds.has(item.content_id)
+                            ? '#0a7ea4'
+                            : colors.whiteBg.backgroundColor,
+                          borderWidth: bookmarkedIds.has(item.content_id) ? 0 : 1,
+                          borderColor: '#ccc',
                         },
                       ]}
                       onPress={() => {
@@ -443,7 +450,7 @@ export default function Home() {
                         }
                         width={16}
                         height={16}
-                        white={true}
+                        white={false}
                       />
                     </TouchableOpacity>
                     <Image
@@ -458,6 +465,53 @@ export default function Home() {
           )}
         </View>
       </ScrollView>
+
+      {/* Goal / Intensity Modal */}
+      <Modal visible={showGoalModal} transparent animationType="fade">
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowGoalModal(false)}>
+          <View style={[styles.modalBox, { backgroundColor: isDark ? '#1c1c1e' : '#fff' }]}>
+            <Text style={[fonts.josefin, fonts.josefinBold, styles.modalTitle, { color: isDark ? '#fff' : '#000' }]}>
+              Your daily goal
+            </Text>
+            {([
+              { key: 'easy',   label: 'Easy',   freq: '1x a day' },
+              { key: 'medium', label: 'Medium',  freq: '3x a day' },
+              { key: 'hard',   label: 'Hard',    freq: '5x a day' },
+            ] as const).map((opt) => {
+              const active = userData.intensity === opt.key;
+              return (
+                <TouchableOpacity
+                  key={opt.key}
+                  style={[
+                    styles.goalOption,
+                    {
+                      backgroundColor: active ? '#0a7ea4' : (isDark ? '#2c2c2e' : '#f0f0f0'),
+                      borderColor: active ? '#0a7ea4' : (isDark ? '#444' : '#e0e0e0'),
+                    },
+                  ]}
+                  activeOpacity={0.75}
+                  onPress={async () => {
+                    if (!db) return;
+                    const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+                    if (user) {
+                      await user.patch({ intensity: opt.key });
+                      setUserData((prev: any) => ({ ...prev, intensity: opt.key }));
+                    }
+                    setShowGoalModal(false);
+                  }}
+                >
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.goalOptionLabel, { color: active ? '#fff' : (isDark ? '#fff' : '#000') }]}>
+                    {opt.label}
+                  </Text>
+                  <Text style={[fonts.josefin, styles.goalOptionFreq, { color: active ? 'rgba(255,255,255,0.8)' : (isDark ? '#aaa' : '#666') }]}>
+                    {opt.freq}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </ThemedView>
   );
 }
@@ -574,6 +628,44 @@ const styles = StyleSheet.create({
   },
   chapterName: {
     fontSize: 14,
+  },
+  starsRow: {
+    flexDirection: 'row',
+    gap: 2,
+    marginTop: 4,
+  },
+  star: {
+    fontSize: 20,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  modalBox: {
+    width: '100%',
+    borderRadius: 24,
+    padding: 24,
+    gap: 12,
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 4,
+  },
+  goalOption: {
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    gap: 2,
+  },
+  goalOptionLabel: {
+    fontSize: 16,
+  },
+  goalOptionFreq: {
+    fontSize: 13,
   },
   goal: {
     backgroundColor: colors.whiteBg.backgroundColor,

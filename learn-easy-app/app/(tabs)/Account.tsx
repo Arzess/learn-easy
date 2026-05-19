@@ -1,5 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useRouter, useFocusEffect } from 'expo-router';
 import {
   Alert,
   Image,
@@ -20,17 +21,13 @@ import { fonts } from '@/constants/theme';
 import { useAppTheme } from '@/context/theme-context';
 import { useDB } from '@/db/DatabaseContext';
 
-type EditField = 'name' | 'kurs' | 'passwort' | 'email';
+type EditField = 'name' | 'kurs';
 
 const EDIT_OPTIONS: { field: EditField; label: string }[] = [
   { field: 'name', label: 'Change Name' },
   { field: 'kurs', label: 'Change Course' },
-  { field: 'passwort', label: 'Change Password' },
-  { field: 'email', label: 'Change Email' },
 ];
 
-const FONT_SIZES = ['1x', '1.5x', '2x'] as const;
-type FontSize = typeof FONT_SIZES[number];
 
 export default function AccountScreen() {
   const db = useDB();
@@ -43,9 +40,9 @@ export default function AccountScreen() {
   const [editOpen, setEditOpen] = useState(false);
   const [activeField, setActiveField] = useState<EditField | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const [pushEnabled, setPushEnabled] = useState(true);
-  const [fontSize, setFontSize] = useState<FontSize>('1x');
+  const [pushEnabled, setPushEnabled] = useState(false);
 
+  const router = useRouter();
   const { theme, isDarkMode, setDarkMode } = useAppTheme();
   const isDark = theme === 'dark';
   const cardBg = isDark ? '#1c1c1e' : '#fff';
@@ -53,22 +50,25 @@ export default function AccountScreen() {
   const textColor = isDark ? '#fff' : '#000';
   const subColor = isDark ? '#aaa' : '#666';
 
-  useEffect(() => {
-    if (!db) return;
-    const fetchUser = async () => {
-      // @ts-ignore
-      const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
-      if (user) {
-        const data = user.toJSON();
-        setName(data.name ?? '');
-        setRole(data.role ?? '');
-        setIntensity(data.intensity ? data.intensity.charAt(0).toUpperCase() + data.intensity.slice(1) : '');
-        setEmail(data.email ?? '');
-        setKurs(String(data.course ?? ''));
-      }
-    };
-    fetchUser();
-  }, [db]);
+  // Problem: Änderungen (z.B. Daily Goal) wurden im Account-Tab nicht aktualisiert – mit KI behoben
+  useFocusEffect(
+    useCallback(() => {
+      if (!db) return;
+      const fetchUser = async () => {
+        // @ts-ignore
+        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+        if (user) {
+          const data = user.toJSON();
+          setName(data.name ?? '');
+          setRole(data.role ?? '');
+          setIntensity(data.intensity ? data.intensity.charAt(0).toUpperCase() + data.intensity.slice(1) : '');
+          setEmail(data.email ?? '');
+          setKurs(String(data.course ?? ''));
+        }
+      };
+      fetchUser();
+    }, [db])
+  );
 
   async function openImagePicker() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -92,10 +92,21 @@ export default function AccountScreen() {
   }
 
   function openEdit(field: EditField) {
-    const current: Record<EditField, string> = { name, email, kurs, passwort: '' };
+    setEditOpen(false);
+    if (field === 'kurs') {
+      Alert.alert(
+        'Change Course',
+        'All your progress, completed chapters and bookmarks for the current course will be deleted and reset. Are you sure?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Continue', style: 'destructive', onPress: () => router.push('/start/Kurswahl') },
+        ]
+      );
+      return;
+    }
+    const current: Record<EditField, string> = { name, kurs };
     setInputValue(current[field]);
     setActiveField(field);
-    setEditOpen(false);
   }
 
   function saveEdit() {
@@ -108,9 +119,7 @@ export default function AccountScreen() {
 
   const modalTitle: Record<EditField, string> = {
     name: 'Change Name',
-    email: 'Change Email',
     kurs: 'Change Course',
-    passwort: 'Change Password',
   };
 
   return (
@@ -181,27 +190,6 @@ export default function AccountScreen() {
             trackColor={{ false: '#ccc', true: '#555' }}
             thumbColor="#fff"
           />
-        </View>
-
-        {/* Font Size */}
-        <View style={[styles.settingsRow, {}]}>
-          <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Font Size</Text>
-          <View style={styles.fontSizeGroup}>
-            {FONT_SIZES.map((size) => (
-              <Pressable
-                key={size}
-                onPress={() => setFontSize(size)}
-                style={[
-                  styles.fontSizeBtn,
-                  { borderColor: '#ccc', backgroundColor: fontSize === size ? '#222' : 'transparent' },
-                ]}
-              >
-                <Text style={[fonts.josefin, styles.fontSizeBtnText, { color: fontSize === size ? '#fff' : '#888' }]}>
-                  {size}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
         </View>
 
         {/* Push Notifications */}
@@ -357,21 +345,6 @@ const styles = StyleSheet.create({
   },
   settingsLabel: {
     fontSize: 14,
-  },
-  fontSizeGroup: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  fontSizeBtn: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-    borderWidth: 1,
-    minWidth: 36,
-    alignItems: 'center',
-  },
-  fontSizeBtnText: {
-    fontSize: 12,
   },
   modalOverlay: {
     flex: 1,

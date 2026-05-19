@@ -8,12 +8,12 @@ export default function Bookmark({added, content_id, courseId, url} : {added: bo
   const source = course?.chapters.flatMap(ch => ch.chapter_content).find(c => c.content_id === content_id);
   
   const imageUri = source?.image_source ?? url;
-  
+
   if (!imageUri) return null;
 
     return (
         <View style={styles.bookmarkContainer}>
-            <Image source={{ uri: url}} resizeMode='cover' style={styles.bookmarkImage}/>
+            <Image source={{ uri: imageUri}} resizeMode='cover' style={styles.bookmarkImage}/>
         </View>
     );
 }

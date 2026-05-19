@@ -6,7 +6,7 @@ import { fonts, colors, Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
-import Svg from 'react-native-svg';
+import Svg from '@/components/svg';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import courses from "@/assets/courses.json"
 
@@ -52,8 +52,12 @@ export default function Quiz() {
     return (
         <ThemedView style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text style={[fonts.josefin, colors.white]}>Quiz</Text>
-            <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, colors.white]}>
+            {/* Problem: Zurück-Button fehlte und Texte waren im Light Mode nicht lesbar – mit KI behoben */}
+            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+              <Svg icon="arrow-left" width={20} height={20} white={theme === 'dark'} />
+            </TouchableOpacity>
+            <Text style={[fonts.josefin, { color: textColor }]}>Quiz</Text>
+            <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]}>
               {currentCourse?.course_name}
             </Text>
           </View>
@@ -191,6 +195,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   buttonContainer: {
     height: 50,

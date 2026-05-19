@@ -65,7 +65,15 @@ export default function Bookmarks() {
               router.push({
                 pathname: "/bookmarks/Videos",
                 params: {
-                  courseId: courseId, 
+                  courseId: courseId,
+                },
+              });
+            }}/>
+            <Card subtext="Category" text="Text" onPress={()=>{
+              router.push({
+                pathname: "/bookmarks/Texts",
+                params: {
+                  courseId: courseId,
                 },
               });
             }}/>

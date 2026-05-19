@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import {
   Image,
   ScrollView,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import Svg from '@/components/svg';
 import '@/components/svg-sheet';
@@ -96,15 +96,18 @@ export default function SucheScreen() {
   const [showResults, setShowResults] = useState(false);
   const [imgErrors, setImgErrors] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    if (!db) return;
-    const fetchUser = async () => {
-      // @ts-ignore
-      const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
-      if (user) setActiveCourseId(String(user.toJSON().course ?? ''));
-    };
-    fetchUser();
-  }, [db]);
+  // Problem: Suche zeigte Inhalte aus anderen Kursen und falsches Bild durch fehlerhaften Fallback-URL – mit KI behoben
+  useFocusEffect(
+    useCallback(() => {
+      if (!db) return;
+      const fetchUser = async () => {
+        // @ts-ignore
+        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+        if (user) setActiveCourseId(String(user.toJSON().course ?? ''));
+      };
+      fetchUser();
+    }, [db])
+  );
 
   const isDark = theme === 'dark';
   const textColor = Colors[theme].text;
@@ -177,7 +180,9 @@ export default function SucheScreen() {
               {item.content_type === 'image' && (
                 <>
                   <Image
-                    source={{ uri: imgErrors.has(item.content_id) ? 'https://images.pexels.com/photos/5275474/pexels-photo-5275474.jpeg' : item.image_source! }}
+                    source={{ uri: imgErrors.has(item.content_id)
+                      ? (courses.courses.find(c => String(c.course_id) === String(item.course_id))?.course_cover_id ?? item.image_source!)
+                      : item.image_source! }}
                     style={styles.resultImage}
                     resizeMode="cover"
                     onError={() => setImgErrors(prev => new Set(prev).add(item.content_id))}

@@ -1,17 +1,15 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
-import { ThemedText } from '@/components/themed-text';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { useState, useCallback } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors, Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import Bookmark from '@/components/Bookmark';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
-import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
 import { removeBookmark } from '@/db/database';
+import courses from '@/assets/courses.json';
 
 
 
@@ -29,23 +27,20 @@ export default function Bookmarks() {
   };
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [noResults, setNoResults] = useState(false);
-  // Fetch bookmarks
-  useEffect(()=>{
-    
-    const fetchBookmarks = async (type: string) => {
-
+  // Problem: Bilder aus Kapiteln wurden in Bookmarks nicht angezeigt (useEffect wurde nicht erneut ausgeführt) – mit KI behoben
+  useFocusEffect(
+    useCallback(() => {
       if (!db) return;
-      const res = await db.general.bookmarks.find({
-        selector: { inhaltsTyp: {$eq: type}}
-      }).exec();
-
-      const results = res.map((b: any) => b.toJSON());
-      setBookmarks(results);
-      if (results.length === 0) setNoResults(true);
-    }
-
-    fetchBookmarks("image");
-  }, [db])
+      const fetch = async () => {
+        const res = await db.general.bookmarks.find().exec();
+        const all = res.map((b: any) => b.toJSON());
+        const results = all.filter((b: any) => b.inhaltsTyp === 'image');
+        setBookmarks(results);
+        setNoResults(results.length === 0);
+      };
+      fetch();
+    }, [db])
+  );
 
 
 
@@ -66,31 +61,36 @@ export default function Bookmarks() {
         !noResults && 
         
         <>
-          <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.bookmarkContainer}>
-                <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
-                <TouchableOpacity
-                                  style={[
-                                    styles.bookmark,
-                                    {
-                                      backgroundColor: colors.whiteBg.backgroundColor,
-                                    }
-                                  ]}
-                                  onPress={() => {
-                                    removeBookmark(db, item.bookmarkId);
-                                    setBookmarks(prev => {
-                                      const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
-                                      if (updated.length === 0) setNoResults(true);
-                                      return updated;
-                                    });
-                                  }}
-                                  activeOpacity={0.7}
-                                >
-                                  <Svg icon="bookmark-remove" width={16} height={16} white={true} />
+          <FlatList
+            data={bookmarks}
+            keyExtractor={item => item.bookmarkId.toString()}
+            contentContainerStyle={{ gap: 16, paddingBottom: 32 }}
+            renderItem={({ item }) => {
+              const allContent = courses.courses.flatMap(c => c.chapters).flatMap(ch => ch.chapter_content) as any[];
+              const source = allContent.find(c => c.content_id === item.inhaltsId);
+              const imageUri = source?.image_source ?? item.url;
+              return (
+                <View style={styles.bookmarkContainer}>
+                  {imageUri ? (
+                    <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+                  ) : null}
+                  <TouchableOpacity
+                    style={[styles.bookmark, { backgroundColor: colors.whiteBg.backgroundColor }]}
+                    onPress={() => {
+                      removeBookmark(db, item.bookmarkId);
+                      setBookmarks(prev => {
+                        const updated = prev.filter(b => b.bookmarkId !== item.bookmarkId);
+                        if (updated.length === 0) setNoResults(true);
+                        return updated;
+                      });
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <Svg icon="bookmark-remove" width={16} height={16} white={true} />
                   </TouchableOpacity>
-              </View>
-            )}  
+                </View>
+              );
+            }}
           />
         </>
         
@@ -128,10 +128,14 @@ const styles = StyleSheet.create({
   },
   bookmarkContainer: {
     width: '100%',
-    minHeight: 200,
+    height: 260,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   bookmark: {
     position: 'absolute',
