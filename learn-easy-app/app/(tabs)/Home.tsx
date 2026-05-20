@@ -27,6 +27,7 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 const width = Dimensions.get("window").width;
 const carouselWidth = width;
 
+
 const difficulties = new Map([
   ["hard", "5x a day"],
   ["easy", "1x a day"],
@@ -50,22 +51,18 @@ export default function Home() {
   const [quiz, setQuiz] = useState(false);
   const [courseRating, setCourseRating] = useState(0);
   const [showGoalModal, setShowGoalModal] = useState(false);
+  
 
   // Check if there's a quiz to be completed
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     const checkStatus = async () => {
-      try {
-        const val = await getItem('@quizIncompleted');
-        const quiz = await getItem('@quizCompletedCourseNotSelected');
-        setQuizCompletedCourseNotSelected(quiz === 'true');
-        setQuiz(val ==='true');
-      } catch (e) {
-        setQuiz(false);
-        setQuizCompletedCourseNotSelected(false);
-      }
+      const val = await getItem('@quizIncompleted');
+      setQuiz(val === 'true');
     };
     checkStatus();
-  }, []);
+    }, [])
+  );
 
   // Fetch the user data and random pictures
   useFocusEffect(
@@ -163,8 +160,10 @@ export default function Home() {
     );
   }
 
-  const isDark = theme === "dark";
-  const textColor = colors.white.color;
+  
+  const isDark = theme === 'dark';
+  const tint = colors.white.color;
+  const textColor = Colors[theme].text;
 
   // Coursedetails
   let completionRate = 0;
@@ -254,9 +253,20 @@ export default function Home() {
                   >
                     {currentCourse?.course_name}
                   </Text>
-                  <Text style={[fonts.josefin, styles.chapterName]}>
-                    Chapter {userData.currentChapter}
-                  </Text>
+                  {!quiz &&
+                    <>
+                      <Text style={[fonts.josefin, styles.chapterName]}>
+                        Chapter {userData.currentChapter}
+                      </Text>
+                    </>
+                  }
+                  {quiz &&
+                    <>
+                      <Text style={[fonts.josefin, styles.chapterName]}>
+                        Quiz
+                      </Text>  
+                    </>
+                  }
                   <View style={styles.starsRow}>
                     {[1, 2, 3, 4, 5].map((star) => (
                       <TouchableOpacity
@@ -272,7 +282,7 @@ export default function Home() {
                         activeOpacity={0.7}
                         hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
                       >
-                        <Text style={[styles.star, { color: star <= courseRating ? '#f5a623' : '#ccc' }]}>
+                        <Text style={[styles.star, { color: star <= courseRating ? colors.black.color : '#ccc' }]}>
                           ★
                         </Text>
                       </TouchableOpacity>
@@ -304,7 +314,7 @@ export default function Home() {
         {/* Jump Back in */}
 
         {/* Case 1: no quiz to do */}
-        {!quiz && (
+        {!quiz &&
           <>
             <View style={styles.categoryContainer}>
               <View style={styles.categoryHeadingContainer}>
@@ -314,51 +324,39 @@ export default function Home() {
                   Carry on with your course
                 </Text>
               </View>
-            )}
-            
-            {/* Case 2: quiz to do */}
-            {quiz && (
-              <View style={styles.categoryContainer}>
-                <View style={styles.categoryHeadingContainer}>
-                  <Text style={[fonts.josefin, styles.categorySubheading, colors.white]}>Jump Back in</Text>
-                  <Text style={[fonts.josefin, styles.categoryHeading, colors.white]}>Finish the quiz</Text>
-                  <Text style={[fonts.josefin, colors.white]}>
-                    You have completed all the chapters - it's time for the {currentCourse?.course_name} quiz!
-                    Take it now.. or take your time, learn the material and hit the button whenever you are ready.
+            </View>
+            <View style={styles.jumpBackIn}>
+                <View style={styles.preview}>
+                  <Text
+                    style={[fonts.josefin, styles.chapterPreviewText]}
+                    numberOfLines={7}
+                    ellipsizeMode="tail"
+                  >
+                    {currentCourse?.chapters[0].chapter_content[0].content}
+
+
+
                   </Text>
                 </View>
-                <Button
-                  text="Take the quiz"
-                  iconName="chevron-right"
-                  light={true}
-                  darkIcon={true}
-                  fullWidth={true}
-                  onPress={() => {
-                    router.push({
-                      pathname: "/Quiz",
-                      params: {
-                        courseId: currentCourse?.course_id,
-                        chapterId: String(userData.currentChapter-1),
-                      },
-                    });
-                  }}
-                />
+
               </View>
-              <Button
+                <Button
                 text="Jump to the chapter"
                 iconName="chevron-right"
                 light={true}
                 darkIcon={true}
                 fullWidth={true}
                 onPress={() => {
-                  // To-do:
-                  // 1: Navigate to the course
-                  // 2: Pass the paramets "course_id" and "chapter"
+                  router.push({
+                      pathname: '/ChapterContent',
+                      params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) }
+                    })
                 }}
               />
-            </View>
           </>
-        )}
+            
+            }
+            
         {/* Case 2: quiz to do */}
         {quiz && (
           <View style={styles.categoryContainer}>

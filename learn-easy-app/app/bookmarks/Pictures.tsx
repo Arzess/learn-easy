@@ -8,6 +8,7 @@ import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
+import Bookmark from '@/components/Bookmark';
 import { removeBookmark } from '@/db/database';
 import courses from '@/assets/courses.json';
 
@@ -56,6 +57,7 @@ export default function Bookmarks() {
         </View>
         {/* Bookmarks */}
         {/* Case 1: available results */}
+        
         {
         
         !noResults && 
@@ -85,8 +87,8 @@ export default function Bookmarks() {
                                   <Svg icon="bookmark-remove" width={16} height={16} white={true} />
                   </TouchableOpacity>
                 </View>
-              );
-            }}
+              )
+            }
           />
         </>
         

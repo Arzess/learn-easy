@@ -5,6 +5,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useDB } from '@/db/DatabaseContext';
 import { colors, fonts } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
+import Button from '@/components/Button';
 import { ThemedView } from '@/components/themed-view';
 import Svg from '@/components/svg';
 import courses from '@/assets/courses.json';
@@ -58,9 +59,7 @@ export default function CourseOverview() {
     <ThemedView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Svg icon="chevron-left" width={24} height={24} white={isDark} />
-        </TouchableOpacity>
+        <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
         <Text style={[fonts.josefin, fonts.josefinBold, styles.headerTitle, { color: textColor }]} numberOfLines={1}>
           {course.course_name}
         </Text>
@@ -97,7 +96,7 @@ export default function CourseOverview() {
             >
               <View style={styles.cardLeft}>
                 <View style={[styles.numberBadge, { backgroundColor: done ? tint : (isDark ? '#444' : '#d0d0d0') }]}>
-                  <Text style={[fonts.josefin, styles.numberText]}>{index + 1}</Text>
+                  <Text style={[fonts.josefin, styles.numberText, done ? {color: colors.black.color} : {color: colors.white.color}]}>{index + 1}</Text>
                 </View>
               </View>
               <View style={styles.cardContent}>
@@ -121,7 +120,7 @@ export default function CourseOverview() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 56,
+    paddingTop: 64,
   },
   header: {
     flexDirection: 'row',
@@ -172,7 +171,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   numberText: {
-    color: 'white',
     fontWeight: '700',
     fontSize: 14,
   },

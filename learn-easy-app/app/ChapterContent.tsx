@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { colors, fonts } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
+import Button from '@/components/Button';
 import { ThemedView } from '@/components/themed-view';
 import Svg from '@/components/svg';
 import { useDB } from '@/db/DatabaseContext';
@@ -31,7 +32,7 @@ export default function ChapterContent() {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const isDark = theme === 'dark';
-  const tint = colors.white.color;
+  const tint = Colors[theme].text;
   const textColor = Colors[theme].text;
 
   useEffect(() => {
@@ -109,19 +110,11 @@ export default function ChapterContent() {
     <ThemedView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Svg icon="chevron-left" width={24} height={24} white={isDark} />
-        </TouchableOpacity>
+        <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
         <Text style={[fonts.josefin, fonts.josefinBold, styles.headerTitle, { color: textColor }]} numberOfLines={2}>
           {chapter.chapter_name}
         </Text>
-        <TouchableOpacity
-          style={[styles.chaptersBtn, { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }]}
-          onPress={() => router.push({ pathname: '/CourseOverview', params: { courseId } })}
-          activeOpacity={0.7}
-        >
-          <Svg icon="chapters" width={22} height={22} white={isDark} />
-        </TouchableOpacity>
+        <Button text="" iconName="chapters" onPress={()=>{router.push({ pathname: '/CourseOverview', params: { courseId } })}} light={true} darkIcon={true} fullWidth={false} style={[{ borderRadius: 999, width: 48, height: 48, }, { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }]}/>
       </View>
 
       {/* Block */}
@@ -241,6 +234,7 @@ export default function ChapterContent() {
               style={styles.modalPrimaryBtn}
               onPress={() => {
                 setShowCongrats(false);
+                setQuiz();
                 const lastChapter = course?.chapters[course.chapters.length - 1];
                 router.replace({ pathname: '/Quiz', params: { courseId, chapterId: String(lastChapter?.chapter_id ?? chapterId) } });
               }}
@@ -266,11 +260,12 @@ export default function ChapterContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 56,
+    paddingTop: 64,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
+    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingBottom: 16,
     gap: 12,
@@ -356,12 +351,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#FF0000',
+    backgroundColor: colors.whiteBg.backgroundColor,
+    borderColor: colors.black.color,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   playIcon: {
-    color: 'white',
+    color: colors.blackBg.backgroundColor,
     fontSize: 22,
     marginLeft: 4,
   },

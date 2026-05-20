@@ -97,7 +97,7 @@ export default function AccountScreen() {
     if (field === 'kurs') {
       Alert.alert(
         'Change Course',
-        'All your progress, completed chapters and bookmarks for the current course will be deleted and reset. Are you sure?',
+        'All your progress and completed chapters for the current course will be deleted and reset. Are you sure?',
         [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Continue', style: 'destructive', onPress: () => router.push('/start/Kurswahl') },
@@ -125,7 +125,7 @@ export default function AccountScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.heading}>Account</ThemedText>
+      <ThemedText type="title" style={[fonts.josefin, styles.heading, ]}>Account</ThemedText>
 
       {/* Avatar */}
       <Pressable onPress={handleAvatarPress} style={styles.avatarWrapper}>
@@ -134,11 +134,11 @@ export default function AccountScreen() {
         ) : (
           <View style={[styles.avatarPlaceholder, { backgroundColor: isDark ? '#2c2c2e' : '#f0ece8' }]}>
             
-            <Svg icon="person-filled" width={100} height={100} white={true} />
+            <Svg icon="person-filled" width={32} height={32} white={true} />
           </View>
         )}
         <View style={[styles.editBadge, { backgroundColor: isDark ? '#333' : '#e0e0e0' }]}>
-          <Svg icon="pencil" width={16} height={16} white={!isDark} />
+          <Svg icon="pencil" width={16} height={16} white={isDark} />
         </View>
       </Pressable>
 
@@ -181,7 +181,7 @@ export default function AccountScreen() {
         {/* Card header */}
         <View style={[styles.settingsHeader, { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }]}>
           <IconSymbol name="gear" size={18} color="black" />
-          <Text style={[fonts.josefin, styles.settingsHeaderText, { color: '#888' }]}>Further Settings</Text>
+          <Text style={[fonts.josefin, styles.settingsHeaderText, { color: colors.black.color }]}>Further Settings</Text>
         </View>
 
         {/* Theme */}
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   settingsHeaderText: {
-    fontSize: 13,
+    fontSize: 16,
   },
   settingsRow: {
     flexDirection: 'row',
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
   },
   settingsLabel: {
-    fontSize: 14,
+    fontSize: 16,
   },
   modalOverlay: {
     flex: 1,

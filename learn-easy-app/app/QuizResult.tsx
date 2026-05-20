@@ -154,8 +154,8 @@ export default function QuizResult() {
                     text="Choose next course"
                     iconName="chevron-right"
                     light={true}
-                    style={styles.button}
                     darkIcon={true}
+                    style={styles.button}
                     fullWidth={true}
                     onPress={async () => {
                       if (db) {
@@ -169,12 +169,11 @@ export default function QuizResult() {
                       router.replace('/start/Kurswahl');
                     }}
                 />
-                </View>
-                <View style={styles.buttonContainer}>
                 <Button
                     text="Later"
                     light={true}
                     noIcon={true}
+                    style={styles.button}
                     darkIcon={true}
                     fullWidth={true}
                     iconName="chevron-right"
@@ -192,20 +191,26 @@ export default function QuizResult() {
                     text="Next chapter"
                     iconName="chevron-right"
                     light={true}
+                    style={styles.button}
                     darkIcon={true}
                     fullWidth={true}
-                    onPress={() => nextStep()}
+                    onPress={() => {
+                      completeQuiz();
+                      nextStep()
+                    }}
                 />
-                </View>
-                <View style={styles.buttonContainer}>
                 <Button
                     text="Maybe later"
                     light={true}
+                    style={styles.button}
                     noIcon={true}
                     darkIcon={true}
                     fullWidth={true}
                     iconName="chevron-right"
-                    onPress={() => router.navigate("/Home")}
+                    onPress={() => {
+                      router.navigate("/Home")
+                    
+                    }}
                 />
                 </View>
             </>
@@ -219,6 +224,7 @@ export default function QuizResult() {
                     text="Try again"
                     iconName="chevron-right"
                     light={true}
+                    style={styles.button}
                     noIcon={true}
                     fullWidth={false}
                     darkIcon={true}
@@ -236,6 +242,7 @@ export default function QuizResult() {
                     text="Maybe later"
                     iconName="chevron-right"
                     light={true}
+                    style={styles.button}
                     noIcon={true}
                     fullWidth={false}
                     darkIcon={true}
@@ -290,7 +297,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   button: {
-    height: 50,
-    flex: 1,
+    minHeight: 50,
   },
 });

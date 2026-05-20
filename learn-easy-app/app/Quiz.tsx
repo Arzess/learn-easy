@@ -53,13 +53,13 @@ export default function Quiz() {
         <ThemedView style={styles.container}>
           <View style={styles.titleContainer}>
             {/* Problem: Zurück-Button fehlte und Texte waren im Light Mode nicht lesbar – mit KI behoben */}
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-              <Svg icon="arrow-left" width={20} height={20} white={theme === 'dark'} />
-            </TouchableOpacity>
-            <Text style={[fonts.josefin, { color: textColor }]}>Quiz</Text>
-            <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]}>
-              {currentCourse?.course_name}
-            </Text>
+            <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+            <View style={{display: 'flex'}}>
+              <Text style={[fonts.josefin, { color: textColor }]}>Quiz</Text>
+              <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]}>
+                {currentCourse?.course_name}
+              </Text>
+            </View>
           </View>
 
           {/* Quiz content */}
