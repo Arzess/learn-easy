@@ -36,7 +36,8 @@ export default function Start() {
         
         <View style={styles.form}>
           
-          <Input color='dark' placeholder='' value={username} label="Username" changeText={setUsername}/>
+          {/* mit KI bearbeitet – Placeholder und Hilfstext für Username-Feld hinzugefügt */}
+          <Input color='dark' placeholder='z.B. max_müller' value={username} label="Username" helperText="Nur Buchstaben, Zahlen und _ erlaubt" changeText={setUsername}/>
           <Input color='dark' placeholder='' value={name} label="Name" changeText={setName}/>
 
           <Button text="Next" iconName="chevron-right" darkIcon={false} fullWidth={false} onPress={()=>{

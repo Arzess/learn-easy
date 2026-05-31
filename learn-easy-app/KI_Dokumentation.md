@@ -71,3 +71,66 @@ Die Texte und Lerninhalte der einzelnen Kapitel wurden mithilfe von KI generiert
 ## Profilbild
 
 Die Funktion zum Hochladen eines Profilbilds wurde zunächst ohne KI-Unterstützung implementiert, jedoch wurden die ausgewählten Bilder nicht korrekt angezeigt. KI wurde eingesetzt, um den Fehler zu identifizieren und die Implementierung korrekt umzusetzen.
+
+---
+
+## UX-Verbesserungen (Session 2 – User Feedback)
+
+Basierend auf User-Tests mit 6 Interviews wurden folgende Verbesserungen mit KI-Unterstützung umgesetzt:
+
+### 17. Username-Feld Hilfstext
+Im Onboarding-Formular fehlte eine Erklärung was "Username" bedeutet. KI hat einen Placeholder (`z.B. max_müller`) und einen Hilfstext ("Nur Buchstaben, Zahlen und _ erlaubt") ergänzt. Betroffene Dateien: `components/Input.tsx`, `app/start/Start.tsx`
+
+### 18. "Carry on"-Navigation klarer gestaltet
+Der rechte Navigations-Pfeil zwischen Inhaltsblöcken (Text/Bild/Video) zeigt jetzt den nächsten Inhaltstyp an, z.B. "Weiter zum Video →". Betroffene Datei: `app/ChapterContent.tsx`
+
+### 19. Course-Switch-Warnung umgeschrieben
+Die Warnung beim Kurswechsel war zu beängstigend und hielt User davon ab zu wechseln. KI hat den Text beruhigend umformuliert und ein eigenes Modal anstelle des nativen Alerts eingebaut. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 20. "Saved to Library" Toast
+Nach dem Speichern eines Bookmarks erscheint jetzt ein kurzer Toast "Saved to Library" bzw. "Removed from Library". Neue Komponente: `components/Toast.tsx`. Eingebaut in: `app/ChapterContent.tsx`, `app/(tabs)/Home.tsx`
+
+### 21. Welcome-Screen nach Account-Erstellung
+Nach dem Onboarding erscheint ein neuer Welcome-Screen mit "Are you ready to learn?" den der User aktiv bestätigen muss. Neue Datei: `app/start/Welcome.tsx`
+
+### 22. Tab-Labels in der Bottom-Navigation
+Alle vier Tabs haben jetzt sichtbare Labels: Home, Search, Library, Account. "Bookmarks" wurde zu "Library" umbenannt um den Zusammenhang mit "Saved to Library" herzustellen. Betroffene Datei: `app/(tabs)/_layout.tsx`
+
+### 23. Single-Course-Modell im Onboarding erklärt
+Auf der Kursauswahl-Seite wurde ein Hinweis hinzugefügt: "You can only have one active course at a time." Betroffene Datei: `app/start/Kurswahl.tsx`
+
+### 24. Info-Icon stärker gestaltet
+Das Info-Icon auf den Kurskarten war zu klein und wurde von allen 6 Usern übersehen. KI hat es in eine sichtbare "About"-Pill unten rechts auf dem Kursbild umgewandelt. Betroffene Datei: `app/start/Kurswahl.tsx`
+
+### 25. Course-Switch in Settings verschoben
+Der "Change Course"-Button wurde aus dem Options-Dropdown entfernt und direkt in die Further-Settings-Card eingefügt, wo er besser sichtbar ist. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 26. Auto-Routing nach "Finish Chapter"
+Nach dem Abschließen eines Kapitels navigiert die App automatisch zum nächsten Kapitel oder zur Home-Seite, statt einfach zurück zu navigieren. Betroffene Datei: `app/ChapterContent.tsx`
+
+### 27. Vollbild-Zoom für Bilder
+Bilder im Chapter-Content können jetzt durch Antippen in einem Vollbild-Modal mit Pinch-to-Zoom angezeigt werden. Neue Komponente: `components/ImageViewer.tsx`
+
+### 28. Detailliertes Quiz-Feedback
+Nach dem Quiz werden falsche Antworten mit den korrekten Lösungen angezeigt, inklusive einem "Review Chapter"-Button der zum entsprechenden Kapitel führt. Betroffene Datei: `app/QuizResult.tsx`
+
+### 29. Bookmark-IDs gefixt (doppelte Einträge)
+Der `bookmarkCounter` wurde nach jedem App-Neustart auf 1 zurückgesetzt, wodurch neue Bookmarks alte überschrieben. KI hat die ID auf `content_id + Timestamp` umgestellt. Betroffene Datei: `db/database.js`
+
+### 30. Bilder in Library mit expo-image
+Bilder in der Library-Übersicht wurden manchmal nicht geladen (besonders GIFs). KI hat auf `expo-image` umgestellt das alle Formate unterstützt. Betroffene Datei: `app/bookmarks/Pictures.tsx`
+
+### 31. Text-Bookmarks mit Kapitelinfo und Kurzvorschau
+Text-Bookmarks zeigen jetzt den Kapitelnamen und nur eine 3-Zeilen-Vorschau statt dem ganzen Text. Betroffene Datei: `app/bookmarks/Texts.tsx`
+
+### 32. Bookmarks bleiben beim Kurswechsel erhalten
+Beim Kurswechsel wurden alle Bookmarks gelöscht. KI hat dieses Verhalten entfernt – Bookmarks sind jetzt kursübergreifend dauerhaft gespeichert. Betroffene Datei: `app/start/Kurswahl.tsx`
+
+### 33. Expo SDK 55 → 56 Upgrade
+Die App wurde von Expo SDK 55 auf SDK 56 aktualisiert. Dazu gehörten Paket-Updates, Import-Fixes in `components/haptic-tab.tsx` und die Entfernung des RxDB Dev-Mode Plugins. Betroffene Dateien: `package.json`, `components/haptic-tab.tsx`, `db/database.js`
+
+### 34. Such-Navigation gefixt
+Der Back-Button in den Suchergebnissen navigierte zu Home statt zurück zur Suchmaske. KI hat den Button auf die interne `handleBack()`-Funktion umgestellt. Betroffene Datei: `app/(tabs)/Suche.tsx`
+
+### 35. Quiz-ChapterId gefixt
+Der Quiz-Button auf der Home-Seite übergab immer die ID des letzten Kapitels. KI hat das auf das zuletzt abgeschlossene Kapitel (`currentChapter - 1`) korrigiert. Betroffene Datei: `app/(tabs)/Home.tsx`

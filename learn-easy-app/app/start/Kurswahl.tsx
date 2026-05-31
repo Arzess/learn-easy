@@ -1,4 +1,4 @@
-import { useState, useId, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { Image, Modal, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, ActivityIndicator, Touchable, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -20,7 +20,7 @@ export default function Kurswahl() {
   const [query, setQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const theme = useColorScheme();
-  const userId = useId();
+  const userId = `user_${Date.now()}`;
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [currentCourse, setCurrentCourse] = useState("");
@@ -60,12 +60,9 @@ export default function Kurswahl() {
   });
   const isDark = theme === 'dark';
 
-  // Problem: Kurswechsel aus Account verursachte Datenbankfehler (fehlende Pflichtfelder) und alte Bookmarks blieben sichtbar – mit KI behoben
+  // mit KI bearbeitet – userId-Fix, Info-Box, About-Button, Modal schließt bei Außenklick, Bookmarks bleiben beim Kurswechsel erhalten
   const next_step = async (course_id: string) => {
     if (!db) return;
-    // Clear all bookmarks when switching courses
-    const allBookmarks = await db.general.bookmarks.find().exec();
-    await Promise.all(allBookmarks.map((b: any) => b.remove()));
 
     const existingUser = await db.general.user.findOne({
       selector: { current: { $eq: true } }
@@ -94,8 +91,11 @@ export default function Kurswahl() {
       });
       completeIntro();
     }
-    // Return to the Home page
-    router.navigate("/(tabs)/Home");
+    if (existingUser) {
+      router.replace('/(tabs)/Home');
+    } else {
+      router.replace({ pathname: '/start/Welcome', params: { name: String(name) } });
+    }
   }
 
 
@@ -106,6 +106,10 @@ export default function Kurswahl() {
         <ThemedText style={[styles.label, fonts.josefin, { color: Colors[theme].icon }]}>
           Choose your next course or the one you would like to start with
         </ThemedText>
+
+        <View style={styles.infoBox}>
+          <Text style={[fonts.josefin, styles.infoText]}>ℹ️  You can only have one active course at a time. You can switch anytime under Account.</Text>
+        </View>
 
         {/* Suchleiste */}
         <View style={[styles.searchBar, {
@@ -131,8 +135,8 @@ export default function Kurswahl() {
         {/* Information modal */}
 
         <Modal visible={modalVisible} animationType="fade" transparent={true} onRequestClose={() => setModalVisible(false)}>
-          <View style={styles.overlay}>
-            <View style={styles.modalContainer}>
+          <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setModalVisible(false)}>
+            <TouchableOpacity style={styles.modalContainer} activeOpacity={1} onPress={() => {}}>
               <View style={styles.modalHeading}>
                 <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                   <Svg icon="close" width={24} height={24} white={false} />
@@ -140,8 +144,8 @@ export default function Kurswahl() {
                 <Text style={[fonts.josefin, styles.modalHeadingText]}>{currentCourse}</Text>
               </View>
               <Text style={[fonts.josefin, styles.modalText]}>{currentDesc}</Text>
-            </View>
-          </View>
+            </TouchableOpacity>
+          </TouchableOpacity>
         </Modal>
 
         {/* Karten */}
@@ -166,10 +170,7 @@ export default function Kurswahl() {
                   </TouchableOpacity>
                 {/* Information about the course */}
                 <TouchableOpacity
-                  style={[
-                    styles.information,
-                    { backgroundColor: colors.whiteBg.backgroundColor, borderWidth: 2, borderColor: '#fff' },
-                  ]}
+                  style={styles.information}
                   onPress={() => {
                     setCurrentCourse(thema.course_name);
                     setCurrentDesc(thema.course_description);
@@ -177,12 +178,8 @@ export default function Kurswahl() {
                   }}
                   activeOpacity={0.7}
                 >
-                  <Svg
-                    icon="information"
-                    width={24}
-                    height={24}
-                    white={true}
-                  />
+                  <Svg icon="information" width={18} height={18} white={false} />
+                  <Text style={[fonts.josefinBold, styles.infoLabel]}>About</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -206,6 +203,18 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
+  },
+  infoBox: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginBottom: 8,
+  },
+  infoText: {
+    color: '#ccc',
+    fontSize: 13,
+    lineHeight: 18,
   },
   searchBar: {
     flexDirection: 'row',
@@ -258,13 +267,19 @@ const styles = StyleSheet.create({
   },
   information: {
     position: 'absolute',
-    top: 10,
+    bottom: 10,
     right: 10,
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  infoLabel: {
+    fontSize: 13,
+    color: '#111',
   },
   // Modal
   overlay: {

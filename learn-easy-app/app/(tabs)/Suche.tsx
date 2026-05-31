@@ -130,6 +130,7 @@ export default function SucheScreen() {
     });
   }
 
+  // mit KI bearbeitet – Back-Button in Suchergebnissen geht zurück zur Suche statt zu Home
   function handleBack() {
     setShowResults(false);
     setQuery(submittedQuery);
@@ -140,7 +141,7 @@ export default function SucheScreen() {
       <ThemedView style={styles.container}>
         {/* Results header */}
         <View style={styles.resultsHeader}>
-          <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+          <Button text="" iconName="arrow-left" onPress={handleBack} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
           <View style={styles.resultsTitleBlock}>
             <Text style={[fonts.josefin, styles.resultsFor, { color: iconColor }]}>Results for</Text>
             <Text style={[fonts.josefin, fonts.josefinBold, styles.resultsQuery, { color: textColor }]}>

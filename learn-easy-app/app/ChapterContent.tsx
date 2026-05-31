@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Linking, Alert, Modal } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -10,6 +10,8 @@ import Svg from '@/components/svg';
 import { useDB } from '@/db/DatabaseContext';
 import { addBookmark, removeBookmark, bookmarkCounter } from '@/db/database';
 import courses from '@/assets/courses.json';
+import Toast from '@/components/Toast';
+import ImageViewer from '@/components/ImageViewer';
 
 export default function ChapterContent() {
   const { courseId, chapterId, contentId } = useLocalSearchParams<{ courseId: string; chapterId: string; contentId?: string }>();
@@ -20,6 +22,10 @@ export default function ChapterContent() {
   const [bookmarkIdMap, setBookmarkIdMap] = useState<Record<number, string>>({});
   const [imgErrors, setImgErrors] = useState<Set<number>>(new Set());
   const [showCongrats, setShowCongrats] = useState(false);
+  const [showImageViewer, setShowImageViewer] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const course = courses.courses.find(c => String(c.course_id) === String(courseId));
   const chapter = course?.chapters.find(ch => String(ch.chapter_id) === String(chapterId));
@@ -65,16 +71,26 @@ export default function ChapterContent() {
       await AsyncStorage.setItem('@quizIncompleted', 'true');
   }
 
+  // mit KI bearbeitet – Toast, Vollbild-Zoom, "Weiter zum"-Navigation, Auto-Routing nach Finish Chapter, falsche chapterId gefixt
+  const showToast = (msg: string) => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToastMsg(msg);
+    setToastVisible(true);
+    toastTimer.current = setTimeout(() => setToastVisible(false), 2200);
+  };
+
   const toggleBookmark = (content_id: number, type: string, url: string) => {
     if (bookmarkedIds.has(content_id)) {
       removeBookmark(db, bookmarkIdMap[content_id]);
       setBookmarkedIds(prev => { const next = new Set(prev); next.delete(content_id); return next; });
       setBookmarkIdMap(prev => { const next = { ...prev }; delete next[content_id]; return next; });
+      showToast('Removed from Library');
     } else {
       const newId = String(bookmarkCounter);
       addBookmark(db, content_id, type, url);
       setBookmarkedIds(prev => new Set(prev).add(content_id));
       setBookmarkIdMap(prev => ({ ...prev, [content_id]: newId }));
+      showToast('Saved to Library');
     }
   };
 
@@ -95,8 +111,14 @@ export default function ChapterContent() {
         setShowCongrats(true);
         return;
       }
+      const nextChapterId = user.currentChapter + 1;
+      const nextChapter = course?.chapters.find(ch => String(ch.chapter_id) === String(nextChapterId));
+      if (nextChapter) {
+        router.replace({ pathname: '/ChapterContent', params: { courseId: String(courseId), chapterId: String(nextChapterId) } });
+      } else {
+        router.replace('/(tabs)/Home');
+      }
     }
-    router.back();
   };
 
   const content = chapter.chapter_content;
@@ -128,7 +150,7 @@ export default function ChapterContent() {
             <TouchableOpacity
               style={[styles.bookmarkBtn, { backgroundColor: '#fff' }]}
               onPress={() => {
-                const url = item.content_type === 'image' ? item.image_source : item.content_type === 'video' ? item.link : item.content;
+                const url = item.content_type === 'image' ? (item.image_source ?? course.course_cover_id) : item.content_type === 'video' ? item.link : item.content;
                 toggleBookmark(item.content_id, item.content_type, url);
               }}
               activeOpacity={0.7}
@@ -147,12 +169,17 @@ export default function ChapterContent() {
           {/* Image */}
           {item.content_type === 'image' && (
             <>
-              <Image
-                source={{ uri: imgErrors.has(item.content_id) ? course.course_cover_id : item.image_source }}
-                style={styles.image}
-                resizeMode="cover"
-                onError={() => setImgErrors(prev => new Set(prev).add(item.content_id))}
-              />
+              <TouchableOpacity onPress={() => setShowImageViewer(true)} activeOpacity={0.9}>
+                <Image
+                  source={{ uri: imgErrors.has(item.content_id) ? course.course_cover_id : item.image_source }}
+                  style={styles.image}
+                  resizeMode="cover"
+                  onError={() => setImgErrors(prev => new Set(prev).add(item.content_id))}
+                />
+                <View style={styles.zoomHint}>
+                  <Text style={[fonts.josefin, styles.zoomHintText]}>🔍 Tap to zoom</Text>
+                </View>
+              </TouchableOpacity>
               <Text style={[fonts.josefin, styles.imageCaption, { color: Colors[theme].icon }]}>
                 {item.image_alt}
               </Text>
@@ -212,11 +239,16 @@ export default function ChapterContent() {
         </View>
 
         <TouchableOpacity
-          style={[styles.navBtn, { opacity: currentIndex === total - 1 ? 0.3 : 1, backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8' }]}
+          style={[styles.navBtnNext, { opacity: currentIndex === total - 1 ? 0.3 : 1, backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8' }]}
           onPress={() => setCurrentIndex(i => i + 1)}
           disabled={currentIndex === total - 1}
           activeOpacity={0.7}
         >
+          {currentIndex < total - 1 && (
+            <Text style={[fonts.josefin, { fontSize: 13, color: isDark ? '#fff' : '#000', marginRight: 4 }]}>
+              {`Weiter zum ${labelMap[content[currentIndex + 1]?.content_type] ?? ''}`}
+            </Text>
+          )}
           <Svg icon="chevron-right" width={24} height={24} white={isDark} />
         </TouchableOpacity>
       </View>
@@ -245,7 +277,7 @@ export default function ChapterContent() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalSecondaryBtn}
-              onPress={() => { setShowCongrats(false); setQuiz(); router.back(); }}
+              onPress={() => { setShowCongrats(false); setQuiz(); router.replace('/(tabs)/Home'); }}
               activeOpacity={0.85}
             >
               <Text style={[fonts.josefin, styles.modalSecondaryBtnText]}>Later</Text>
@@ -253,6 +285,13 @@ export default function ChapterContent() {
           </View>
         </View>
       </Modal>
+      <ImageViewer
+        uri={item.content_type === 'image' ? (imgErrors.has(item.content_id) ? course.course_cover_id : item.image_source) : ''}
+        caption={item.image_alt}
+        visible={showImageViewer}
+        onClose={() => setShowImageViewer(false)}
+      />
+      <Toast message={toastMsg} visible={toastVisible} />
     </ThemedView>
   );
 }
@@ -330,6 +369,19 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     fontStyle: 'italic',
   },
+  zoomHint: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  zoomHintText: {
+    color: '#fff',
+    fontSize: 11,
+  },
   videoThumbnailContainer: {
     width: '100%',
     height: 200,
@@ -398,6 +450,14 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navBtnNext: {
+    height: 48,
+    borderRadius: 24,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

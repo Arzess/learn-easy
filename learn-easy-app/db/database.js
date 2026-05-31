@@ -1,6 +1,5 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { getRxStorageMemory } from 'rxdb/plugins/storage-memory';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
@@ -10,14 +9,16 @@ const getStorage = () => {
   return getRxStorageMemory();
 };
 
+// mit KI bearbeitet – eindeutige Bookmark-IDs mit Timestamp, RxDB Dev-Mode Plugin entfernt
 export let bookmarkCounter = 1;
 
  // Bookmark logic
  // Add a bookmark
 export const addBookmark = async (db, content_id, type, url) => {
   if (db){
+    const bookmarkId = `${content_id}_${Date.now()}`;
     db.general.bookmarks.upsert({
-      bookmarkId: String(bookmarkCounter),
+      bookmarkId,
       inhaltsTyp: type,
       inhaltsId: content_id,
       url: url,
@@ -38,9 +39,6 @@ export const addBookmark = async (db, content_id, type, url) => {
 
 
 const _create = async () => {
-  if (process.env.NODE_ENV === 'development') {
-    addRxPlugin(RxDBDevModePlugin);
-  }
   const db = await createRxDatabase({
     name: 'learn-easy-db',
     storage: wrappedValidateAjvStorage({

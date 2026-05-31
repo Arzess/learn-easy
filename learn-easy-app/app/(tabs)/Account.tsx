@@ -26,7 +26,6 @@ type EditField = 'name' | 'kurs';
 
 const EDIT_OPTIONS: { field: EditField; label: string }[] = [
   { field: 'name', label: 'Change Name' },
-  { field: 'kurs', label: 'Change Course' },
 ];
 
 
@@ -42,6 +41,8 @@ export default function AccountScreen() {
   const [activeField, setActiveField] = useState<EditField | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [pushEnabled, setPushEnabled] = useState(false);
+  // mit KI bearbeitet – Course-Switch Modal, Settings-Design, Switch-Course in Settings verschoben
+  const [showCourseSwitch, setShowCourseSwitch] = useState(false);
 
   const router = useRouter();
   const { theme, isDarkMode, setDarkMode } = useAppTheme();
@@ -95,14 +96,7 @@ export default function AccountScreen() {
   function openEdit(field: EditField) {
     setEditOpen(false);
     if (field === 'kurs') {
-      Alert.alert(
-        'Change Course',
-        'All your progress and completed chapters for the current course will be deleted and reset. Are you sure?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Continue', style: 'destructive', onPress: () => router.push('/start/Kurswahl') },
-        ]
-      );
+      setShowCourseSwitch(true);
       return;
     }
     const current: Record<EditField, string> = { name, kurs };
@@ -185,7 +179,7 @@ export default function AccountScreen() {
         </View>
 
         {/* Theme */}
-        <View style={[styles.settingsRow, {}]}>
+        <View style={[styles.settingsRow, { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }]}>
           <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Light Theme</Text>
           <Switch
             value={!isDarkMode}
@@ -196,7 +190,7 @@ export default function AccountScreen() {
         </View>
 
         {/* Push Notifications */}
-        <View style={[styles.settingsRow, {}]}>
+        <View style={[styles.settingsRow, { borderBottomWidth: 1, borderBottomColor: '#e0e0e0' }]}>
           <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Push Notifications</Text>
           <Switch
             value={pushEnabled}
@@ -205,7 +199,38 @@ export default function AccountScreen() {
             thumbColor="#fff"
           />
         </View>
+
+        {/* Switch Course */}
+        <Pressable style={styles.settingsRow} onPress={() => setShowCourseSwitch(true)}>
+          <Text style={[fonts.josefin, styles.settingsLabel, { color: '#111' }]}>Switch Course</Text>
+          <View style={styles.switchPlaceholder}>
+            <Svg icon="chevron-right" width={16} height={16} white={false} />
+          </View>
+        </Pressable>
       </View>
+
+      {/* Course Switch Modal */}
+      <Modal visible={showCourseSwitch} transparent animationType="fade">
+        <Pressable style={styles.modalOverlay} onPress={() => setShowCourseSwitch(false)}>
+          <Pressable style={[styles.modalBox, { backgroundColor: cardBg }]}>
+            <Text style={[fonts.josefin, styles.courseSwitchTitle, { color: textColor }]}>Switch Course</Text>
+            <Text style={[fonts.josefin, styles.courseSwitchBody, { color: subColor }]}>
+              Your bookmarks are saved and will stay. Only your chapter progress in the current course will be reset.
+            </Text>
+            <View style={styles.modalButtons}>
+              <Pressable onPress={() => setShowCourseSwitch(false)} style={[styles.modalCancel, { borderColor }]}>
+                <Text style={[fonts.josefin, { color: subColor }]}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => { setShowCourseSwitch(false); router.push('/start/Kurswahl'); }}
+                style={[styles.modalSave, { backgroundColor: isDark ? '#fff' : '#000' }]}
+              >
+                <Text style={[fonts.josefin, styles.modalSaveText, { color: isDark ? '#000' : '#fff' }]}>Switch</Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       {/* Edit Modal */}
       <Modal visible={activeField !== null} transparent animationType="fade">
@@ -351,10 +376,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 13,
+    height: 56,
   },
   settingsLabel: {
-    fontSize: 16,
+    fontSize: 15,
+  },
+  switchPlaceholder: {
+    width: 51,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  settingsRowLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  settingsRowIcon: {
+    fontSize: 18,
   },
   modalOverlay: {
     flex: 1,
@@ -400,5 +438,16 @@ const styles = StyleSheet.create({
   },
   modalSaveText: {
     fontWeight: '600',
+  },
+  courseSwitchTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  courseSwitchBody: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });

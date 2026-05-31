@@ -1,10 +1,10 @@
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors, Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import Bookmark from '@/components/Bookmark';
 import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
@@ -12,6 +12,18 @@ import Card from '@/components/Card';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
 import { removeBookmark } from '@/db/database';
+// mit KI bearbeitet – Kapitelname angezeigt, Kurzvorschau (3 Zeilen), doppelte Bookmark-IDs gefixt
+import courses from '@/assets/courses.json';
+
+const findChapterForContent = (contentId: number) => {
+  for (const course of courses.courses) {
+    for (const chapter of course.chapters) {
+      const found = chapter.chapter_content.find((c: any) => c.content_id === contentId);
+      if (found) return { chapterName: chapter.chapter_name, chapterNum: chapter.chapter_id };
+    }
+  }
+  return null;
+};
 
 
 
@@ -29,23 +41,19 @@ export default function Bookmarks() {
   };
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [noResults, setNoResults] = useState(false);
-  // Fetch bookmarks
-  useEffect(()=>{
-    
-    const fetchBookmarks = async (type: string) => {
-
+  useFocusEffect(
+    useCallback(() => {
       if (!db) return;
-      const res = await db.general.bookmarks.find({
-        selector: { inhaltsTyp: {$eq: type}}
-      }).exec();
-
-      const results = res.map((b: any) => b.toJSON());
-      setBookmarks(results);
-      if (results.length === 0) setNoResults(true);
-    }
-
-    fetchBookmarks("text");
-  }, [db])
+      const fetchBookmarks = async () => {
+        const res = await db.general.bookmarks.find().exec();
+        const all = res.map((b: any) => b.toJSON());
+        const results = all.filter((b: any) => b.inhaltsTyp === 'text');
+        setBookmarks(results);
+        setNoResults(results.length === 0);
+      };
+      fetchBookmarks();
+    }, [db])
+  );
 
 
 
@@ -55,7 +63,7 @@ export default function Bookmarks() {
         <View style={styles.titleNavigationContainer}>
             <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
             <View style={styles.titleContainer}>
-                <Text style={[fonts.josefin, { color: textColor }]}>Bookmarks</Text>
+                <Text style={[fonts.josefin, { color: textColor }]}>Library</Text>
                 <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">Texts</Text>
             </View>
         </View>
@@ -66,10 +74,19 @@ export default function Bookmarks() {
         !noResults && 
         
         <>
-          <FlatList data={bookmarks} keyExtractor={item => item.bookmarkId.toString()}
+          <FlatList
+            data={bookmarks}
+            keyExtractor={item => item.bookmarkId.toString()}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item }) => (
               <View style={styles.bookmarkContainer}>
-                <Bookmark added={true} content_id={item.inhaltsId} isText={true} courseId={courseId} url={item.url}/>
+                {(() => {
+                  const info = findChapterForContent(item.inhaltsId);
+                  return info ? (
+                    <Text style={[fonts.josefinBold, styles.chapterLabel]}>{info.chapterName}</Text>
+                  ) : null;
+                })()}
+                <Text style={[fonts.josefin, styles.previewText]} numberOfLines={3} ellipsizeMode="tail">{item.url}</Text>
                 <TouchableOpacity
                                   style={[
                                     styles.bookmark,
@@ -128,12 +145,25 @@ const styles = StyleSheet.create({
   },
   bookmarkContainer: {
     width: '100%',
-    minHeight: 200,
     backgroundColor: colors.whiteBg.backgroundColor,
     borderRadius: 16,
     padding: 16,
-    paddingTop: 64,
+    paddingRight: 56,
     overflow: 'hidden',
+  },
+  previewText: {
+    color: '#111',
+    lineHeight: 22,
+    fontSize: 14,
+  },
+  chapterLabel: {
+    fontSize: 11,
+    color: '#888',
+    marginBottom: 8,
+    letterSpacing: 0.5,
+  },
+  separator: {
+    height: 12,
   },
   bookmark: {
     position: 'absolute',

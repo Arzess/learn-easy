@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text,} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors } from '@/constants/theme';
@@ -23,7 +23,9 @@ export default function QuizResult() {
     const [isLastChapter, setIsLastChapter] = useState(false);
     const [helpText, setHelpText] = useState("You did well on this test! Now choose the next course you want to learn!");
     const [score, setScore] = useState(0);
-    const db = useDB(); 
+    // mit KI bearbeitet – falsche Antworten werden angezeigt mit korrekten Lösungen und "Review Chapter"-Button
+    const [wrongQuestions, setWrongQuestions] = useState<{ question: string; correct: string[] }[]>([]);
+    const db = useDB();
     useEffect(()=>{ 
         const fetchCourseInfo = async () => {
             const foundCourse = courses.courses.find(c => String(c.course_id) === String(courseId));
@@ -73,7 +75,17 @@ export default function QuizResult() {
               correctLabels.every((label: string) => userAnswers.includes(label)) &&
               userAnswers.every((label: string) => correctLabels.includes(label));
 
-            if (allCorrect) userScore += 1;
+            if (allCorrect) {
+              userScore += 1;
+            } else {
+              const correctLabelsForDisplay = questions[i].answers
+                .filter((a: any) => a.correct === true)
+                .map((a: any) => a.answer_label);
+              setWrongQuestions(prev => [...prev, {
+                question: questions[i].question,
+                correct: correctLabelsForDisplay,
+              }]);
+            }
         }
         const endScore = Math.round(userScore/totalScore*100);
         setScore(endScore);
@@ -139,11 +151,34 @@ export default function QuizResult() {
 
     return (
         <ThemedView style={styles.container}>
+          <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             <View style={styles.result}>
                 <Text style={[fonts.josefin, fonts.josefinBold, {textAlign: 'center'}]}>{resultText}</Text>
                 <Text style={[fonts.josefin, fonts.josefinBold, {fontSize: 48, textAlign: 'center' }]}>{score}%</Text>
                 <Text style={[fonts.josefin, fonts.josefinMedium, {textAlign: 'center'}]}>{helpText}</Text>
             </View>
+
+            {wrongQuestions.length > 0 && (
+              <View style={styles.wrongSection}>
+                <Text style={[fonts.josefinBold, styles.wrongTitle, { color: '#fff' }]}>What went wrong</Text>
+                {wrongQuestions.map((q, i) => (
+                  <View key={i} style={styles.wrongCard}>
+                    <Text style={[fonts.josefinBold, styles.wrongQuestion]}>Q{i + 1}: {q.question}</Text>
+                    <Text style={[fonts.josefin, styles.wrongLabel]}>Correct answer{q.correct.length > 1 ? 's' : ''}:</Text>
+                    {q.correct.map((a, j) => (
+                      <Text key={j} style={[fonts.josefin, styles.wrongAnswer]}>✓ {a}</Text>
+                    ))}
+                  </View>
+                ))}
+                <TouchableOpacity
+                  style={styles.reviewBtn}
+                  onPress={() => router.push({ pathname: '/ChapterContent', params: { courseId, chapterId } })}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[fonts.josefinBold, styles.reviewBtnText]}>Review Chapter →</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           {/* Choose a different course or just complete the chapter */}
           
           {/* Case 1: passed, last chapter → choose next course */}
@@ -253,6 +288,7 @@ export default function QuizResult() {
                 </View>
             </>
           }
+          </ScrollView>
         </ThemedView>
     );
 }
@@ -263,14 +299,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
-    paddingTop: 64,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 32,
   },
   titleContainer: {
     display: 'flex',
@@ -298,5 +326,52 @@ const styles = StyleSheet.create({
   },
   button: {
     minHeight: 50,
+  },
+  scrollContent: {
+    padding: 16,
+    paddingTop: 64,
+    paddingBottom: 32,
+    gap: 24,
+    alignItems: 'center',
+  },
+  wrongSection: {
+    width: '100%',
+    gap: 12,
+  },
+  wrongTitle: {
+    fontSize: 17,
+    marginBottom: 4,
+  },
+  wrongCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    gap: 6,
+    borderLeftWidth: 4,
+    borderLeftColor: '#e05252',
+  },
+  wrongQuestion: {
+    fontSize: 14,
+    color: '#111',
+    marginBottom: 4,
+  },
+  wrongLabel: {
+    fontSize: 12,
+    color: '#666',
+  },
+  wrongAnswer: {
+    fontSize: 13,
+    color: '#2a7a2a',
+  },
+  reviewBtn: {
+    backgroundColor: '#111',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  reviewBtnText: {
+    color: '#fff',
+    fontSize: 15,
   },
 });

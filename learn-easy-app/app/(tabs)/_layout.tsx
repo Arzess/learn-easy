@@ -6,6 +6,7 @@ import { colors } from '@/constants/theme';
 import { HapticTab } from '@/components/haptic-tab';
 import { useAppTheme } from '@/context/theme-context';
 
+// mit KI bearbeitet – Tab-Labels hinzugefügt (Home, Search, Library, Account)
 export default function TabLayout() {
   const { isDarkMode } = useAppTheme();
 
@@ -18,7 +19,14 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveBackgroundColor: tabBarActiveBg,
         headerShown: false,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 11,
+          marginBottom: 8,
+          fontFamily: 'JosefinSans_400Regular',
+        },
+        tabBarActiveTintColor: isDarkMode ? '#000' : '#000',
+        tabBarInactiveTintColor: isDarkMode ? '#888' : '#888',
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor: tabBarBg,
@@ -41,6 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Home"
         options={{
+          tabBarLabel: 'Home',
           tabBarIcon: ({ focused }) => <SVG icon={"home"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
@@ -48,6 +57,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Suche"
         options={{
+          tabBarLabel: 'Search',
           tabBarIcon: ({ focused }) => <SVG icon={"library"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
@@ -55,6 +65,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Bookmarks"
         options={{
+          tabBarLabel: 'Library',
           tabBarIcon: ({ focused }) => <SVG icon={"bookmark"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />
@@ -62,6 +73,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Account"
         options={{
+          tabBarLabel: 'Account',
           tabBarIcon: ({ focused }) => <SVG icon={"user"} width={24} height={24} white={isDarkMode && !focused}/>,
         }}
       />

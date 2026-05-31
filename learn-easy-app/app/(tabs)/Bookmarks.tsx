@@ -41,7 +41,7 @@ export default function Bookmarks() {
     <ThemedView style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]}>
-          Bookmarks
+          Library
         </Text>
         <Text style={[fonts.josefin, { color: textColor }]}>
           Browse through your saved content

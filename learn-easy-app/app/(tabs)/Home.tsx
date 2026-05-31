@@ -2,6 +2,7 @@ import { getItem } from "@/app/index";
 import courses from "@/assets/courses.json";
 import Button from "@/components/Button";
 import Svg from "@/components/svg";
+import Toast from "@/components/Toast";
 import { ThemedView } from "@/components/themed-view";
 import { colors, fonts, Colors } from "@/constants/theme";
 import { addBookmark, removeBookmark } from "@/db/database";
@@ -51,6 +52,17 @@ export default function Home() {
   const [quiz, setQuiz] = useState(false);
   const [courseRating, setCourseRating] = useState(0);
   const [showGoalModal, setShowGoalModal] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // mit KI bearbeitet – Toast für Bookmark-Aktionen, einheitliches Bookmark-Styling, korrekter Quiz-chapterId
+  const showToast = (msg: string) => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToastMsg(msg);
+    setToastVisible(true);
+    toastTimer.current = setTimeout(() => setToastVisible(false), 2200);
+  };
   
 
   // Check if there's a quiz to be completed
@@ -380,14 +392,12 @@ export default function Home() {
               darkIcon={true}
               fullWidth={true}
               onPress={() => {
-                const lastChapterId =
-                  currentCourse?.chapters[currentCourse.chapters.length - 1]
-                    ?.chapter_id;
+                const completedChapterId = userData?.currentChapter - 1;
                 router.push({
                   pathname: "/Quiz",
                   params: {
                     courseId: currentCourse?.course_id,
-                    chapterId: String(lastChapterId),
+                    chapterId: String(completedChapterId),
                   },
                 });
               }}
@@ -449,10 +459,8 @@ export default function Home() {
                       style={[
                         styles.bookmark,
                         {
-                          backgroundColor: bookmarkedIds.has(item.content_id)
-                            ? '#0a7ea4'
-                            : colors.whiteBg.backgroundColor,
-                          borderWidth: bookmarkedIds.has(item.content_id) ? 0 : 1,
+                          backgroundColor: colors.whiteBg.backgroundColor,
+                          borderWidth: 1,
                           borderColor: '#ccc',
                         },
                       ]}
@@ -464,6 +472,7 @@ export default function Home() {
                             next.delete(item.content_id);
                             return next;
                           });
+                          showToast('Removed from Library');
                         } else {
                           addBookmark(
                             db,
@@ -474,6 +483,7 @@ export default function Home() {
                           setBookmarkedImagesIds((prev) =>
                             new Set(prev).add(item.content_id),
                           );
+                          showToast('Saved to Library');
                         }
                       }}
                       activeOpacity={0.7}
@@ -548,6 +558,7 @@ export default function Home() {
           </View>
         </TouchableOpacity>
       </Modal>
+      <Toast message={toastMsg} visible={toastVisible} />
     </ThemedView>
   );
 }

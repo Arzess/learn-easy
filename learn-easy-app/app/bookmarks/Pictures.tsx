@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useCallback } from 'react';
 import { ThemedView } from '@/components/themed-view';
 import { fonts, colors, Colors } from '@/constants/theme';
@@ -8,12 +9,12 @@ import { useDB } from '@/db/DatabaseContext';
 import Button from '@/components/Button';
 import NothingFound from '@/components/NothingFound';
 import Svg from '@/components/svg';
-import Bookmark from '@/components/Bookmark';
 import { removeBookmark } from '@/db/database';
 import courses from '@/assets/courses.json';
 
 
 
+// mit KI bearbeitet – expo-image statt Image für bessere GIF/WebP-Unterstützung, direkte URL-Anzeige statt Bookmark-Komponente
 export default function Bookmarks() {
   const theme = useColorScheme();
   const textColor = Colors[theme].text;
@@ -51,7 +52,7 @@ export default function Bookmarks() {
         <View style={styles.titleNavigationContainer}>
             <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
             <View style={styles.titleContainer}>
-                <Text style={[fonts.josefin, { color: textColor }]}>Bookmarks</Text>
+                <Text style={[fonts.josefin, { color: textColor }]}>Library</Text>
                 <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading, { color: textColor }]} className="heading">Pictures</Text>
             </View>
         </View>
@@ -66,7 +67,17 @@ export default function Bookmarks() {
           <FlatList data={bookmarks} style={{flex: 1}} ItemSeparatorComponent={()=>(<View style={{height: 16}}></View>)} keyExtractor={item => item.bookmarkId.toString()}
             renderItem={({ item }) => (
               <View style={styles.bookmarkContainer}>
-                <Bookmark added={true} content_id={item.inhaltsId} courseId={courseId} url={item.url}/>
+                {item.url ? (
+                  <Image
+                    source={{ uri: item.url }}
+                    style={styles.image}
+                    contentFit="cover"
+                  />
+                ) : (
+                  <View style={[styles.image, { justifyContent: 'center', alignItems: 'center' }]}>
+                    <Text style={[fonts.josefin, { color: '#aaa' }]}>Image not available</Text>
+                  </View>
+                )}
                 <TouchableOpacity
                                   style={[
                                     styles.bookmark,
