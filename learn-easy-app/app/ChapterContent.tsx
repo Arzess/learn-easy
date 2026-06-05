@@ -66,6 +66,9 @@ export default function ChapterContent() {
     );
   }
 
+  // Setzt den Quiz-Status in AsyncStorage auf "offen".
+  // Wird nach Kapitelabschluss aufgerufen. Die Home-Seite liest diesen Wert
+  // beim nächsten Öffnen und zeigt dem User einen Hinweis zum Quiz an.
   const setQuiz = async () => {
       const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
       await AsyncStorage.setItem('@quizIncompleted', 'true');
@@ -79,6 +82,10 @@ export default function ChapterContent() {
     toastTimer.current = setTimeout(() => setToastVisible(false), 2200);
   };
 
+  // Schaltet den Bookmark-Status eines Inhalts um:
+  // Ist der Inhalt bereits gemerkt, wird er entfernt. Sonst wird er gespeichert.
+  // Aktualisiert sowohl den lokalen State als auch die Datenbank.
+  // Zeigt anschließend einen Toast ("Saved to Library" oder "Removed from Library").
   const toggleBookmark = (content_id: number, type: string, url: string) => {
     if (bookmarkedIds.has(content_id)) {
       removeBookmark(db, bookmarkIdMap[content_id]);
@@ -95,6 +102,11 @@ export default function ChapterContent() {
   };
 
   // Problem: "Take the quiz" nach Kapitelabschluss führte zu leerem Quiz (fehlender chapterId-Parameter) – mit KI behoben
+  // Schließt das aktuelle Kapitel ab:
+  // 1. Fügt die chapterId zur Liste der abgeschlossenen Kapitel hinzu
+  // 2. Erhöht currentChapter um 1 in der Datenbank
+  // 3. Wenn alle Kapitel fertig → zeigt Congratulations-Modal
+  // 4. Sonst → navigiert direkt zum nächsten Kapitel
   const finishChapter = async () => {
     if (!db) return;
     // @ts-ignore

@@ -4,6 +4,9 @@ import { getRxStorageMemory } from 'rxdb/plugins/storage-memory';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { Platform } from 'react-native';
 
+// Wählt den richtigen Speicher-Adapter je nach Plattform.
+// Auf Web wird IndexedDB (Dexie) verwendet, auf Android/iOS In-Memory-Speicher,
+// da SQLite-basierte Lösungen in Expo Go nicht ohne weiteres verfügbar sind.
 const getStorage = () => {
   if (Platform.OS === 'web') return getRxStorageDexie();
   return getRxStorageMemory();
@@ -12,8 +15,11 @@ const getStorage = () => {
 // mit KI bearbeitet – eindeutige Bookmark-IDs mit Timestamp, RxDB Dev-Mode Plugin entfernt
 export let bookmarkCounter = 1;
 
- // Bookmark logic
- // Add a bookmark
+// Speichert einen neuen Bookmark in der Datenbank.
+// Die ID wird aus content_id + aktuellem Timestamp zusammengesetzt,
+// um Kollisionen nach App-Neustarts zu vermeiden.
+// Parameter: db = Datenbankinstanz, content_id = ID des Inhalts,
+// type = "text" | "image" | "video", url = Medien-URL oder Text
 export const addBookmark = async (db, content_id, type, url) => {
   if (db){
     const bookmarkId = `${content_id}_${Date.now()}`;
@@ -26,7 +32,9 @@ export const addBookmark = async (db, content_id, type, url) => {
     bookmarkCounter++;
   }
  }
- export const removeBookmark = async (db, bookmark_id) => {
+// Sucht einen Bookmark anhand seiner bookmarkId und löscht ihn aus der Datenbank.
+// Wird aufgerufen wenn der User das Bookmark-Icon ein zweites Mal antippt.
+export const removeBookmark = async (db, bookmark_id) => {
   if (db){
    // @ts-ignore
    const bookmark = await db.general.bookmarks.findOne({
@@ -38,6 +46,11 @@ export const addBookmark = async (db, content_id, type, url) => {
  }
 
 
+// Erstellt die RxDB Datenbank mit drei Collections:
+// - user: Speichert Profildaten, Kurs, Fortschritt und Einstellungen
+// - bookmarks: Speichert gespeicherte Texte, Bilder und Videos
+// - last_queries: Speichert frühere Suchanfragen
+// AJV-Validierung stellt sicher dass nur valide Daten gespeichert werden.
 const _create = async () => {
   const db = await createRxDatabase({
     name: 'learn-easy-db',
@@ -114,6 +127,9 @@ const _create = async () => {
 
 let dbPromise = null;
 
+// Gibt die Datenbankinstanz zurück. Verwendet das Singleton-Muster:
+// Die Datenbank wird nur beim ersten Aufruf erstellt, danach wird
+// immer dieselbe Instanz zurückgegeben um mehrfache Initialisierung zu vermeiden.
 export const getDatabase = () => {
   if (!dbPromise) {
     dbPromise = _create();

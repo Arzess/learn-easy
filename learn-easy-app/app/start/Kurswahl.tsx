@@ -61,6 +61,10 @@ export default function Kurswahl() {
   const isDark = theme === 'dark';
 
   // mit KI bearbeitet – userId-Fix, Info-Box, About-Button, Modal schließt bei Außenklick, Bookmarks bleiben beim Kurswechsel erhalten
+  // Verarbeitet die Kursauswahl:
+  // Für bestehende User → aktualisiert course, setzt Fortschritt zurück, navigiert zu Home.
+  // Für neue User → legt einen neuen User-Datensatz an mit allen Onboarding-Daten
+  // und navigiert zum Welcome-Screen.
   const next_step = async (course_id: string) => {
     if (!db) return;
 

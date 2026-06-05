@@ -51,12 +51,12 @@ export default function Home() {
   const progress = useSharedValue<number>(0);
   const [quiz, setQuiz] = useState(false);
   const [courseRating, setCourseRating] = useState(0);
-  const [showGoalModal, setShowGoalModal] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // mit KI bearbeitet – Toast für Bookmark-Aktionen, einheitliches Bookmark-Styling, korrekter Quiz-chapterId
+  // Zeigt einen Toast mit der übergebenen Nachricht für 2,2 Sekunden an
   const showToast = (msg: string) => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     setToastMsg(msg);
@@ -307,7 +307,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             {/* Goal */}
-            <TouchableOpacity style={styles.goal} onPress={() => setShowGoalModal(true)} activeOpacity={0.75}>
+            <View style={styles.goal}>
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
                 <Text
@@ -320,7 +320,7 @@ export default function Home() {
                   {difficulties.get(userData.intensity)}
                 </Text>
               </View>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
         {/* Jump Back in */}
@@ -512,52 +512,6 @@ export default function Home() {
         </View>
       </ScrollView>
 
-      {/* Goal / Intensity Modal */}
-      <Modal visible={showGoalModal} transparent animationType="fade">
-        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowGoalModal(false)}>
-          <View style={[styles.modalBox, { backgroundColor: isDark ? '#1c1c1e' : '#fff' }]}>
-            <Text style={[fonts.josefin, fonts.josefinBold, styles.modalTitle, { color: isDark ? '#fff' : '#000' }]}>
-              Your daily goal
-            </Text>
-            {([
-              { key: 'easy',   label: 'Easy',   freq: '1x a day' },
-              { key: 'medium', label: 'Medium',  freq: '3x a day' },
-              { key: 'hard',   label: 'Hard',    freq: '5x a day' },
-            ] as const).map((opt) => {
-              const active = userData.intensity === opt.key;
-              return (
-                <TouchableOpacity
-                  key={opt.key}
-                  style={[
-                    styles.goalOption,
-                    {
-                      backgroundColor: active ? '#0a7ea4' : (isDark ? '#2c2c2e' : '#f0f0f0'),
-                      borderColor: active ? '#0a7ea4' : (isDark ? '#444' : '#e0e0e0'),
-                    },
-                  ]}
-                  activeOpacity={0.75}
-                  onPress={async () => {
-                    if (!db) return;
-                    const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
-                    if (user) {
-                      await user.patch({ intensity: opt.key });
-                      setUserData((prev: any) => ({ ...prev, intensity: opt.key }));
-                    }
-                    setShowGoalModal(false);
-                  }}
-                >
-                  <Text style={[fonts.josefin, fonts.josefinBold, styles.goalOptionLabel, { color: active ? '#fff' : (isDark ? '#fff' : '#000') }]}>
-                    {opt.label}
-                  </Text>
-                  <Text style={[fonts.josefin, styles.goalOptionFreq, { color: active ? 'rgba(255,255,255,0.8)' : (isDark ? '#aaa' : '#666') }]}>
-                    {opt.freq}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </TouchableOpacity>
-      </Modal>
       <Toast message={toastMsg} visible={toastVisible} />
     </ThemedView>
   );

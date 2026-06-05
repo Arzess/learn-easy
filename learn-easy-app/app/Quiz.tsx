@@ -21,7 +21,8 @@ export default function Quiz() {
     const [questionCounter, setQuestionCounter] = useState(0);
     const [submittedAnswers, setSubmittedAnswers] = useState<Map<Number, Array<String>>>();
     const db = useDB(); 
-    useEffect(()=>{ 
+    // Lädt Kurs- und Kapitel-Daten anhand der übergebenen courseId und chapterId
+    useEffect(()=>{
         const fetchCourseInfo = async () => {
             const foundCourse = courses.courses.find(c => String(c.course_id) === String(courseId));
             if (foundCourse) {
@@ -39,7 +40,7 @@ export default function Quiz() {
         ["single_choice", "Single Choice"],
     ])
 
-    // Map will be passed to quiz result page for assessment
+    // Initialisiert eine leere Antwort-Map für jede Frage (wird ans QuizResult weitergegeben)
     useEffect(() => {
       if (!course) return;
       const answerSheet = new Map<number, string[]>();

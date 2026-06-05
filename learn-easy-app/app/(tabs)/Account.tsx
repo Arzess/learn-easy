@@ -22,10 +22,13 @@ import { useAppTheme } from '@/context/theme-context';
 import { useDB } from '@/db/DatabaseContext';
 import Svg from '@/components/svg';
 
-type EditField = 'name' | 'kurs';
+type EditField = 'name' | 'kurs' | 'role' | 'username' | 'intensity';
 
 const EDIT_OPTIONS: { field: EditField; label: string }[] = [
   { field: 'name', label: 'Change Name' },
+  { field: 'username', label: 'Change Username' },
+  { field: 'role', label: 'Change Role' },
+  { field: 'intensity', label: 'Change Intensity' },
 ];
 
 
@@ -33,6 +36,7 @@ export default function AccountScreen() {
   const db = useDB();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [intensity, setIntensity] = useState('');
   const [email, setEmail] = useState('');
@@ -43,6 +47,20 @@ export default function AccountScreen() {
   const [pushEnabled, setPushEnabled] = useState(false);
   // mit KI bearbeitet – Course-Switch Modal, Settings-Design, Switch-Course in Settings verschoben
   const [showCourseSwitch, setShowCourseSwitch] = useState(false);
+  const [showRolePicker, setShowRolePicker] = useState(false);
+  const [showIntensityPicker, setShowIntensityPicker] = useState(false);
+
+  const intensities = [
+    { value: 'easy', label: 'Easy', freq: '1x a day' },
+    { value: 'medium', label: 'Medium', freq: '3x a day' },
+    { value: 'hard', label: 'Hard', freq: '5x a day' },
+  ];
+
+  const roles = [
+    { value: 'student', label: 'Student' },
+    { value: 'teacher', label: 'Teacher' },
+    { value: 'learner', label: 'Just looking for new things to learn' },
+  ];
 
   const router = useRouter();
   const { theme, isDarkMode, setDarkMode } = useAppTheme();
@@ -62,6 +80,7 @@ export default function AccountScreen() {
         if (user) {
           const data = user.toJSON();
           setName(data.name ?? '');
+          setUsername(data.username ?? '');
           setRole(data.role ?? '');
           setIntensity(data.intensity ? data.intensity.charAt(0).toUpperCase() + data.intensity.slice(1) : '');
           setEmail(data.email ?? '');
@@ -84,6 +103,9 @@ export default function AccountScreen() {
     if (!result.canceled) setProfileImage(result.assets[0].uri);
   }
 
+  // Reagiert auf Tap auf das Profilbild:
+  // Ohne Bild → öffnet direkt den Galerie-Picker.
+  // Mit bestehendem Bild → zeigt Aktionsmenü mit "Change Photo" und "Delete Photo".
   function handleAvatarPress() {
     if (!profileImage) { openImagePicker(); return; }
     Alert.alert('Profile Picture', undefined, [
@@ -93,28 +115,69 @@ export default function AccountScreen() {
     ]);
   }
 
+  // Öffnet das passende Bearbeitungs-Modal je nach gewähltem Feld.
+  // Für Kurs → Course-Switch-Modal, für Rolle/Intensität → eigene Picker-Modals,
+  // für Name/Username → Text-Input-Modal mit aktuellem Wert vorausgefüllt.
   function openEdit(field: EditField) {
     setEditOpen(false);
     if (field === 'kurs') {
       setShowCourseSwitch(true);
       return;
     }
-    const current: Record<EditField, string> = { name, kurs };
+    if (field === 'role') {
+      setShowRolePicker(true);
+      return;
+    }
+    if (field === 'intensity') {
+      setShowIntensityPicker(true);
+      return;
+    }
+    const current: Record<EditField, string> = { name, kurs, role, username };
     setInputValue(current[field]);
     setActiveField(field);
   }
 
-  function saveEdit() {
+  // Speichert das geänderte Profilfeld:
+  // Aktualisiert den lokalen State sofort für flüssige UI,
+  // und schreibt den neuen Wert zusätzlich in die RxDB-Datenbank
+  // damit die Änderung nach App-Neustart erhalten bleibt.
+  async function saveEdit() {
     if (!activeField) return;
-    if (activeField === 'name') setName(inputValue.trim() || name);
+    if (activeField === 'name') {
+      const newName = inputValue.trim() || name;
+      setName(newName);
+      if (db) {
+        // @ts-ignore
+        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+        if (user) await user.patch({ name: newName });
+      }
+    }
     if (activeField === 'email') setEmail(inputValue.trim() || email);
     if (activeField === 'kurs') setKurs(inputValue.trim());
+    if (activeField === 'username') {
+      setUsername(inputValue.trim() || username);
+      if (db) {
+        // @ts-ignore
+        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+        if (user) await user.patch({ username: inputValue.trim() || username });
+      }
+    }
+    if (activeField === 'role') {
+      setRole(inputValue.trim() || role);
+      if (db) {
+        // @ts-ignore
+        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+        if (user) await user.patch({ role: inputValue.trim() || role });
+      }
+    }
     setActiveField(null);
   }
 
   const modalTitle: Record<EditField, string> = {
     name: 'Change Name',
     kurs: 'Change Course',
+    role: 'Change Role',
+    username: 'Change Username',
   };
 
   return (
@@ -136,8 +199,8 @@ export default function AccountScreen() {
         </View>
       </Pressable>
 
-      {/* Name / Role / Intensity */}
-      <Text style={[fonts.josefin, styles.nameText, { color: textColor }]}>{name || 'Your Name'}</Text>
+      {/* Username / Role / Intensity */}
+      <Text style={[fonts.josefin, styles.nameText, { color: textColor }]}>{username || name || 'Username'}</Text>
       <Text style={[fonts.josefin, styles.roleText, { color: subColor }]}>{role.charAt(0).toUpperCase() +
                     role.slice(1) || 'Student'}</Text>
       <Text style={[fonts.josefin, styles.intensityText, { color: subColor }]}>{intensity}</Text>
@@ -208,6 +271,66 @@ export default function AccountScreen() {
           </View>
         </Pressable>
       </View>
+
+      {/* Intensity Picker Modal */}
+      <Modal visible={showIntensityPicker} transparent animationType="fade">
+        <Pressable style={styles.modalOverlay} onPress={() => setShowIntensityPicker(false)}>
+          <Pressable style={[styles.modalBox, { backgroundColor: cardBg }]}>
+            <Text style={[fonts.josefin, styles.courseSwitchTitle, { color: textColor }]}>Change Intensity</Text>
+            <View style={{ gap: 10, width: '100%' }}>
+              {intensities.map(opt => {
+                const active = intensity.toLowerCase() === opt.value;
+                return (
+                  <Pressable
+                    key={opt.value}
+                    onPress={async () => {
+                      setIntensity(opt.label);
+                      if (db) {
+                        // @ts-ignore
+                        const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+                        if (user) await user.patch({ intensity: opt.value });
+                      }
+                      setShowIntensityPicker(false);
+                    }}
+                    style={[styles.roleOption, { borderColor, backgroundColor: active ? (isDark ? '#fff' : '#000') : 'transparent' }]}
+                  >
+                    <Text style={[fonts.josefinBold, { color: active ? (isDark ? '#000' : '#fff') : textColor, fontSize: 14 }]}>{opt.label}</Text>
+                    <Text style={[fonts.josefin, { color: active ? (isDark ? '#333' : '#ccc') : subColor, fontSize: 12 }]}>{opt.freq}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      {/* Role Picker Modal */}
+      <Modal visible={showRolePicker} transparent animationType="fade">
+        <Pressable style={styles.modalOverlay} onPress={() => setShowRolePicker(false)}>
+          <Pressable style={[styles.modalBox, { backgroundColor: cardBg }]}>
+            <Text style={[fonts.josefin, styles.courseSwitchTitle, { color: textColor }]}>Change Role</Text>
+            <View style={{ gap: 10, width: '100%' }}>
+              {roles.map(r => (
+                <Pressable
+                  key={r.value}
+                  onPress={async () => {
+                    setRole(r.value);
+                    if (db) {
+                      // @ts-ignore
+                      const user = await db.general.user.findOne({ selector: { current: { $eq: true } } }).exec();
+                      if (user) await user.patch({ role: r.value });
+                    }
+                    setShowRolePicker(false);
+                  }}
+                  style={[styles.roleOption, { borderColor, backgroundColor: role === r.value ? (isDark ? '#fff' : '#000') : 'transparent' }]}
+                >
+                  <Text style={[fonts.josefin, { color: role === r.value ? (isDark ? '#000' : '#fff') : textColor, fontSize: 14 }]}>{r.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       {/* Course Switch Modal */}
       <Modal visible={showCourseSwitch} transparent animationType="fade">
@@ -438,6 +561,13 @@ const styles = StyleSheet.create({
   },
   modalSaveText: {
     fontWeight: '600',
+  },
+  roleOption: {
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    width: '100%',
   },
   courseSwitchTitle: {
     fontSize: 18,

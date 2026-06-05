@@ -46,6 +46,7 @@ export default function QuizResult() {
       await AsyncStorage.setItem('@quizCompletedCourseNotSelected', 'true');
     }
 
+    // Markiert den Quiz als abgeschlossen in AsyncStorage
     const completeQuiz = async () => {
       const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
       await AsyncStorage.setItem('@quizIncompleted', 'false');
@@ -111,6 +112,10 @@ export default function QuizResult() {
 
     }, [course, currentCourse])
 
+    // Schließt den Quiz-Flow ab:
+    // Fügt chapterId zu den abgeschlossenen Kapiteln hinzu und erhöht currentChapter.
+    // Wenn letztes Kapitel → markiert den Kurs als abgeschlossen und öffnet Kursauswahl.
+    // Sonst → navigiert zurück zur Home-Seite.
     const nextStep = async () => {
         if (!db) return;
         
