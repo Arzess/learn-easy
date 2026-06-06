@@ -134,3 +134,39 @@ Der Back-Button in den Suchergebnissen navigierte zu Home statt zurück zur Such
 
 ### 35. Quiz-ChapterId gefixt
 Der Quiz-Button auf der Home-Seite übergab immer die ID des letzten Kapitels. KI hat das auf das zuletzt abgeschlossene Kapitel (`currentChapter - 1`) korrigiert. Betroffene Datei: `app/(tabs)/Home.tsx`
+
+---
+
+## Verbesserungen (Session 3 – Dozenten-Feedback)
+
+Basierend auf Dozenten-Feedback wurden folgende Punkte mit KI-Unterstützung umgesetzt:
+
+### 36. Card-Komponente neu proportioniert
+Die Auswahlkarten (Rolle, Intensität, Library) hatten zu große Höhe und zu kleinen Text. KI hat feste Höhe entfernt, Text vergrößert und Inhalt zentriert. Betroffene Datei: `components/Card.tsx`
+
+### 37. Change Role als Auswahl-Modal
+Die Rolle (Student/Teacher/Learner) konnte nur als Freitext geändert werden. KI hat ein Auswahl-Modal mit den gleichen Optionen wie im Onboarding eingebaut. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 38. Change Username hinzugefügt
+Username war nach dem Onboarding nicht mehr änderbar. KI hat "Change Username" zu den Account-Options hinzugefügt. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 39. Change Name in DB gespeichert
+Namensänderungen wurden nur im State gespeichert und gingen nach Neustart verloren. KI hat die DB-Speicherung ergänzt. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 40. Change Intensity in Account verschoben
+Die Intensität war nur über einen klickbaren Bereich auf der Home-Seite änderbar. KI hat das Modal in Account Options verschoben und aus Home entfernt. Betroffene Dateien: `app/(tabs)/Account.tsx`, `app/(tabs)/Home.tsx`
+
+### 41. Username in Account, echter Name in Home
+Account zeigte den echten Namen unter dem Profilbild. KI hat das auf Username umgestellt, während Home weiterhin den echten Namen verwendet. Betroffene Datei: `app/(tabs)/Account.tsx`
+
+### 42. Introduction-Screen vor Chapter 1
+Vor dem ersten Kapitel gibt es jetzt einen Introduction-Screen mit Kursbeschreibung, Kapitelübersicht mit Beschreibungen und einem "Start Chapter 1"-Button. Neue Datei: `app/CourseIntro.tsx`. Betroffene Datei: `app/CourseOverview.tsx`
+
+### 43. Klickbare Such-Chips
+Die leere Search-Seite zeigt jetzt 3 klickbare Suchbegriffe aus dem aktiven Kurs. Die Begriffe sind kursspezifisch und liefern garantiert Suchergebnisse. Betroffene Datei: `app/(tabs)/Suche.tsx`
+
+### 44. Such-Back-Button → leeres Suchfeld
+Nach einer Suche führte der Back-Button zur Home-Seite. KI hat das gefixt – er führt jetzt zurück zu einem leeren Suchfeld. Betroffene Datei: `app/(tabs)/Suche.tsx`
+
+### 45. Detaillierte Code-Kommentare
+Alle wichtigen Funktionen wurden mit detaillierten Kommentaren versehen die Parameter, Ablauf und Zweck erklären. Betroffene Dateien: `db/database.js`, `app/ChapterContent.tsx`, `app/QuizResult.tsx`, `app/Quiz.tsx`, `app/(tabs)/Account.tsx`, `app/(tabs)/Suche.tsx`, `app/start/Kurswahl.tsx`, `app/CourseOverview.tsx`, `components/Toast.tsx`, `components/ImageViewer.tsx`, `components/Card.tsx`

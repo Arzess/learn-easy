@@ -70,12 +70,12 @@ export default function Home() {
   const progress = useSharedValue<number>(0);
   const [quiz, setQuiz] = useState(false);
   const [courseRating, setCourseRating] = useState(0);
-  const [showGoalModal, setShowGoalModal] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // mit KI bearbeitet – Toast für Bookmark-Aktionen, einheitliches Bookmark-Styling, korrekter Quiz-chapterId
+  // Zeigt einen Toast mit der übergebenen Nachricht für 2,2 Sekunden an
   const showToast = (msg: string) => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     setToastMsg(msg);
@@ -333,7 +333,7 @@ export default function Home() {
               </View>
             </TouchableOpacity>
             {/* Goal */}
-            <TouchableOpacity style={styles.goal} onPress={() => setShowGoalModal(true)} activeOpacity={0.75}>
+            <View style={styles.goal}>
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
                 <Text

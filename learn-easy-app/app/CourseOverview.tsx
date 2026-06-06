@@ -20,6 +20,7 @@ export default function CourseOverview() {
 
   const course = courses.courses.find(c => String(c.course_id) === String(courseId));
 
+  // Lädt die abgeschlossenen Kapitel des aktuellen Users bei jedem Aufruf des Screens
   useFocusEffect(useCallback(() => {
     if (!db) return;
     const fetchUser = async () => {
@@ -110,6 +111,27 @@ export default function CourseOverview() {
         <Text style={[fonts.josefin, styles.sectionLabel, { color: Colors[theme].icon }]}>
           {course.amount_of_chapters} Chapters
         </Text>
+
+        {/* Introduction Card */}
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => router.push({ pathname: '/CourseIntro', params: { courseId: course.course_id } })}
+          style={[styles.card, { backgroundColor: isDark ? '#2c2c2e' : '#f0f0f0', borderColor: isDark ? '#444' : '#e0e0e0', borderWidth: 1 }]}
+        >
+          <View style={styles.cardLeft}>
+            <View style={[styles.numberBadge, { backgroundColor: isDark ? '#444' : '#d0d0d0' }]}>
+              <Text style={[fonts.josefin, styles.numberText, { color: colors.white.color }]}>📖</Text>
+            </View>
+          </View>
+          <View style={styles.cardContent}>
+            <Text style={[fonts.josefin, fonts.josefinBold, styles.chapterName, { color: Colors[theme].text }]}>
+              Introduction
+            </Text>
+            <Text style={[fonts.josefin, { color: Colors[theme].icon, fontSize: 12 }]}>
+              What you will learn in this course
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         {course.chapters.map((chapter, index) => {
           const done = completedChapters.map(String).includes(String(chapter.chapter_id));

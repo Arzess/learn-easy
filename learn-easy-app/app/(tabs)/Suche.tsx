@@ -36,6 +36,10 @@ type ResultItem = {
   course_name: string;
 };
 
+// Durchsucht alle Inhalte des aktiven Kurses nach dem eingegebenen Begriff.
+// Prüft bei Texten den Inhalt, bei Bildern den Alt-Text, bei Videos den Titel.
+// Verhindert Duplikate über ein "seen"-Set und gibt eine Liste von ResultItems zurück.
+// Ist keine activeCourseId gesetzt, werden alle Kurse durchsucht.
 function searchCourses(query: string, activeCourseId: string): ResultItem[] {
   if (!query.trim()) return [];
   const q = query.toLowerCase();
@@ -118,6 +122,8 @@ export default function SucheScreen() {
   const cardBg = '#fff';
   const cardBorder = '#e8e8e8';
 
+  // Verarbeitet eine Suchanfrage: bereinigt den Eingabestring, ruft searchCourses auf,
+  // speichert den Begriff in den letzten Suchanfragen (max. 5) und wechselt in die Ergebnis-Ansicht.
   function handleSearch(q: string) {
     const trimmed = q.trim();
     if (!trimmed) return;
@@ -134,7 +140,7 @@ export default function SucheScreen() {
   // mit KI bearbeitet – Back-Button in Suchergebnissen geht zurück zur Suche statt zu Home
   function handleBack() {
     setShowResults(false);
-    setQuery(submittedQuery);
+    setQuery('');
   }
 
   const currentCourseData = courses.courses.find(
@@ -287,6 +293,38 @@ export default function SucheScreen() {
       )}
         </View>
 
+      {/* Example chips – aus dem aktiven Kurs */}
+      {(() => {
+        const courseChips: Record<string, string[]> = {
+          '1': ['Genghis', 'Silk Road', 'conquest'],
+          '2': ['Ada Lovelace', 'engineer', 'computer'],
+          '3': ['Leonardo', 'Michelangelo', 'Florence'],
+          '4': ['warming', 'carbon', 'emission'],
+          '5': ['Soviet', 'nuclear', 'Cold War'],
+          '6': ['Pharaoh', 'pyramid', 'Nile'],
+          '7': ['neuron', 'memory', 'synapse'],
+        };
+        const suggestions = courseChips[activeCourseId] ?? [];
+        if (!suggestions.length) return null;
+        return (
+          <View style={styles.chipsContainer}>
+            <Text style={[fonts.josefin, styles.chipsLabel, { color: iconColor }]}>Try searching for:</Text>
+            <View style={styles.chips}>
+              {suggestions.map(term => (
+                <TouchableOpacity
+                  key={term}
+                  style={[styles.chip, { backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8', borderColor: isDark ? '#555' : '#ccc' }]}
+                  onPress={() => { setQuery(term); handleSearch(term); }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[fonts.josefin, styles.chipText, { color: isDark ? '#fff' : '#111' }]}>{term}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        );
+      })()}
+
       </View>
       {/* Last queries */}
       {lastQueries.length > 0 && (
@@ -331,6 +369,28 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
+  },
+  chipsContainer: {
+    marginTop: 16,
+    marginBottom: 24,
+    gap: 10,
+  },
+  chipsLabel: {
+    fontSize: 13,
+  },
+  chips: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  chip: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+  chipText: {
+    fontSize: 13,
   },
   lastQueriesCard: {
     borderRadius: 16,

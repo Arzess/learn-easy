@@ -5,11 +5,15 @@ import SVG from './svg'
 import './svg-sheet'
 
 
+// Wiederverwendbare Auswahlkarte.
+// Wird im Onboarding (Rolle, Intensität) und in der Library-Übersicht verwendet.
+// Bei "selected=true" wechselt sie zu schwarzem Hintergrund mit weißem Text.
+// Props: subtext = kleine Beschriftung oben, text = Haupttitel, selected = ausgewählt, onPress = Callback
 export default function Card({subtext, text, onPress, selected} : {subtext: string, text: string, onPress: Function, selected?: boolean}){
     return (
         <Pressable style={[styles.card, selected && styles.cardSelected]} onPress={onPress as any}>
             <Text style={[fonts.josefin, styles.cardSmallText, selected && styles.cardSelectedText]}>{subtext}</Text>
-            <Text style={[fonts.josefin, fonts.josefinMedium, selected && styles.cardSelectedText]}>{text}</Text>
+            <Text style={[fonts.josefin, fonts.josefinMedium, styles.cardText, selected && styles.cardSelectedText]}>{text}</Text>
         </Pressable>
     )
 }
@@ -18,25 +22,23 @@ export default function Card({subtext, text, onPress, selected} : {subtext: stri
 const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.whiteBg.backgroundColor,
-        flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'flex-start',
-        gap: 0,
-        height: 128,
-        minHeight: 128,
+        gap: 4,
         width: '100%',
-        padding: 12,
-        borderRadius: 8,
+        paddingHorizontal: 16,
+        paddingVertical: 18,
+        borderRadius: 12,
         borderWidth: 1,
         borderColor: '#EFEFF0',
     },
     cardSmallText: {
-        fontSize: 10,
+        fontSize: 12,
     },
     cardText: {
-        fontSize: 14,
+        fontSize: 16,
     },
     cardSelected: {
         backgroundColor: colors.blackBg.backgroundColor,

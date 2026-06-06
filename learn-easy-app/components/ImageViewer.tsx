@@ -7,6 +7,10 @@ import { fonts } from '@/constants/theme';
 
 const { width, height } = Dimensions.get('window');
 
+// Zeigt ein Bild im Vollbildmodus in einem Modal an.
+// Unterstützt Pinch-to-Zoom (max. 5x) und Doppeltipp zum Reinzoomen (2,5x) oder Zurücksetzen.
+// Schließen über den ✕-Button oder den Hardware-Back-Button.
+// Props: uri = Bild-URL, caption = optionaler Untertitel, visible = Modal-Sichtbarkeit, onClose = Callback
 export default function ImageViewer({ uri, caption, visible, onClose }: {
   uri: string;
   caption?: string;
