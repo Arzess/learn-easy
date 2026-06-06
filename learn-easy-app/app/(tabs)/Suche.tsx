@@ -293,38 +293,6 @@ export default function SucheScreen() {
       )}
         </View>
 
-      {/* Example chips – aus dem aktiven Kurs */}
-      {(() => {
-        const courseChips: Record<string, string[]> = {
-          '1': ['Genghis', 'Silk Road', 'conquest'],
-          '2': ['Ada Lovelace', 'engineer', 'computer'],
-          '3': ['Leonardo', 'Michelangelo', 'Florence'],
-          '4': ['warming', 'carbon', 'emission'],
-          '5': ['Soviet', 'nuclear', 'Cold War'],
-          '6': ['Pharaoh', 'pyramid', 'Nile'],
-          '7': ['neuron', 'memory', 'synapse'],
-        };
-        const suggestions = courseChips[activeCourseId] ?? [];
-        if (!suggestions.length) return null;
-        return (
-          <View style={styles.chipsContainer}>
-            <Text style={[fonts.josefin, styles.chipsLabel, { color: iconColor }]}>Try searching for:</Text>
-            <View style={styles.chips}>
-              {suggestions.map(term => (
-                <TouchableOpacity
-                  key={term}
-                  style={[styles.chip, { backgroundColor: isDark ? '#2c2c2e' : '#e8e8e8', borderColor: isDark ? '#555' : '#ccc' }]}
-                  onPress={() => { setQuery(term); handleSearch(term); }}
-                  activeOpacity={0.7}
-                >
-                  <Text style={[fonts.josefin, styles.chipText, { color: isDark ? '#fff' : '#111' }]}>{term}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        );
-      })()}
-
       </View>
       {/* Last queries */}
       {lastQueries.length > 0 && (

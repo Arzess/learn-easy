@@ -115,15 +115,15 @@ export default function ChapterContent() {
       const data = user.toJSON();
       const already = data.currentCourseCompletedChapters ?? [];
       let updated = already;
+      let nextChapterId = user.currentChapter + 1;
       if (!already.map(String).includes(String(chapterId))) {
         updated = [...already, String(chapterId)];
-        await user.patch({ currentCourseCompletedChapters: updated, currentChapter: user.currentChapter+1 });
+        await user.patch({ currentCourseCompletedChapters: updated, currentChapter: nextChapterId });
       }
       if (course && updated.length >= course.amount_of_chapters) {
         setShowCongrats(true);
         return;
       }
-      const nextChapterId = user.currentChapter + 1;
       const nextChapter = course?.chapters.find(ch => String(ch.chapter_id) === String(nextChapterId));
       if (nextChapter) {
         router.replace({ pathname: '/ChapterContent', params: { courseId: String(courseId), chapterId: String(nextChapterId) } });

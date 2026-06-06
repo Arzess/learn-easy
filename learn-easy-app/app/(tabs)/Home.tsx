@@ -25,11 +25,9 @@ import {
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import { addWhitelistedNativeProps } from "react-native-reanimated/lib/typescript/ConfigHelper";
 
 const width = Dimensions.get("window").width;
 const carouselWidth = width;
-
 
 const difficulties = new Map([
   ["hard", "5x a day"],
@@ -41,7 +39,7 @@ const intensities = new Map([
   ["hard", 5],
   ["easy", 1],
   ["medium", 3],
-])
+]);
 
 const daysOfWeek = [
   "Monday",
@@ -50,9 +48,8 @@ const daysOfWeek = [
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday"
+  "Sunday",
 ];
-
 
 export default function Home() {
   const theme = useColorScheme();
@@ -70,6 +67,7 @@ export default function Home() {
   const progress = useSharedValue<number>(0);
   const [quiz, setQuiz] = useState(false);
   const [courseRating, setCourseRating] = useState(0);
+  const [showGoalModal, setShowGoalModal] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -82,16 +80,15 @@ export default function Home() {
     setToastVisible(true);
     toastTimer.current = setTimeout(() => setToastVisible(false), 2200);
   };
-  
 
   // Check if there's a quiz to be completed
   useFocusEffect(
-  useCallback(() => {
-    const checkStatus = async () => {
-      const val = await getItem('@quizIncompleted');
-      setQuiz(val === 'true');
-    };
-    checkStatus();
+    useCallback(() => {
+      const checkStatus = async () => {
+        const val = await getItem('@quizIncompleted');
+        setQuiz(val === 'true');
+      };
+      checkStatus();
     }, [])
   );
 
@@ -151,6 +148,7 @@ export default function Home() {
       fetchUser();
     }, [db]),
   );
+
   // Load bookmarks
   useEffect(() => {
     const loadBookmarked = async () => {
@@ -168,19 +166,19 @@ export default function Home() {
 
   const selectNew = async () => {
     if (!db) return;
-        
+
     const user = await db.general.user.findOne({
-      selector: { current: {$eq: true}}
+      selector: { current: { $eq: true } },
     }).exec();
-    
-    if (user){
-      // Update the completed courses
+
+    if (user) {
       await user.patch({
-                  completedCourses: [...user.completedCourses, currentCourse?.course_id],
+        completedCourses: [...user.completedCourses, currentCourse?.course_id],
       });
       router.navigate("/start/Kurswahl");
     }
-  }
+  };
+
   // @ts-ignore
   const maxIntensity = intensities.get(userData?.intensity) || 1;
 
@@ -198,7 +196,6 @@ export default function Home() {
     );
   }
 
-  
   const isDark = theme === 'dark';
   const tint = colors.white.color;
   const textColor = Colors[theme].text;
@@ -239,6 +236,7 @@ export default function Home() {
             Welcome back, {userData.name}!
           </Text>
         </View>
+
         {/* Progress */}
         <View style={styles.categoryContainer}>
           <View style={styles.categoryHeadingContainer}>
@@ -291,20 +289,20 @@ export default function Home() {
                   >
                     {currentCourse?.course_name}
                   </Text>
-                  {!quiz &&
+                  {!quiz && (
                     <>
                       <Text style={[fonts.josefin, styles.chapterName]}>
                         Chapter {userData.currentChapter}
                       </Text>
                     </>
-                  }
-                  {quiz &&
+                  )}
+                  {quiz && (
                     <>
                       <Text style={[fonts.josefin, styles.chapterName]}>
                         Quiz
-                      </Text>  
+                      </Text>
                     </>
-                  }
+                  )}
                   <View style={styles.starsRow}>
                     {[1, 2, 3, 4, 5].map((star) => (
                       <TouchableOpacity
@@ -332,8 +330,9 @@ export default function Home() {
                 </View>
               </View>
             </TouchableOpacity>
+
             {/* Goal */}
-            <View style={styles.goal}>
+            <TouchableOpacity style={styles.goal} onPress={() => setShowGoalModal(true)} activeOpacity={0.75}>
               <Text style={styles.goalEmoji}>🎯</Text>
               <View style={styles.textContainer}>
                 <Text
@@ -349,20 +348,21 @@ export default function Home() {
             </TouchableOpacity>
           </View>
         </View>
+
         {/* Calendar */}
         <View style={styles.categoryContainer}>
-          <View style={[styles.categoryHeadingContainer, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
-            <View style={{display: 'flex', gap: 8,}}>
-                    <Text
-              style={[fonts.josefin, styles.categorySubheading, { color: textColor }]}
-            >
-              Calendar
-            </Text>
-            <Text style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}>
-              Your consistency
-            </Text>
+          <View style={[styles.categoryHeadingContainer, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
+            <View style={{ display: 'flex', gap: 8 }}>
+              <Text
+                style={[fonts.josefin, styles.categorySubheading, { color: textColor }]}
+              >
+                Calendar
+              </Text>
+              <Text style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}>
+                Your consistency
+              </Text>
             </View>
-                  <Button
+            <Button
               text="Overview"
               iconName="chevron-right"
               light={true}
@@ -377,35 +377,33 @@ export default function Home() {
               }}
             />
           </View>
-          <View style={[styles.calendar, {justifyContent: 'space-between'}]}>
-             {consistency.map((c, i) => {
-                const currentIntensity = intensities.get(userData?.intensity) || 1;
-                const calculatedPercentage = Math.round((c / currentIntensity) * 100);
+          <View style={[styles.calendar, { justifyContent: 'space-between' }]}>
+            {consistency.map((c, i) => {
+              const currentIntensity = intensities.get(userData?.intensity) || 1;
+              const calculatedPercentage = Math.round((c / currentIntensity) * 100);
 
-                return (
-                  <View style={[styles.calendarUnit]} key={i}>
-                    <Text style={[fonts.josefin, fonts.josefinSemi]}>
-                      {daysOfWeek[i % 7]}
-                    </Text>
-
-                    <ProgressCircle 
-                      radius={16} 
-                      percentage={calculatedPercentage === 0 ? 0 : calculatedPercentage} 
-                      color={"black"}
-                      strokeWidth={5}
-                    />
-
-                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={[fonts.josefin]}>May</Text>
-                      <Text style={[fonts.josefin, fonts.josefinSemi, {fontSize: 20,}]}>{i + 1}</Text>
-                    </View>
+              return (
+                <View style={[styles.calendarUnit]} key={i}>
+                  <Text style={[fonts.josefin, fonts.josefinSemi]}>
+                    {daysOfWeek[i % 7]}
+                  </Text>
+                  <ProgressCircle
+                    radius={16}
+                    percentage={calculatedPercentage === 0 ? 0 : calculatedPercentage}
+                    color={"black"}
+                    strokeWidth={5}
+                  />
+                  <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={[fonts.josefin]}>May</Text>
+                    <Text style={[fonts.josefin, fonts.josefinSemi, { fontSize: 20 }]}>{i + 1}</Text>
                   </View>
-                );
-              })}
+                </View>
+              );
+            })}
           </View>
         </View>
 
-        {/* Jump Back in */}
+        {/* Jump Back In */}
         {/* Case 1: no quiz to do */}
         {!quiz && (
           <>
@@ -421,12 +419,11 @@ export default function Home() {
             </View>
             <View style={styles.jumpBackIn}>
               {/* Render chapter's name */}
-              <Text style={[fonts.josefin, {color: textColor}]}>
+              <Text style={[fonts.josefin, { color: textColor }]}>
                 {(() => {
                   const currentChapterObj = currentCourse?.chapters.find(
                     (ch) => Number(ch.chapter_id) === Number(userData?.currentChapter)
                   );
-
                   return currentChapterObj?.chapter_name || "Unknown Chapter";
                 })()}
               </Text>
@@ -440,8 +437,7 @@ export default function Home() {
                     const currentChapterObj = currentCourse?.chapters.find(
                       (ch) => Number(ch.chapter_id) === Number(userData?.currentChapter)
                     );
-
-                    return currentChapterObj?.chapter_content?.[0]?.content 
+                    return currentChapterObj?.chapter_content?.[0]?.content
                       || "Ready to continue your learning journey? Click below to view the chapter.";
                   })()}
                 </Text>
@@ -456,13 +452,13 @@ export default function Home() {
               onPress={() => {
                 router.push({
                   pathname: '/ChapterContent',
-                  params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) }
+                  params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) },
                 });
               }}
             />
           </>
         )}
-            
+
         {/* Case 2: quiz to do */}
         {quiz && (
           <View style={styles.categoryContainer}>
@@ -499,7 +495,6 @@ export default function Home() {
           </View>
         )}
 
-
         {/* Gallery */}
         <View style={styles.categoryContainer}>
           <View style={styles.categoryHeadingContainer}>
@@ -534,7 +529,7 @@ export default function Home() {
                 autoPlay={true}
                 autoPlayInterval={4000}
                 data={pictures}
-                width={width-32}
+                width={width - 32}
                 height={220}
                 loop={true}
                 pagingEnabled={true}
@@ -652,6 +647,7 @@ export default function Home() {
           </View>
         </TouchableOpacity>
       </Modal>
+
       <Toast message={toastMsg} visible={toastVisible} />
     </ThemedView>
   );
@@ -711,7 +707,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   // Course and goal
   course: {
     display: "flex",
@@ -864,6 +859,7 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 32,
   },
+  // Calendar
   calendar: {
     display: 'flex',
     flexDirection: 'row',

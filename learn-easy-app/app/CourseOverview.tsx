@@ -40,16 +40,6 @@ export default function CourseOverview() {
   const tint = colors.white.color;
   const textColor = Colors[theme].text;
 
-  const getCurrentChapter = async () => {
-    if (!db) return;
-
-    const user = await db.general.user.findOne({
-      selector: { current: { $eg: true }},
-    }).exec();
-
-    if (user) return user.currentChapter;
-  }
-
   const updateChapter = async (chapter: number) => {
     if (!db){
       return;
@@ -60,8 +50,8 @@ export default function CourseOverview() {
     }).exec();
 
     if (user){
-      await user.incrementalPatch({
-      currentChapter: chapter,
+      await user.patch({
+        currentChapter: chapter,
       });
     }
 
@@ -88,12 +78,7 @@ export default function CourseOverview() {
     <ThemedView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Button text="" iconName="arrow-left" onPress={()=>{
-          router.push({
-                  pathname: '/ChapterContent',
-                  params: { courseId: course.course_id, chapterId: String(getCurrentChapter()) }
-                })
-        }} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+        <Button text="" iconName="arrow-left" onPress={() => router.back()} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
         <Text style={[fonts.josefin, fonts.josefinBold, styles.headerTitle, { color: textColor }]} numberOfLines={1}>
           {course.course_name}
         </Text>
