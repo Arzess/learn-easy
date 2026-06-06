@@ -1,6 +1,7 @@
 // mit KI bearbeitet – neuer Welcome-Screen nach Onboarding-Abschluss
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import Button from '@/components/Button';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { fonts } from '@/constants/theme';
 
@@ -25,9 +26,8 @@ export default function Welcome() {
         <Text style={[fonts.josefinBold, styles.headline]}>Are you ready{'\n'}to learn?</Text>
         <Text style={[fonts.josefin, styles.sub]}>Your account is set up and{'\n'}your course is waiting for you.</Text>
 
-        <TouchableOpacity style={styles.btn} onPress={() => router.navigate('/(tabs)/Home')} activeOpacity={0.85}>
-          <Text style={[fonts.josefinBold, styles.btnText]}>Let's go →</Text>
-        </TouchableOpacity>
+        
+        <Button text="Let's go" iconName="chevron-right" darkIcon={true} light={true} fullWidth={false} onPress={()=>{router.navigate("/(tabs)/Home")}}/>
       </Animated.View>
     </View>
   );

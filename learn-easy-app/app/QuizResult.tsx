@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/themed-view';
-import { fonts, colors } from '@/constants/theme';
+import { colors, fonts } from "@/constants/theme";
 import Button from '@/components/Button';
 import { useDB } from '@/db/DatabaseContext';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -160,7 +160,7 @@ export default function QuizResult() {
 
             {wrongQuestions.length > 0 && (
               <View style={styles.wrongSection}>
-                <Text style={[fonts.josefinBold, styles.wrongTitle, { color: '#fff' }]}>What went wrong</Text>
+                <Text style={[fonts.josefinBold, styles.wrongTitle, {color: 'grey'}]}>What went wrong</Text>
                 {wrongQuestions.map((q, i) => (
                   <View key={i} style={styles.wrongCard}>
                     <Text style={[fonts.josefinBold, styles.wrongQuestion]}>Q{i + 1}: {q.question}</Text>

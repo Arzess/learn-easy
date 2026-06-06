@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  FlatList
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -136,6 +137,12 @@ export default function SucheScreen() {
     setQuery(submittedQuery);
   }
 
+  const currentCourseData = courses.courses.find(
+  (c) => String(c.course_id) === String(activeCourseId)
+  );
+
+  const suggestionsData = currentCourseData?.search_suggestions ?? [];
+
   if (showResults) {
     return (
       <ThemedView style={styles.container}>
@@ -238,7 +245,8 @@ export default function SucheScreen() {
         <Text style={[fonts.josefin, fonts.josefinMedium, styles.label, { color: iconColor }]}>Quickly find interesting material</Text>
 
       {/* Search bar */}
-        <View style={[styles.searchBar, {
+        <View className="searchbar-container" style={{display: 'flex', gap: 4,}}>
+          <View style={[styles.searchBar, {
         backgroundColor: isDark ? '#2c2c2e' : '#f0f0f0',
         borderColor: isDark ? '#444' : '#ddd',
       }]}>
@@ -246,7 +254,7 @@ export default function SucheScreen() {
           style={[fonts.josefin, styles.input, { color: textColor }]}
           value={query}
           onChangeText={setQuery}
-          placeholder="e.g Mongolia"
+          placeholder="I want to find.."
           placeholderTextColor={'#61646B'}
           returnKeyType="search"
           onSubmitEditing={() => handleSearch(query)}
@@ -255,6 +263,29 @@ export default function SucheScreen() {
           <IconSymbol name="magnifyingglass" size={18} color={iconColor} />
         </TouchableOpacity>
       </View>
+        {/* Search Suggestions */}
+        {suggestionsData.length > 0 && (
+        <FlatList 
+          data={suggestionsData}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={{ width: 8 }} />}
+          renderItem={({ item }) => (
+            <TouchableOpacity 
+              style={styles.suggestion} 
+              onPress={() => {
+                setQuery(item);
+                handleSearch(item);
+              }}
+            >
+              <Text style={[fonts.josefin, { color: textColor }]}>
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+        </View>
 
       </View>
       {/* Last queries */}
@@ -304,6 +335,7 @@ const styles = StyleSheet.create({
   lastQueriesCard: {
     borderRadius: 16,
     borderWidth: 1,
+    marginTop: 16,
     gap: 10,
     flex: 1,
   },
@@ -420,5 +452,14 @@ const styles = StyleSheet.create({
   },
   noSearches: {
     justifyContent: 'center',
+  },
+  suggestion: {
+    padding: 8,
+    borderRadius: 8,
+    borderColor: 'white',
+    borderWidth: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });

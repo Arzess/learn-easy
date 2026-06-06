@@ -132,7 +132,7 @@ export default function ChapterContent() {
     <ThemedView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+        <Button text="" iconName="arrow-left" onPress={()=>{router.navigate("/(tabs)/Home")}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
         <Text style={[fonts.josefin, fonts.josefinBold, styles.headerTitle, { color: textColor }]} numberOfLines={2}>
           {chapter.chapter_name}
         </Text>
@@ -262,6 +262,7 @@ export default function ChapterContent() {
               You have finished all the chapters!
             </Text>
             <Text style={[fonts.josefin, styles.modalSub, colors.black]}>Are you ready for the quiz?</Text>
+            
             <TouchableOpacity
               style={styles.modalPrimaryBtn}
               onPress={() => {

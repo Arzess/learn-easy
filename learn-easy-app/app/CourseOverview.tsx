@@ -39,6 +39,34 @@ export default function CourseOverview() {
   const tint = colors.white.color;
   const textColor = Colors[theme].text;
 
+  const getCurrentChapter = async () => {
+    if (!db) return;
+
+    const user = await db.general.user.findOne({
+      selector: { current: { $eg: true }},
+    }).exec();
+
+    if (user) return user.currentChapter;
+  }
+
+  const updateChapter = async (chapter: number) => {
+    if (!db){
+      return;
+    }
+    
+    const user = await db.general.user.findOne({
+      selector: { current: { $eq: true}},
+    }).exec();
+
+    if (user){
+      await user.incrementalPatch({
+      currentChapter: chapter,
+      });
+    }
+
+  }
+  
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
@@ -59,7 +87,12 @@ export default function CourseOverview() {
     <ThemedView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Button text="" iconName="arrow-left" onPress={()=>{router.back()}} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
+        <Button text="" iconName="arrow-left" onPress={()=>{
+          router.push({
+                  pathname: '/ChapterContent',
+                  params: { courseId: course.course_id, chapterId: String(getCurrentChapter()) }
+                })
+        }} light={true} darkIcon={true} fullWidth={false} style={{ borderRadius: 999, width: 48, height: 48,}}/>
         <Text style={[fonts.josefin, fonts.josefinBold, styles.headerTitle, { color: textColor }]} numberOfLines={1}>
           {course.course_name}
         </Text>
@@ -84,10 +117,16 @@ export default function CourseOverview() {
             <TouchableOpacity
               key={chapter.chapter_id}
               activeOpacity={0.75}
-              onPress={() => router.push({
-                pathname: '/ChapterContent',
-                params: { courseId: course.course_id, chapterId: String(chapter.chapter_id) }
-              })}
+              onPress={() => {
+                updateChapter(chapter?.chapter_id);
+                router.push({
+                  pathname: '/ChapterContent',
+                  params: { courseId: course.course_id, chapterId: String(chapter.chapter_id) }
+                })
+            
+
+              }}
+              
               style={[styles.card, {
                 backgroundColor: isDark ? '#2c2c2e' : '#f0f0f0',
                 borderColor: done ? tint : (isDark ? '#444' : '#e0e0e0'),

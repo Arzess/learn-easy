@@ -46,7 +46,7 @@ export default function Index() {
   }
 
   if (isFirstLaunch) {
-    return <Redirect href="/start/Start" />;
+    return <Redirect href="/start/WelcomeStart" />;
   }
 
   return <Redirect href="/(tabs)/Home" />;

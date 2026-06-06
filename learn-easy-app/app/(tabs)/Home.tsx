@@ -10,6 +10,7 @@ import { useDB } from "@/db/DatabaseContext";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { router, useFocusEffect } from "expo-router";
 import { createClient } from "pexels";
+import ProgressCircle from "@/components/Circle";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -24,6 +25,7 @@ import {
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import { addWhitelistedNativeProps } from "react-native-reanimated/lib/typescript/ConfigHelper";
 
 const width = Dimensions.get("window").width;
 const carouselWidth = width;
@@ -34,6 +36,23 @@ const difficulties = new Map([
   ["easy", "1x a day"],
   ["medium", "3x a day"],
 ]);
+
+const intensities = new Map([
+  ["hard", 5],
+  ["easy", 1],
+  ["medium", 3],
+])
+
+const daysOfWeek = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+];
+
 
 export default function Home() {
   const theme = useColorScheme();
@@ -162,7 +181,14 @@ export default function Home() {
       router.navigate("/start/Kurswahl");
     }
   }
+  // @ts-ignore
+  const maxIntensity = intensities.get(userData?.intensity) || 1;
 
+  const consistency = Array.from({ length: 3 }, () => {
+    const possibleSteps = [0, 0.25, 0.5, 0.75, 1];
+    const randomStep = possibleSteps[Math.floor(Math.random() * possibleSteps.length)];
+    return randomStep * maxIntensity;
+  });
 
   if (!userData) {
     return (
@@ -323,51 +349,119 @@ export default function Home() {
             </TouchableOpacity>
           </View>
         </View>
-        {/* Jump Back in */}
+        {/* Calendar */}
+        <View style={styles.categoryContainer}>
+          <View style={[styles.categoryHeadingContainer, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
+            <View style={{display: 'flex', gap: 8,}}>
+                    <Text
+              style={[fonts.josefin, styles.categorySubheading, { color: textColor }]}
+            >
+              Calendar
+            </Text>
+            <Text style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}>
+              Your consistency
+            </Text>
+            </View>
+                  <Button
+              text="Overview"
+              iconName="chevron-right"
+              light={true}
+              darkIcon={true}
+              fullWidth={false}
+              onPress={() => {
+                router.push({
+                  pathname: '/Calendar',
+                  // @ts-ignore
+                  params: intensities.get(userData?.intensity),
+                });
+              }}
+            />
+          </View>
+          <View style={[styles.calendar, {justifyContent: 'space-between'}]}>
+             {consistency.map((c, i) => {
+                const currentIntensity = intensities.get(userData?.intensity) || 1;
+                const calculatedPercentage = Math.round((c / currentIntensity) * 100);
 
+                return (
+                  <View style={[styles.calendarUnit]} key={i}>
+                    <Text style={[fonts.josefin, fonts.josefinSemi]}>
+                      {daysOfWeek[i % 7]}
+                    </Text>
+
+                    <ProgressCircle 
+                      radius={16} 
+                      percentage={calculatedPercentage === 0 ? 0 : calculatedPercentage} 
+                      color={"black"}
+                      strokeWidth={5}
+                    />
+
+                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={[fonts.josefin]}>May</Text>
+                      <Text style={[fonts.josefin, fonts.josefinSemi, {fontSize: 20,}]}>{i + 1}</Text>
+                    </View>
+                  </View>
+                );
+              })}
+          </View>
+        </View>
+
+        {/* Jump Back in */}
         {/* Case 1: no quiz to do */}
-        {!quiz &&
+        {!quiz && (
           <>
             <View style={styles.categoryContainer}>
               <View style={styles.categoryHeadingContainer}>
-                <Text
-                  style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}
-                >
+                <Text style={[fonts.josefin, styles.categorySubheading, { color: textColor }]}>
+                  Jump Back In
+                </Text>
+                <Text style={[fonts.josefin, styles.categoryHeading, { color: textColor }]}>
                   Carry on with your course
                 </Text>
               </View>
             </View>
             <View style={styles.jumpBackIn}>
-                <View style={styles.preview}>
-                  <Text
-                    style={[fonts.josefin, styles.chapterPreviewText]}
-                    numberOfLines={7}
-                    ellipsizeMode="tail"
-                  >
-                    {currentCourse?.chapters[0].chapter_content[0].content}
+              {/* Render chapter's name */}
+              <Text style={[fonts.josefin, {color: textColor}]}>
+                {(() => {
+                  const currentChapterObj = currentCourse?.chapters.find(
+                    (ch) => Number(ch.chapter_id) === Number(userData?.currentChapter)
+                  );
 
+                  return currentChapterObj?.chapter_name || "Unknown Chapter";
+                })()}
+              </Text>
+              <View style={styles.preview}>
+                <Text
+                  style={[fonts.josefin, styles.chapterPreviewText]}
+                  numberOfLines={7}
+                  ellipsizeMode="tail"
+                >
+                  {(() => {
+                    const currentChapterObj = currentCourse?.chapters.find(
+                      (ch) => Number(ch.chapter_id) === Number(userData?.currentChapter)
+                    );
 
-
-                  </Text>
-                </View>
-
+                    return currentChapterObj?.chapter_content?.[0]?.content 
+                      || "Ready to continue your learning journey? Click below to view the chapter.";
+                  })()}
+                </Text>
               </View>
-                <Button
-                text="Jump to the chapter"
-                iconName="chevron-right"
-                light={true}
-                darkIcon={true}
-                fullWidth={true}
-                onPress={() => {
-                  router.push({
-                      pathname: '/ChapterContent',
-                      params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) }
-                    })
-                }}
-              />
+            </View>
+            <Button
+              text="Jump to the chapter"
+              iconName="chevron-right"
+              light={true}
+              darkIcon={true}
+              fullWidth={true}
+              onPress={() => {
+                router.push({
+                  pathname: '/ChapterContent',
+                  params: { courseId: currentCourse?.course_id, chapterId: String(userData.currentChapter) }
+                });
+              }}
+            />
           </>
-            
-            }
+        )}
             
         {/* Case 2: quiz to do */}
         {quiz && (
@@ -531,8 +625,8 @@ export default function Home() {
                   style={[
                     styles.goalOption,
                     {
-                      backgroundColor: active ? '#0a7ea4' : (isDark ? '#2c2c2e' : '#f0f0f0'),
-                      borderColor: active ? '#0a7ea4' : (isDark ? '#444' : '#e0e0e0'),
+                      backgroundColor: active ? 'white' : (isDark ? '#2c2c2e' : '#f0f0f0'),
+                      borderColor: active ? 'white' : (isDark ? '#444' : '#e0e0e0'),
                     },
                   ]}
                   activeOpacity={0.75}
@@ -546,10 +640,10 @@ export default function Home() {
                     setShowGoalModal(false);
                   }}
                 >
-                  <Text style={[fonts.josefin, fonts.josefinBold, styles.goalOptionLabel, { color: active ? '#fff' : (isDark ? '#fff' : '#000') }]}>
+                  <Text style={[fonts.josefin, fonts.josefinBold, styles.goalOptionLabel, { color: active ? 'black' : (isDark ? '#fff' : '#000') }]}>
                     {opt.label}
                   </Text>
-                  <Text style={[fonts.josefin, styles.goalOptionFreq, { color: active ? 'rgba(255,255,255,0.8)' : (isDark ? '#aaa' : '#666') }]}>
+                  <Text style={[fonts.josefin, styles.goalOptionFreq, { color: active ? 'black' : (isDark ? '#aaa' : '#666') }]}>
                     {opt.freq}
                   </Text>
                 </TouchableOpacity>
@@ -747,6 +841,8 @@ const styles = StyleSheet.create({
   // Jump Back in
   jumpBackIn: {
     minHeight: 160,
+    display: 'flex',
+    gap: 8,
   },
   preview: {
     backgroundColor: colors.whiteBg.backgroundColor,
@@ -767,5 +863,33 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 16,
     paddingBottom: 32,
+  },
+  calendar: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 24,
+    backgroundColor: 'white',
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingTop: 24,
+    borderRadius: 16,
+    paddingBottom: 24,
+  },
+  calendarUnit: {
+    backgroundColor: "#F4F4F4",
+    width: '28%',
+    gap: 12,
+    borderTopWidth: 4,
+    borderTopColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 4,
+    elevation: 2,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
+    shadowColor: "black",
   },
 });

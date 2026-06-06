@@ -1,5 +1,5 @@
 import React from 'react'
-import {Pressable, StyleSheet, Text} from 'react-native'
+import {Pressable, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import { StyleProp, ViewStyle } from 'react-native'
 import { fonts, colors} from '@/constants/theme'
 import SVG from './svg'
@@ -8,10 +8,10 @@ import './svg-sheet'
 
 export default function Button({text, iconName, onPress, light, darkIcon, style, fullWidth, noIcon} : {text: string, iconName: string, onPress: Function, light?: boolean, darkIcon: boolean, style?: StyleProp<ViewStyle>, fullWidth: boolean, noIcon?: boolean}){
     return (
-        <Pressable style={[styles.button, style, light && styles.lightButton, fullWidth && styles.fullWidth]} onPress={onPress as any}>
+        <TouchableOpacity style={[styles.button, style, light && styles.lightButton, fullWidth && styles.fullWidth]} onPress={onPress as any} activeOpacity={0.85}>
             <Text style={[fonts.josefin, styles.buttonText, light && styles.lightButtonText]}>{text}</Text>
             {!noIcon && <SVG icon={iconName} width={24} height={24} white={!darkIcon}/>}
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

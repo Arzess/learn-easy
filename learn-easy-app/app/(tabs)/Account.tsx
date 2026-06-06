@@ -20,6 +20,7 @@ import { colors, Colors } from '@/constants/theme';
 import { fonts } from '@/constants/theme';
 import { useAppTheme } from '@/context/theme-context';
 import { useDB } from '@/db/DatabaseContext';
+import Button from '@/components/Button';
 import Svg from '@/components/svg';
 
 type EditField = 'name' | 'kurs';
@@ -107,6 +108,7 @@ export default function AccountScreen() {
   function saveEdit() {
     if (!activeField) return;
     if (activeField === 'name') setName(inputValue.trim() || name);
+    // @ts-ignore
     if (activeField === 'email') setEmail(inputValue.trim() || email);
     if (activeField === 'kurs') setKurs(inputValue.trim());
     setActiveField(null);
@@ -218,15 +220,8 @@ export default function AccountScreen() {
               Your bookmarks are saved and will stay. Only your chapter progress in the current course will be reset.
             </Text>
             <View style={styles.modalButtons}>
-              <Pressable onPress={() => setShowCourseSwitch(false)} style={[styles.modalCancel, { borderColor }]}>
-                <Text style={[fonts.josefin, { color: subColor }]}>Cancel</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => { setShowCourseSwitch(false); router.push('/start/Kurswahl'); }}
-                style={[styles.modalSave, { backgroundColor: isDark ? '#fff' : '#000' }]}
-              >
-                <Text style={[fonts.josefin, styles.modalSaveText, { color: isDark ? '#000' : '#fff' }]}>Switch</Text>
-              </Pressable>
+              <Button text="Cancel" iconName="" light={false} darkIcon={false} noIcon={true} fullWidth={true} style={styles.modalCancel} onPress={() => { setShowCourseSwitch(false); }}/>
+              <Button text="Switch" iconName="" light={true} darkIcon={false} noIcon={true} fullWidth={true} style={styles.modalSave} onPress={() => { setShowCourseSwitch(false); router.push('/start/Kurswahl'); }}/>
             </View>
           </Pressable>
         </Pressable>
@@ -244,7 +239,9 @@ export default function AccountScreen() {
               value={inputValue}
               onChangeText={setInputValue}
               autoFocus
+              // @ts-ignore
               secureTextEntry={activeField === 'passwort'}
+              // @ts-ignore
               placeholder={activeField === 'passwort' ? 'New Password' : ''}
               placeholderTextColor={Colors[theme].icon}
             />
@@ -429,6 +426,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
+    backgroundColor: 'transparent',
+    borderColor: 'white',
   },
   modalSave: {
     flex: 1,

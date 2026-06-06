@@ -5,8 +5,8 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint"
   },
@@ -16,7 +16,7 @@
     "@nozbe/microfuzz": "^1.0.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "ajv": "^8.20.0",
-    "expo": "^56.0.0",
+    "expo": "^56.0.8",
     "expo-constants": "~56.0.16",
     "expo-font": "~56.0.5",
     "expo-haptics": "~56.0.3",

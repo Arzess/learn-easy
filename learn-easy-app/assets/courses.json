@@ -6,6 +6,7 @@
       "course_id": "1",
       "course_cover_id": "https://images.pexels.com/photos/5275474/pexels-photo-5275474.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Genghis Khan", "Pax Mongolica", "Temüjin", "Silk Road", "Kublai Khan", "Kurultai", "Paiza", "Steppe Tribes"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: The Rise of Genghis Khan",
@@ -283,6 +284,7 @@
       "course_id": "2",
       "course_cover_id": "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Ada Lovelace", "Katherine Johnson", "ENIAC Programmers", "Hidden Figures", "NASA", "Analytical Engine", "Dorothy Vaughan", "Computer Algorithm"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: The First Programmers Were Women",
@@ -560,6 +562,7 @@
       "course_id": "3",
       "course_cover_id": "https://images.pexels.com/photos/36742562/pexels-photo-36742562.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Leonardo da Vinci", "Michelangelo", "Medici Family", "Florence", "Uomo Universale", "Brunelleschi", "Sistine Chapel", "The Black Death"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: Why Florence? The Birth of a New World",
@@ -837,6 +840,7 @@
       "course_id": "4",
       "course_cover_id": "https://images.pexels.com/photos/35279538/pexels-photo-35279538.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Greenhouse Effect", "Tipping Points", "CO2 Levels", "Eunice Newton Foote", "Permafrost Thaw", "Amazon Rainforest", "Methane", "Greenland Ice Sheet"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: The Greenhouse Effect — A Story 200 Years in the Making",
@@ -1114,6 +1118,7 @@
       "course_id": "5",
       "course_cover_id": "https://images.pexels.com/photos/31508293/pexels-photo-31508293.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Cuban Missile Crisis", "Iron Curtain", "John F. Kennedy", "Containment Policy", "Yalta Conference", "Vasili Arkhipov", "Nuclear Brinkmanship", "George Kennan"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: From Allies to Enemies — How the Cold War Began",
@@ -1391,6 +1396,7 @@
       "course_id": "6",
       "course_cover_id": "https://images.pexels.com/photos/31734018/pexels-photo-31734018.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Great Pyramid of Khufu", "Pharaohs", "Nile River", "Giza Plateau", "Narmer", "Kemet", "Hieroglyphics", "Egyptian Dynasties"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: The Gift of the Nile — How a River Built a Civilization",
@@ -1668,6 +1674,7 @@
       "course_id": "7",
       "course_cover_id": "https://images.pexels.com/photos/15410078/pexels-photo-15410078.jpeg",
       "amount_of_chapters": 2,
+      "search_suggestions": ["Neurons", "Synapses", "Flashbulb Memory", "Neuroplasticity", "Hippocampus", "Neurotransmitters", "Axons", "Eyewitness Reliability"],
       "chapters": [
         {
           "chapter_name": "Chapter 1: 86 Billion Neurons — How Your Brain Is Wired",

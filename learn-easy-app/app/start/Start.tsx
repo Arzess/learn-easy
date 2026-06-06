@@ -30,7 +30,7 @@ export default function Start() {
       
       <ThemedView style={styles.container}>
         <View>
-          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading]} className="heading">Hey!</Text>
+          <Text style={[fonts.josefin, fonts.josefinMedium, styles.heading]} className="heading">Great!</Text>
           <Text style={[fonts.josefin, styles.subheading]}>Could you tell us about yourself?</Text>
         </View>
         
